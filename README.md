@@ -3,7 +3,7 @@
 ### Authentication Checklist
 
 ```text
-MongoDB Connection           ✅
+MongoDB Connection          ✅
 User Registration           ✅
 Password Hashing (bcrypt)   ✅
 Login                       ✅
