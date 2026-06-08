@@ -1,3 +1,17 @@
+User Visits FolioForge
+          ↓
+Create Account
+          ↓
+Dashboard
+          ↓
+Fill Portfolio Data
+          ↓
+Choose Template
+          ↓
+Publish
+          ↓
+Get Portfolio Link
+
 ### Authentication Checklist
 
 ```text
