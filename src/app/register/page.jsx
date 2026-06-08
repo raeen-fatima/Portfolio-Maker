@@ -1,13 +1,16 @@
 "use client";
-
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/validators/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 export default function RegisterPage() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -41,6 +44,9 @@ export default function RegisterPage() {
       }
 
       toast.success(result.message);
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 1000);
 
       reset();
     } catch (error) {
