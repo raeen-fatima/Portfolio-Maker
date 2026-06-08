@@ -26,7 +26,7 @@ export default function ResetPasswordPage() {
       setLoading(true);
 
       const response = await fetch(
-        "/api/reset-password",
+        "/api/auth/reset-password",
         {
           method: "POST",
           headers: {
@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
       toast.success(result.message);
 
       setTimeout(() => {
-        router.push("/login");
+        router.push("/auth/login");
       }, 1500);
     } catch (error) {
       toast.error("Something went wrong");

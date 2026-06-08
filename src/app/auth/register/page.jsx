@@ -24,7 +24,7 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -240,7 +240,7 @@ export default function RegisterPage() {
           <p className="text-sm text-gray-500 text-center">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href="/auth/login"
               className="text-black  font-bold hover:underline"
             >
               Log In

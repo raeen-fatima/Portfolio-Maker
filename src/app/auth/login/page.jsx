@@ -26,7 +26,7 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +159,7 @@ export default function LoginPage() {
             {/* Forgot Password */}
             <div className="flex justify-end">
               <Link
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="text-sm text-gray-500 hover:text-black"
               >
                 Forgot Password?
@@ -196,7 +196,7 @@ export default function LoginPage() {
           <p className="text-sm text-center text-gray-500">
             Don&apos;t have an account?{" "}
             <Link
-              href="/register"
+              href="/auth/register"
               className="text-black  font-bold hover:underline"
             >
               Create Account

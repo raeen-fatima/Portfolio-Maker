@@ -48,7 +48,7 @@ export async function POST(request) {
     await user.save();
 
     const resetLink =
-      `${process.env.NEXT_PUBLIC_APP_URL}/reset-password/${resetToken}`;
+      `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password/${resetToken}`;
 
     await sendResetEmail(
       user.email,

@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
       setLoading(true);
 
       const response = await fetch(
-        "/api/forgot-password",
+        "/api/auth/forgot-password",
         {
           method: "POST",
           headers: {

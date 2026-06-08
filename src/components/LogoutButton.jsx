@@ -8,7 +8,7 @@ export default function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/logout", {
+      const response = await fetch("/api/auth/logout", {
         method: "POST",
       });
 
@@ -21,7 +21,7 @@ export default function LogoutButton() {
 
       toast.success(result.message);
 
-      router.push("/login");
+      router.push("/auth/login");
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
