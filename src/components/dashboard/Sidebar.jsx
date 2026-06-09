@@ -79,7 +79,7 @@ export default function Sidebar() {
           const Icon = link.icon;
 
           return (
-            <>
+            
               <Link
                 key={link.href}
                 href={link.href}
@@ -93,7 +93,7 @@ export default function Sidebar() {
                 <span>{link.name}</span>
               </Link>
 
-            </>
+            
           );
         })}
       </nav>

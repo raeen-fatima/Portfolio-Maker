@@ -319,3 +319,63 @@ Mobile
 └─────────────────────────────────────┘
 
 Sidebar opens as drawer
+
+
+Welcome Back, Raeen 👋
+
+Portfolio Completion: 15%
+
+--------------------------------
+
+Projects      0
+Skills        0
+Experience    0
+Education     0
+
+--------------------------------
+
+Quick Actions
+
++ Complete Hero Section
++ Add About Information
++ Add First Project
++ Choose Template
+
+Dashboard Overview Architecture
+Dashboard
+│
+├── Welcome Section
+│
+├── Portfolio Progress
+│
+├── Statistics Cards
+│
+└── Quick Actions
+
+Portfolio Views
+Portfolio URL
+Selected Template
+Publish Status
+
+┌───────────────────────────────┐
+│ Welcome Back 👋               │
+│ Complete your portfolio       │
+└───────────────────────────────┘
+
+┌─────────┬─────────┬─────────┬─────────┐
+│Projects │ Skills  │ Exp.    │ Educ.   │
+│    0    │    0    │    0    │    0    │
+└─────────┴─────────┴─────────┴─────────┘
+
+┌───────────────────────────────┐
+│ Portfolio Completion          │
+│ 15% ████░░░░░░░░░░░░░░        │
+└───────────────────────────────┘
+
+┌───────────────────────────────┐
+│ Quick Actions                 │
+│ Complete Hero Section         │
+│ Add About Information         │
+│ Add First Project             │
+│ Choose Template               │
+└───────────────────────────────┘
