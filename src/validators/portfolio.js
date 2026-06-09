@@ -1,17 +1,24 @@
 import { z } from "zod";
 
 export const heroSchema = z.object({
-  heading: z
+  name: z
     .string()
-    .min(3, "Heading is required"),
+    .min(2, "Name is required"),
 
-  subHeading: z
+  title: z
     .string()
-    .min(5, "Sub heading is required"),
+    .min(3, "Title is required"),
+
+  tagline: z
+    .string()
+    .min(10, "Tagline is required"),
 
   resumeUrl: z
     .string()
     .url("Enter a valid URL"),
+    
+  image: z.
+    string().url().optional(),
 });
 
 // Hero Form

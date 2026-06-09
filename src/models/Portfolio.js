@@ -24,10 +24,11 @@ const portfolioSchema = new mongoose.Schema(
     },
 
     hero: {
-      heading: String,
-      subHeading: String,
-      profileImage: String,
+      name: String,
+      title: String,
+      tagline: String,
       resumeUrl: String,
+      image: String,
     },
 
     about: {
@@ -53,7 +54,7 @@ const portfolioSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default mongoose.models.Portfolio ||

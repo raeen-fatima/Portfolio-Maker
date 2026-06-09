@@ -9,8 +9,7 @@ export async function POST(request) {
 
     const cookieStore = await cookies();
 
-    const token =
-      cookieStore.get("token")?.value;
+    const token = cookieStore.get("token")?.value;
 
     if (!token) {
       return Response.json(
@@ -20,38 +19,33 @@ export async function POST(request) {
         },
         {
           status: 401,
-        }
+        },
       );
     }
 
-    const decoded =
-      verifyToken(token);
+    const decoded = verifyToken(token);
 
-    const {
-      heading,
-      subHeading,
-      resumeUrl,
-    } = await request.json();
+    const { name, title, tagline, resumeUrl } = await request.json();
 
-    let portfolio =
-      await Portfolio.findOne({
-        userId: decoded.id,
-      });
+    let portfolio = await Portfolio.findOne({
+      userId: decoded.id,
+    });
 
     if (!portfolio) {
-      portfolio =
-        await Portfolio.create({
-          userId: decoded.id,
-          hero: {
-            heading,
-            subHeading,
-            resumeUrl,
-          },
-        });
+      portfolio = await Portfolio.create({
+        userId: decoded.id,
+        hero: {
+          name,
+          title,
+          tagline,
+          resumeUrl,
+        },
+      });
     } else {
       portfolio.hero = {
-        heading,
-        subHeading,
+        name,
+        title,
+        tagline,
         resumeUrl,
       };
 
@@ -60,8 +54,7 @@ export async function POST(request) {
 
     return Response.json({
       success: true,
-      message:
-        "Hero section saved successfully",
+      message: "Hero section saved successfully",
       portfolio,
     });
   } catch (error) {
@@ -74,11 +67,10 @@ export async function POST(request) {
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }
-
 
 // Hero Form
 //    ↓
