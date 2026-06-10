@@ -2,41 +2,116 @@
 
 ## Overview
 
-The Hero Section is the first section displayed on the user's portfolio website.
+The Hero Module is the first customizable section of the FolioForge Portfolio Builder.
 
-Users can customize:
+It allows users to manage their portfolio introduction, including:
+
+* Full Name
+* Professional Title
+* Personal Tagline
+* Resume Link
+* Profile Image
+
+The module provides real-time preview, image upload support, data persistence, and automatic data restoration after refresh.
+
+---
+
+# Features
+
+## Hero Form
+
+Users can enter:
 
 * Name
 * Professional Title
 * Tagline
-* Resume Link
-* Profile Image
+* Resume URL
 
-The Hero Section includes a live preview system allowing users to see changes instantly.
+All fields are validated before submission.
 
 ---
 
-## Hero Architecture
+## Cloudinary Image Upload
+
+Users can upload a profile image using Cloudinary.
+
+Flow:
 
 ```text
-User Inputs Data
+User Selects Image
         ↓
+Cloudinary Upload Widget
+        ↓
+Image Uploaded
+        ↓
+Cloudinary Returns Secure URL
+        ↓
+URL Stored In State
+        ↓
+URL Saved In MongoDB
+```
+
+---
+
+## Live Preview
+
+The Hero Section preview updates instantly while the user types.
+
+Flow:
+
+```text
+User Types
+      ↓
 React Hook Form
-        ↓
+      ↓
+useWatch()
+      ↓
+Preview Updates Instantly
+```
+
+This provides a website-builder experience instead of a traditional form.
+
+---
+
+## Authentication Flow
+
+Hero data is protected using JWT authentication.
+
+```text
+User Login
+      ↓
+JWT Generated
+      ↓
+Cookie Stored
+      ↓
+Hero API Access
+```
+
+Only authenticated users can create or update Hero data.
+
+---
+
+# Architecture
+
+```text
+Hero Form
+     ↓
+React Hook Form
+     ↓
 Zod Validation
-        ↓
-Submit Request
-        ↓
+     ↓
 POST /api/portfolio/hero
-        ↓
+     ↓
+JWT Verification
+     ↓
 MongoDB
-        ↓
+     ↓
 Portfolio Updated
 ```
 
 ---
 
-## Hero Data Structure
+# Database Structure
 
 ```javascript
 hero: {
@@ -48,83 +123,43 @@ hero: {
 }
 ```
 
----
+Example:
 
-## Live Preview Architecture
-
-```text
-User Types
-      ↓
-useWatch()
-      ↓
-Preview Updates Instantly
-      ↓
-User Sees Final Result
+```javascript
+hero: {
+  name: "Raeen Fatima",
+  title: "Full Stack Developer",
+  tagline: "Building modern web applications",
+  resumeUrl: "https://example.com/resume",
+  image: "https://res.cloudinary.com/..."
+}
 ```
 
 ---
 
-## Cloudinary Integration
+# Validation
 
-### Purpose
+Validation is implemented using Zod.
 
-Cloudinary is used to store user profile images.
-
-Instead of storing images directly in MongoDB:
-
-```text
-Image
-   ↓
-Cloudinary
-   ↓
-Image URL
-   ↓
-MongoDB
+```javascript
+name
+title
+tagline
+resumeUrl
 ```
 
----
+Rules:
 
-## Upload Flow
-
-```text
-User Selects Image
-         ↓
-Cloudinary Upload Widget
-         ↓
-Image Uploaded
-         ↓
-Cloudinary Returns URL
-         ↓
-URL Saved In State
-         ↓
-URL Stored In MongoDB
-```
+* Name is required
+* Title is required
+* Tagline is required
+* Resume URL must be a valid URL
 
 ---
 
-## Cloudinary Components
+# API Endpoints
 
-### ImageUpload Component
-
-Responsible for:
-
-* Opening Cloudinary Widget
-* Uploading Images
-* Returning Secure URL
-
-### Hero Form
-
-Responsible for:
-
-* Receiving Image URL
-* Sending URL to API
-* Displaying Live Preview
-
----
-
-## API Architecture
-
-### POST /api/portfolio/hero
+## POST /api/portfolio/hero
 
 Purpose:
 
@@ -133,69 +168,149 @@ Create or update Hero data.
 Flow:
 
 ```text
-JWT Cookie
-      ↓
-Verify Token
-      ↓
-Get User ID
-      ↓
+Request
+   ↓
+Verify JWT
+   ↓
 Find Portfolio
-      ↓
-Create / Update Hero
-      ↓
+   ↓
+Create/Update Hero
+   ↓
 Save To MongoDB
+   ↓
+Response
 ```
 
 ---
 
-## MongoDB Example
+## GET /api/portfolio/hero
 
-```javascript
+Purpose:
+
+Retrieve existing Hero data.
+
+Flow:
+
+```text
+Request
+   ↓
+Verify JWT
+   ↓
+Find Portfolio
+   ↓
+Return Hero Data
+```
+
+Example Response:
+
+```json
 {
-  userId: "...",
-
-  hero: {
-    name: "Raeen Fatima",
-    title: "Full Stack Developer",
-    tagline: "Building modern web applications",
-    resumeUrl: "https://example.com",
-    image: "https://res.cloudinary.com/..."
+  "success": true,
+  "hero": {
+    "name": "Raeen Fatima",
+    "title": "Full Stack Developer",
+    "tagline": "Building modern web applications",
+    "resumeUrl": "https://example.com",
+    "image": "https://res.cloudinary.com/..."
   }
 }
 ```
 
 ---
 
-## Technologies Used
+# Auto Fill Functionality
+
+Saved Hero data automatically loads when the page opens.
+
+Flow:
+
+```text
+Hero Page Opens
+        ↓
+GET /api/portfolio/hero
+        ↓
+Fetch Saved Data
+        ↓
+reset()
+        ↓
+Form Populated Automatically
+```
+
+Benefits:
+
+* No data loss on refresh
+* Better user experience
+* Faster editing workflow
+
+---
+
+# Technologies Used
 
 * Next.js
+* React
 * React Hook Form
 * Zod
 * MongoDB
 * Mongoose
+* JWT
 * Cloudinary
 * next-cloudinary
 * Tailwind CSS
+* Sonner
 
 ---
 
-## Current Features
+# Current Status
 
 Completed:
 
-* Hero Form
-* Validation
-* Live Preview
-* Cloudinary Upload
-* MongoDB Storage
-* Responsive Design
+✅ Hero Form
 
-In Progress:
+✅ Form Validation
 
-* GET Hero API
-* Auto-fill Form
-* Image Persistence After Refresh
-* Full CRUD Operations
+✅ Live Preview
 
+✅ Cloudinary Image Upload
+
+✅ MongoDB Integration
+
+✅ JWT Protected APIs
+
+✅ Create Hero
+
+✅ Read Hero
+
+✅ Update Hero
+
+✅ Auto Fill Saved Data
+
+✅ Responsive Design
+
+---
+
+# Learning Outcomes
+
+Through this module, the following concepts were implemented:
+
+* Form Handling
+* Form Validation
+* JWT Authentication
+* MongoDB CRUD Operations
+* Cloudinary Image Uploads
+* State Management
+* API Development
+* Responsive UI Design
+* Real-Time Preview Systems
+
+---
+
+# Module Completion Status
+
+```text
+Create  ✅
+Read    ✅
+Update  ✅
+Delete  ⏳ (Optional Future Enhancement)
 ```
-```
+
+Hero Module Status: COMPLETED

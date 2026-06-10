@@ -97,3 +97,47 @@ export async function POST(request) {
 // Update Hero Section
 //      ↓
 // Save
+
+
+//Add GET Route
+
+export async function GET() {
+  try {
+    await connectDB();
+
+    const cookieStore = await cookies();
+
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) {
+      return Response.json(
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        { status: 401 }
+      );
+    }
+
+    const decoded = verifyToken(token);
+
+    const portfolio = await Portfolio.findOne({
+      userId: decoded.id,
+    });
+
+    return Response.json({
+      success: true,
+      hero: portfolio?.hero || {},
+    });
+  } catch (error) {
+    console.log(error);
+
+    return Response.json(
+      {
+        success: false,
+        message: "Something went wrong",
+      },
+      { status: 500 }
+    );
+  }
+}

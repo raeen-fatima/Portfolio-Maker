@@ -24,3 +24,13 @@ export default function ImageUpload({
     </CldUploadWidget>
   );
 }
+// "Images are uploaded directly to Cloudinary using the upload widget. Cloudinary returns a secure URL, which is stored in MongoDB and used in portfolio templates."
+// Browser
+//    ↓
+// Cloudinary Widget
+//    ↓
+// Cloudinary Storage
+//    ↓
+// Secure URL
+//    ↓
+// MongoDB

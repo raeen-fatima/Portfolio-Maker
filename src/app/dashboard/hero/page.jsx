@@ -1,25 +1,33 @@
 "use client";
-
-import { useState } from "react";
+// React Hooks
+import { useEffect, useState } from "react";
+// React Hook Form
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+// Validation Schema
 import { heroSchema } from "@/validators/portfolio";
+// UI & Notifications
 import { toast } from "sonner";
 import ImageUpload from "@/components/ImageUpload";
 import Image from "next/image";
+
 export default function HeroPage() {
+   // Loading state for form submission
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
+  // Initialize form with Zod schema validation
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(heroSchema),
   });
 
+  // Watch form fields for real-time preview updates
   const name = useWatch({
     control,
     name: "name",
@@ -39,11 +47,37 @@ export default function HeroPage() {
     control,
     name: "resumeUrl",
   });
+  // Fetch existing hero data on component mount
+  useEffect(() => {
+    const fetchHero = async () => {
+      try {
+        const response = await fetch("/api/portfolio/hero");
 
+        const result = await response.json();
+
+        if (!result.success) return;
+
+        // Populate form with existing hero data
+        reset(result.hero);
+
+        // Set profile image if it exists
+        if (result.hero.image) {
+          setImageUrl(result.hero.image);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchHero();
+  }, [reset]);
+
+  // Handle form submission - save hero section to database
   const onSubmit = async (data) => {
     try {
       setLoading(true);
 
+      // Send form data along with profile image URL to API
       const response = await fetch("/api/portfolio/hero", {
         method: "POST",
         headers: {
@@ -58,11 +92,13 @@ export default function HeroPage() {
 
       const result = await response.json();
 
+      // Show error toast if submission failed
       if (!response.ok) {
         toast.error(result.message);
         return;
       }
 
+      // Show success message
       toast.success(result.message);
     } catch (error) {
       toast.error("Something went wrong");
@@ -73,7 +109,7 @@ export default function HeroPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Page Header */}
       <div>
         <h1 className="text-3xl font-bold">Hero Section</h1>
 
@@ -82,12 +118,13 @@ export default function HeroPage() {
         </p>
       </div>
 
-      {/* Main Layout */}
+      {/* Main Layout - Two column grid: Editor on left, Preview on right */}
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Editor */}
+        {/* Form Editor Section */}
         <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
+          {/* Hero form with fields and validation */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Name */}
+            {/* Full Name Input */}
             <div>
               <label className="block text-sm font-medium mb-2">
                 Full Name
@@ -119,7 +156,7 @@ export default function HeroPage() {
               )}
             </div>
 
-            {/* Title */}
+            {/* Professional Title Input */}
             <div>
               <label className="block text-sm font-medium mb-2">
                 Professional Title
@@ -151,7 +188,7 @@ export default function HeroPage() {
               )}
             </div>
 
-            {/* Tagline */}
+            {/* Tagline Input - Multi-line textarea */}
             <div>
               <label className="block text-sm font-medium mb-2">Tagline</label>
 
@@ -182,7 +219,7 @@ export default function HeroPage() {
               )}
             </div>
 
-            {/* Resume URL */}
+            {/* Resume URL Input */}
             <div>
               <label className="block text-sm font-medium mb-2">
                 Resume Link
@@ -213,6 +250,7 @@ export default function HeroPage() {
                 </p>
               )}
             </div>
+            {/* Profile Image Upload */}
             <div>
               <label className="block text-sm font-medium mb-2">
                 Profile Image
@@ -221,6 +259,7 @@ export default function HeroPage() {
               <ImageUpload onUpload={setImageUrl} />
             </div>
 
+            {/* Submit Button - Disabled during loading */}
             <button
               type="submit"
               disabled={loading}
@@ -241,26 +280,30 @@ export default function HeroPage() {
           </form>
         </div>
 
-        {/* Live Preview */}
+        {/* Live Preview Section - Shows real-time hero preview */}
         <div
           className="
             bg-linear-to-br from-black via-zinc-900 to-black text-white  rounded-3xl  p-8  min-h-500px  flex flex-col  justify-center"
         >
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            {/* Left */}
+            {/* Preview Content - Name, title, tagline */}
             <div className="flex-1">
               <p className="text-zinc-400 text-lg">Hi, I&#39;m</p>
 
+              {/* Display name from form or placeholder */}
               <h1 className="text-3xl font-bold mt-3">{name || "Your Name"}</h1>
 
+              {/* Display professional title from form or placeholder */}
               <h2 className="text-xl text-zinc-300 mt-4">
                 {title || "Professional Title"}
               </h2>
 
+              {/* Display tagline from form or placeholder */}
               <p className="text-zinc-400 mt-6 leading-relaxed">
                 {tagline || "Your professional summary will appear here."}
               </p>
 
+              {/* Resume download button with dynamic URL */}
               <a
                 href={resumeUrl || "#"}
                 target="_blank"
@@ -271,8 +314,9 @@ export default function HeroPage() {
               </a>
             </div>
 
-            {/* Right */}
+            {/* Preview Image Section */}
             <div className="shrink-0">
+              {/* Show uploaded image or placeholder if no image */}
               {imageUrl ? (
                 <Image
                   src={imageUrl}
