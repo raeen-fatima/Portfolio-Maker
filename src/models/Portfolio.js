@@ -34,6 +34,10 @@ const portfolioSchema = new mongoose.Schema(
     about: {
       bio: String,
       location: String,
+      email: String,
+      phone: String,
+      github: String,
+      linkedin: String,
     },
 
     skills: [
@@ -49,6 +53,25 @@ const portfolioSchema = new mongoose.Schema(
         image: String,
         githubUrl: String,
         liveUrl: String,
+        technologies: [String],
+      },
+    ],
+    experience: [
+      {
+        company: String,
+        role: String,
+        startDate: String,
+        endDate: String,
+        description: String,
+      },
+    ],
+
+    education: [
+      {
+        institution: String,
+        degree: String,
+        startYear: String,
+        endYear: String,
       },
     ],
   },

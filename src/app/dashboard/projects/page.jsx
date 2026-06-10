@@ -1,12 +1,19 @@
-import React from 'react'
+import ProjectForm from "@/components/projects/ProjectForm";
 
-function ProjectsPage() {
+export default function ProjectsPage() {
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
-      <h1>Projects Page</h1>
-      <p>This is the Projects page for the dashboard.</p>
-    </div>
-  )
-}
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">
+          Projects
+        </h1>
 
-export default ProjectsPage
+        <p className="text-gray-500 mt-2">
+          Showcase your best projects.
+        </p>
+      </div>
+
+      <ProjectForm />
+    </div>
+  );
+}
