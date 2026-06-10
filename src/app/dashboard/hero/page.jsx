@@ -5,9 +5,11 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { heroSchema } from "@/validators/portfolio";
 import { toast } from "sonner";
-
+import ImageUpload from "@/components/ImageUpload";
+import Image from "next/image";
 export default function HeroPage() {
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const {
     register,
@@ -47,10 +49,12 @@ export default function HeroPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          image: imageUrl,
+        }),
       });
       console.log("FORM DATA:", data);
-
 
       const result = await response.json();
 
@@ -209,6 +213,13 @@ export default function HeroPage() {
                 </p>
               )}
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Profile Image
+              </label>
+
+              <ImageUpload onUpload={setImageUrl} />
+            </div>
 
             <button
               type="submit"
@@ -225,7 +236,7 @@ export default function HeroPage() {
                 disabled:opacity-50
               "
             >
-              {loading ? "Saving..." : "Save Changes"}
+              {loading ? "Saving..." : <>Save Hero Section</>}
             </button>
           </form>
         </div>
@@ -233,48 +244,47 @@ export default function HeroPage() {
         {/* Live Preview */}
         <div
           className="
-            bg-black
-            text-white
-            rounded-3xl
-            p-8
-            min-h-500px
-            flex
-            flex-col
-            justify-center
-          "
+            bg-linear-to-br from-black via-zinc-900 to-black text-white  rounded-3xl  p-8  min-h-500px  flex flex-col  justify-center"
         >
-          <p className="text-zinc-400 text-lg">Hi, I&apos;m</p>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            {/* Left */}
+            <div className="flex-1">
+              <p className="text-zinc-400 text-lg">Hi, I&#39;m</p>
 
-          <h1 className="text-4xl lg:text-5xl font-bold mt-2">
-            {name || "Your Name"}
-          </h1>
+              <h1 className="text-3xl font-bold mt-3">{name || "Your Name"}</h1>
 
-          <h2 className="text-xl lg:text-2xl text-zinc-300 mt-5">
-            {title || "Professional Title"}
-          </h2>
+              <h2 className="text-xl text-zinc-300 mt-4">
+                {title || "Professional Title"}
+              </h2>
 
-          <p className="text-zinc-400 mt-6 leading-relaxed max-w-lg">
-            {tagline || "Your professional summary will appear here."}
-          </p>
+              <p className="text-zinc-400 mt-6 leading-relaxed">
+                {tagline || "Your professional summary will appear here."}
+              </p>
 
-          <div className="mt-8">
-            <a
-              href={resumeUrl || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                inline-flex
-                items-center
-                px-6
-                py-3
-                bg-white
-                text-black
-                rounded-xl
-                font-medium
-              "
-            >
-              Download Resume
-            </a>
+              <a
+                href={resumeUrl || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex mt-6 items-center px-5 py-2 bg-white text-black rounded-xl font-medium"
+              >
+                Download Resume
+              </a>
+            </div>
+
+            {/* Right */}
+            <div className="shrink-0">
+              {imageUrl ? (
+                <Image
+                  src={imageUrl}
+                  alt="Profile"
+                  width={180}
+                  height={180}
+                  className="rounded-xl object-cover border-4 border-zinc-700"
+                />
+              ) : (
+                <div className="w-45 h-45 rounded-full  bg-zinc-800   border-2 border-dashed  border-zinc-600" />
+              )}
+            </div>
           </div>
         </div>
       </div>

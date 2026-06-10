@@ -25,7 +25,7 @@ export async function POST(request) {
 
     const decoded = verifyToken(token);
 
-    const { name, title, tagline, resumeUrl } = await request.json();
+    const { name, title, tagline, resumeUrl, image } = await request.json();
 
     let portfolio = await Portfolio.findOne({
       userId: decoded.id,
@@ -39,6 +39,7 @@ export async function POST(request) {
           title,
           tagline,
           resumeUrl,
+          image,
         },
       });
     } else {
@@ -47,6 +48,7 @@ export async function POST(request) {
         title,
         tagline,
         resumeUrl,
+        image,
       };
 
       await portfolio.save();
