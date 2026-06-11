@@ -1,233 +1,165 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { projectSchema } from "@/validators/portfolio";
-import ImageUpload from "@/components/ImageUpload";
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { MoreVertical } from "lucide-react";
 
-export default function ProjectForm() {
-  const [imageUrl, setImageUrl] = useState("");
+export default function ProjectCard({ project, onDelete, onEdit }) {
+  // Local UI state for the dropdown menu and delete confirmation modal.
+  const [showMenu, setShowMenu] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(projectSchema),
-  });
+  // Ref used to detect outside clicks for the menu.
+  const menuRef = useRef(null);
 
-  const onSubmit = async (data) => {
-    console.log({
-      ...data,
-      image: imageUrl,
-    });
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">
-          Add New Project
-        </h2>
+    <>
+      <div className="group bg-white border border-zinc-200 rounded-3xl overflow-hidden h-full flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
+        {/* Project image section */}
+        {project.image && (
+          <div className="relative overflow-hidden">
+            <Image
+              src={project.image}
+              alt={project.title}
+              width={800}
+              height={500}
+              className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
+        )}
 
-        <p className="text-gray-500 mt-2">
-          Showcase your best work.
-        </p>
+        <div className="p-6">
+          {/* Title and menu */}
+          <div className="flex justify-between items-start gap-4">
+            <div>
+              <h3 className="text-xl font-bold line-clamp-2 leading-tight">
+                {project.title}
+              </h3>
+            </div>
+
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setShowMenu((prev) => !prev)}
+                className="p-2 rounded-lg hover:bg-zinc-100 transition"
+              >
+                <MoreVertical size={18} />
+              </button>
+
+              {showMenu && (
+                <div className="absolute right-0 top-12 bg-white border rounded-xl shadow-lg w-40 z-20">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onEdit(project);
+                      setShowMenu(false);
+                    }}
+                    className="w-full text-left px-4 py-3 hover:bg-gray-100 rounded-xl"
+                  >
+                    Edit Project
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDelete(true);
+                      setShowMenu(false);
+                    }}
+                    className="w-full text-left px-4 py-3 rounded-xl text-red-500 hover:bg-red-50"
+                  >
+                    Delete Project
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Project description */}
+          <p className="text-gray-500 mt-3 line-clamp-3 leading-relaxed text-sm">
+            {project.description}
+          </p>
+
+          {/* Technology tags */}
+          <div className="flex flex-wrap gap-2 mt-5">
+            {project.technologies?.slice(0, 4).map((tech) => (
+              <span
+                key={tech}
+                className="px-3 py-1 bg-zinc-100 text-zinc-700 rounded-full text-xs font-medium"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          {/* External action links */}
+          <div className="flex gap-3 mt-6">
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1 text-center px-4 py-2.5 bg-black text-white rounded-xl font-medium hover:opacity-90 transition"
+            >
+              GitHub
+            </a>
+
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1 text-center px-4 py-2.5 border rounded-xl font-medium hover:bg-zinc-100 transition"
+            >
+              Live Demo
+            </a>
+          </div>
+        </div>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
-        {/* Project Title */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Project Title
-          </label>
-
-          <input
-            type="text"
-            placeholder="Portfolio Builder"
-            {...register("title")}
-            className="
-              w-full
-              bg-zinc-50
-              border
-              border-zinc-200
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-white
-              transition
-            "
-          />
-
-          {errors.title && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.title.message}
+      {/* Delete confirmation modal */}
+      {showDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-md mx-4">
+            <h3 className="text-xl font-bold">Delete Project</h3>
+            <p className="text-gray-500 mt-3">
+              Are you sure you want to delete this project? This action cannot be undone.
             </p>
-          )}
+
+            <div className="flex gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => setShowDelete(false)}
+                className="flex-1 py-3 border rounded-xl"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onDelete(project._id);
+                  setShowDelete(false);
+                }}
+                className="flex-1 py-3 bg-red-500 text-white rounded-xl"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
-
-        {/* Description */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Description
-          </label>
-
-          <textarea
-            rows={5}
-            placeholder="Describe your project..."
-            {...register("description")}
-            className="
-              w-full
-              bg-zinc-50
-              border
-              border-zinc-200
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-white
-              transition
-              resize-none
-            "
-          />
-
-          {errors.description && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.description.message}
-            </p>
-          )}
-        </div>
-
-        {/* GitHub URL */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            GitHub URL
-          </label>
-
-          <input
-            type="text"
-            placeholder="https://github.com/..."
-            {...register("githubUrl")}
-            className="
-              w-full
-              bg-zinc-50
-              border
-              border-zinc-200
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-white
-              transition
-            "
-          />
-
-          {errors.githubUrl && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.githubUrl.message}
-            </p>
-          )}
-        </div>
-
-        {/* Live URL */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Live Demo URL
-          </label>
-
-          <input
-            type="text"
-            placeholder="https://your-project.vercel.app"
-            {...register("liveUrl")}
-            className="
-              w-full
-              bg-zinc-50
-              border
-              border-zinc-200
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-white
-              transition
-            "
-          />
-
-          {errors.liveUrl && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.liveUrl.message}
-            </p>
-          )}
-        </div>
-
-        {/* Technologies */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Technologies
-          </label>
-
-          <input
-            type="text"
-            placeholder="Next.js, MongoDB, Tailwind CSS"
-            {...register("technologies")}
-            className="
-              w-full
-              bg-zinc-50
-              border
-              border-zinc-200
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-white
-              transition
-            "
-          />
-
-          {errors.technologies && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.technologies.message}
-            </p>
-          )}
-        </div>
-
-        {/* Project Image */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Project Image
-          </label>
-
-          <ImageUpload
-            onUpload={setImageUrl}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="
-            w-full
-            bg-black
-            text-white
-            py-3.5
-            rounded-2xl
-            font-medium
-            hover:opacity-90
-            transition
-          "
-        >
-          Save Project
-        </button>
-      </form>
-    </div>
+      )}
+    </>
   );
 }
