@@ -10,6 +10,7 @@ export async function GET() {
     const cookieStore = await cookies();
 
     const token = cookieStore.get("token")?.value;
+    console.log("Token:", token);
 
     if (!token) {
       return Response.json(
@@ -26,6 +27,8 @@ export async function GET() {
     const portfolio = await Portfolio.findOne({
       userId: decoded.id,
     });
+    console.log("Decoded ID:", decoded.id);
+    console.log("Portfolio:", portfolio?._id);
 
     skills: portfolio?.skills?.sort((a, b) => a.name.localeCompare(b.name)) ||
       [];

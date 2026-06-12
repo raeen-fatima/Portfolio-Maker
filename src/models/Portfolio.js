@@ -58,11 +58,40 @@ const portfolioSchema = new mongoose.Schema(
     ],
     experience: [
       {
-        company: String,
-        role: String,
-        startDate: String,
-        endDate: String,
-        description: String,
+        company: {
+          type: String,
+          required: true,
+        },
+
+        role: {
+          type: String,
+          required: true,
+        },
+
+        location: {
+          type: String,
+          default: "",
+        },
+
+        startDate: {
+          type: String,
+          required: true,
+        },
+
+        endDate: {
+          type: String,
+          default: "",
+        },
+
+        current: {
+          type: Boolean,
+          default: false,
+        },
+
+        description: {
+          type: String,
+          default: "",
+        },
       },
     ],
 

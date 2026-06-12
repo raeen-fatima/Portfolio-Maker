@@ -106,3 +106,38 @@ export const skillSchema = z.object({
     .min(2, "Skill name is required")
     .max(30, "Skill name is too long"),
 });
+
+export const experienceSchema =
+  z.object({
+    company: z
+      .string()
+      .trim()
+      .min(
+        2,
+        "Company name is required"
+      ),
+
+    role: z
+      .string()
+      .trim()
+      .min(
+        2,
+        "Role is required"
+      ),
+
+    location: z.string().optional(),
+
+    startDate: z.string(),
+
+    endDate: z.string().optional(),
+
+    current: z.boolean(),
+
+    description: z
+      .string()
+      .trim()
+      .min(
+        10,
+        "Description must be at least 10 characters"
+      ),
+  });
