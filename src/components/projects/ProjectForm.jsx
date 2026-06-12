@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 
 // Dynamic Import
-const ImageUpload = dynamic(() => import("@/components/ImageUpload"), {
+const ImageUpload = dynamic(() => import("@/components/ui/ImageUpload"), {
   ssr: false,
 });
 

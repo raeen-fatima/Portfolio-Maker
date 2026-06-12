@@ -13,7 +13,7 @@ import {
   Eye,
   Settings,
 } from "lucide-react";
-import LogoutButton from "@/components/LogoutButton";
+import LogoutButton from "@/components/ui/LogoutButton";
 const links = [
   {
     name: "Dashboard",

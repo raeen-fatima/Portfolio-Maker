@@ -1,5 +1,5 @@
 "use client";
-
+import DeleteModal from "@/components/ui/DeleteModal";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { MoreVertical } from "lucide-react";
@@ -129,37 +129,21 @@ export default function ProjectCard({ project, onDelete, onEdit }) {
       </div>
 
       {/* Delete confirmation modal */}
-      {showDelete && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-3xl p-6 w-full max-w-md mx-4">
-            <h3 className="text-xl font-bold">Delete Project</h3>
-            <p className="text-gray-500 mt-3">
-              Are you sure you want to delete this project? This action cannot be undone.
-            </p>
 
-            <div className="flex gap-3 mt-6">
-              <button
-                type="button"
-                onClick={() => setShowDelete(false)}
-                className="flex-1 py-3 border rounded-xl"
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  onDelete(project._id);
-                  setShowDelete(false);
-                }}
-                className="flex-1 py-3 bg-red-500 text-white rounded-xl"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DeleteModal
+        isOpen={showDelete}
+        onClose={() =>
+          setShowDelete(false)
+        }
+        onConfirm={() => {
+          onDelete(project._id);
+          setShowDelete(false);
+        }}
+        title="Delete Project"
+        description={`Are you sure you want to delete "${project.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+      />
+   
     </>
   );
 }

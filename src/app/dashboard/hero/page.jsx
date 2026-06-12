@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { heroSchema } from "@/validators/portfolio";
 // UI & Notifications
 import { toast } from "sonner";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUpload from "@/components/ui/ImageUpload";
 import Image from "next/image";
 
 export default function HeroPage() {

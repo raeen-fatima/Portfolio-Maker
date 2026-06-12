@@ -98,3 +98,11 @@ export const projectSchema = z.object({
     .string()
     .min(1, "Technology is required"),
 });
+
+export const skillSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Skill name is required")
+    .max(30, "Skill name is too long"),
+});

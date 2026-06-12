@@ -133,4 +133,10 @@ Dashboard
  ├── Topbar
  └── Content Area
 ```
+useEffect(() => {
+  const loadSkills = async () => {
+    await fetchSkills();
+  };
 
+  loadSkills();
+}, []);
