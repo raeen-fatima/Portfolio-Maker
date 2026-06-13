@@ -127,7 +127,12 @@ export const experienceSchema =
 
     location: z.string().optional(),
 
-    startDate: z.string(),
+    startDate: z
+      .string()
+      .min(
+        1,
+        "Start date is required"
+      ),
 
     endDate: z.string().optional(),
 
@@ -141,3 +146,40 @@ export const experienceSchema =
         "Description must be at least 10 characters"
       ),
   });
+
+export const educationSchema = z.object({
+  institution: z
+    .string()
+    .trim()
+    .min(
+      2,
+      "Institution is required"
+    ),
+
+  degree: z
+    .string()
+    .trim()
+    .min(
+      2,
+      "Degree is required"
+    ),
+
+  startYear: z
+    .string()
+    .min(
+      4,
+      "Start year is required"
+    )
+    .max(
+      4,
+      "Enter a valid year"
+    ),
+
+  endYear: z
+    .string()
+    .max(
+      4,
+      "Enter a valid year"
+    )
+    .optional(),
+});

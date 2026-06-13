@@ -325,14 +325,14 @@ export default function AboutPage() {
         {/* Live Preview */}
         <div
           className="
-            bg-gradient-to-br
+            bg-linear-to-br
             from-black
             via-zinc-900
             to-black
             text-white
             rounded-3xl
             p-8
-            min-h-[500px]
+            min-h-125
           "
         >
           <h2 className="text-3xl font-bold">About Me</h2>
