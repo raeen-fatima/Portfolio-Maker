@@ -236,7 +236,7 @@ export default function ProjectForm({
 
         {/* Technologies */}
         <div>
-          <label className="block text-sm font-medium mb-2">Technologies</label>
+          <label className="block text-sm  font-medium mb-2">Technologies</label>
 
           <input
             type="text"

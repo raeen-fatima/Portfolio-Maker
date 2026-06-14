@@ -14,7 +14,7 @@ import Image from "next/image";
 export default function HeroPage() {
    // Loading state for form submission
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); 
 
   // Initialize form with Zod schema validation
   const {

@@ -18,7 +18,7 @@ export default function ImageUpload({
           onClick={() => open()}
           className="w-full border-2 border-dashed rounded-2xl p-6 hover:bg-gray-50 transition"
         >
-          Upload Profile Image
+          Upload Image
         </button>
       )}
     </CldUploadWidget>

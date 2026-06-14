@@ -94,7 +94,7 @@ export default function ProjectCard({ project, onDelete, onEdit }) {
           </p>
 
           {/* Technology tags */}
-          <div className="flex flex-wrap gap-2 mt-5">
+          <div className="flex uppercase flex-wrap gap-2 mt-5">
             {project.technologies?.slice(0, 4).map((tech) => (
               <span
                 key={tech}

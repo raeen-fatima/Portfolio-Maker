@@ -1,13 +1,15 @@
 "use client";
-
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { aboutSchema } from "@/validators/portfolio";
 import { toast } from "sonner";
+import ImageUpload from "@/components/ui/ImageUpload";
 
 export default function AboutPage() {
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const {
     register,
@@ -49,6 +51,10 @@ export default function AboutPage() {
     control,
     name: "linkedin",
   });
+  const instagram = useWatch({
+    control,
+    name: "instagram",
+  });
 
   const onSubmit = async (data) => {
     try {
@@ -59,7 +65,10 @@ export default function AboutPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          image: imageUrl,
+        }),
       });
       //  console.log("ABOUT DATA:", data);
 
@@ -89,6 +98,10 @@ export default function AboutPage() {
         if (!result.success) return;
 
         reset(result.about);
+        // Set profile image if it exists
+        if (result.about.image) {
+          setImageUrl(result.about.image);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -300,6 +313,45 @@ export default function AboutPage() {
                 </p>
               )}
             </div>
+            {/* Instagram */}
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Instagram URL
+              </label>
+
+              <input
+                type="text"
+                placeholder="https://instagram.com/username"
+                {...register("instagram")}
+                className="
+                  w-full
+                  bg-zinc-50
+                  border
+                  border-zinc-200
+                  rounded-2xl
+                  px-4
+                  py-3.5
+                  outline-none
+                  focus:border-black
+                  focus:bg-white
+                  transition
+                "
+              />
+
+              {errors.instagram && (
+                <p className="text-red-500 text-sm mt-2">
+                  {errors.instagram.message}
+                </p>
+              )}
+            </div>
+            {/* Profile Image Upload */}
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                About Image
+              </label>
+
+              <ImageUpload onUpload={setImageUrl} />
+            </div>
 
             {/* Submit Button */}
             <button
@@ -366,6 +418,21 @@ export default function AboutPage() {
                 {linkedin || "LinkedIn Profile URL"}
               </span>
             </p>
+          </div>
+          {/* Preview Image Section */}
+          <div className="shrink-0">
+            {/* Show uploaded image or placeholder if no image */}
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt="Profile"
+                width={180}
+                height={180}
+                className="rounded-xl object-cover border-4 border-zinc-700"
+              />
+            ) : (
+              <div className="w-45 h-45 rounded-full  bg-zinc-800   border-2 border-dashed  border-zinc-600" />
+            )}
           </div>
         </div>
       </div>

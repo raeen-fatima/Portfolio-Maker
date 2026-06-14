@@ -38,6 +38,8 @@ const portfolioSchema = new mongoose.Schema(
       phone: String,
       github: String,
       linkedin: String,
+      instagram: String,
+      image: String,
     },
 
     skills: [
@@ -103,6 +105,86 @@ const portfolioSchema = new mongoose.Schema(
         endYear: String,
       },
     ],
+    // certifications: [
+    //   {
+    //     title: {
+    //       type: String,
+    //       required: true,
+    //     },
+
+    //     issuer: {
+    //       type: String,
+    //       required: true,
+    //     },
+
+    //     issueDate: {
+    //       type: String,
+    //       required: true,
+    //     },
+
+    //     credentialId: {
+    //       type: String,
+    //       default: "",
+    //     },
+
+    //     credentialUrl: {
+    //       type: String,
+    //       default: "",
+    //     },
+
+    //     image: {
+    //       type: String,
+    //       default: "",
+    //     },
+    //   },
+    // ],
+
+    certifications: [
+      {
+        title: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+
+        issuer: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+
+        issueDate: {
+          type: String,
+          required: true,
+        },
+
+        credentialUrl: {
+          type: String,
+          default: "",
+        },
+      },
+    ],
+    contact: {
+      email: {
+        type: String,
+        default: "",
+      },
+
+      phone: {
+        type: String,
+        default: "",
+      },
+
+      location: {
+        type: String,
+        default: "",
+      },
+
+      // contactFormEnabled: {
+      //   type: Boolean,
+      //   default: false,
+      // },
+    },
   },
   {
     timestamps: true,

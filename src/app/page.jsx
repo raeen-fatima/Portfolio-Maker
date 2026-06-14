@@ -31,7 +31,7 @@ export default function Home() {
           </div>
           <div className="flex justify-center">
             <div className="w-full max-w-md rounded-lg overflow-hidden shadow-lg">
-              <Image src="/LandingImage.jpg" width={500} height={300} alt="Portfolio preview" className="object-cover w-full h-auto" loading="lazy" />
+              <Image src="/LandingImage.jpg" width={500} height={300} alt="Portfolio preview" className="object-cover w-full h-auto" loading="eager" />
             </div>
           </div>
         </div>

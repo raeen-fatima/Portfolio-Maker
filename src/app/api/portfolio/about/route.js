@@ -23,7 +23,7 @@ export async function POST(request) {
 
     const decoded = verifyToken(token);
 
-    const { bio, location, email, phone, github, linkedin } =
+    const { bio, location, email, phone, github, linkedin, instagram, image } =
       await request.json();
     console.log({
       bio,
@@ -32,6 +32,8 @@ export async function POST(request) {
       phone,
       github,
       linkedin,
+      instagram,
+      image,
     });
 
     let portfolio = await Portfolio.findOne({
@@ -48,6 +50,8 @@ export async function POST(request) {
           phone,
           github,
           linkedin,
+          instagram,
+          image,
         },
       });
     } else {
@@ -58,6 +62,8 @@ export async function POST(request) {
         phone,
         github,
         linkedin,
+        instagram,
+        image,
       };
       // console.log("Before Save:");
       // console.log(portfolio.about);

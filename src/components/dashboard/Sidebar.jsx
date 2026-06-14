@@ -11,7 +11,7 @@ import {
   GraduationCap,
   LayoutTemplate,
   Eye,
-  Settings,
+  Settings,ShieldCheck
 } from "lucide-react";
 import LogoutButton from "@/components/ui/LogoutButton";
 const links = [
@@ -49,6 +49,16 @@ const links = [
     name: "Education",
     href: "/dashboard/education",
     icon: GraduationCap,
+  },
+  {
+    name: "Certifications",
+    href: "/dashboard/certifications",
+    icon: ShieldCheck,
+  },
+   {
+    name: "Contact",
+    href: "/dashboard/contact",
+    icon: User,
   },
   {
     name: "Templates",
