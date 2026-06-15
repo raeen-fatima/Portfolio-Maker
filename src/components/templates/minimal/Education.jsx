@@ -60,7 +60,7 @@ export default function Education({
           <div
             className="
               absolute
-              left-[7px]
+              left-1.75
               top-0
               h-full
               w-px

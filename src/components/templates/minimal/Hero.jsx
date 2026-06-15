@@ -62,7 +62,7 @@ export default function Hero({ heroData, aboutData }) {
               </h2>
               
             )}
-            <div className="mt-4 h-[2px] w-26 bg-lime-400 rounded-full" />
+            <div className="mt-4 h-0.5 w-26 bg-lime-400 rounded-full" />
 
             {/* Tagline */}
             {heroData?.tagline && (
@@ -186,8 +186,8 @@ export default function Hero({ heroData, aboutData }) {
               <div
                 className="
                   relative
-                  h-[500px]
-                  w-[360px]
+                  h-125
+                  w-90
                   overflow-hidden
                   rounded-3xl
                   bg-zinc-100

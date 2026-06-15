@@ -79,7 +79,7 @@ export default function Projects({
                       width={800}
                       height={600}
                       className="
-                        h-[300px]
+                        h-75
                         w-full
                         object-cover
                         transition

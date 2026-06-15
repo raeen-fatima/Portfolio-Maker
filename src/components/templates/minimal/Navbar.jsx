@@ -11,11 +11,9 @@ export default function Navbar({
 
   const navItems = [
     "About",
-    "Skills",
     "Projects",
     "Education",
     "Experience",
-    "Certifications",
     "Contact",
   ];
 

@@ -33,8 +33,9 @@ export default function About({
                   alt="About"
                   width={600}
                   height={700}
+                  
                   className="
-                    h-[550px]
+                    h-137.5
                     w-full
                     object-cover
                   "
@@ -139,7 +140,7 @@ export default function About({
                   hover:text-lime-500
                 "
               >
-                Let's Connect
+                Let&apos;s Connect
                 <ArrowRight size={18} />
               </a>
             </div>
