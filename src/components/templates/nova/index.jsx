@@ -9,11 +9,28 @@ import Certifications from "./Certifications";
 import Contact from "./Contact";
 import Footer from "./Footer";
 
-
-export default function Nova({ heroData, aboutData, skills, socialLinks, projects, experience, education, certifications, contact }) {
+export default function Nova({
+  heroData,
+  aboutData,
+  skills,
+  socialLinks,
+  projects,
+  experience,
+  education,
+  certifications,
+  contact,
+}) {
   return (
     <main className="min-h-screen bg-zinc-950">
-      <Navbar />
+      <Navbar
+        heroData={heroData}
+        aboutData={aboutData}
+        skills={skills}
+        projects={projects}
+        experience={experience}
+        education={education}
+        certifications={certifications}
+      />
 
       <Hero heroData={heroData} socialLinks={socialLinks} />
       <About aboutData={aboutData} HeroData={heroData} />

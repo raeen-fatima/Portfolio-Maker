@@ -26,8 +26,8 @@ export default function Projects({ projects }) {
           </h2>
 
           <p className="mt-4 max-w-2xl text-zinc-400">
-            A collection of projects showcasing my experience in building
-            modern web applications and digital products.
+            A collection of projects showcasing my experience in building modern
+            web applications and digital products.
           </p>
         </div>
 
@@ -54,18 +54,16 @@ export default function Projects({ projects }) {
                   grid
                   lg:grid-cols-2
                   items-center
-                  ${
-                    index % 2 !== 0
-                      ? "lg:[&>*:first-child]:order-2"
-                      : ""
-                  }
+                  ${index % 2 !== 0 ? "lg:[&>*:first-child]:order-2" : ""}
                 `}
               >
                 {/* Image */}
-                <div className="relative h-[250px] sm:h-[320px] lg:h-[450px] overflow-hidden">
+                <div className="relative h-62.5 sm:h-80 lg:h-112.5 overflow-hidden">
                   <Image
                     src={project.image}
                     alt={project.title}
+                    sizes="(max-width: 768px) 100vw,
+                    (max-width: 1200px) 50vw 33vw"
                     fill
                     className="
                       object-cover
@@ -75,7 +73,7 @@ export default function Projects({ projects }) {
                     "
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
                 </div>
 
                 {/* Content */}

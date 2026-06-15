@@ -50,7 +50,7 @@ export default function About({ aboutData, HeroData }) {
                   width={600}
                   height={600}
                   className="
-                    h-[400px]
+                    h-100
                     w-full
                     object-cover
                     transition-all
@@ -60,7 +60,7 @@ export default function About({ aboutData, HeroData }) {
                 />
               </div>
             ) : (
-              <div className="h-[500px] rounded-3xl border border-zinc-800 bg-zinc-900" />
+              <div className="h-125 rounded-3xl border border-zinc-800 bg-zinc-900" />
             )}
           </div>
 

@@ -16,12 +16,12 @@ export default function Hero({
     heroData?.title?.split(" ") || [];
 
   return (
-    <section className="relative overflow-hidden">
+    <section id="hero" className="relative overflow-hidden">
       {/* Background Glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-violet-600/20 blur-[140px]" />
+        <div className="absolute left-1/2 top-20 h-125 w-125 -translate-x-1/2 rounded-full bg-violet-600/20 blur-[140px]" />
 
-        <div className="absolute right-0 top-1/2 h-[350px] w-[350px] rounded-full bg-violet-500/20 blur-[120px]" />
+        <div className="absolute right-0 top-1/2 h-87.5 w-87.5 rounded-full bg-violet-500/20 blur-[120px]" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:py-28">

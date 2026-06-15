@@ -41,7 +41,7 @@ export default function Education({ education }) {
 
         {/* Timeline */}
         <div className="relative">
-          <div className="absolute left-[15px] top-0 h-full w-px bg-zinc-800" />
+          <div className="absolute left-3.75 top-0 h-full w-px bg-zinc-800" />
 
           <div className="space-y-10">
             {education.map((item, index) => (
