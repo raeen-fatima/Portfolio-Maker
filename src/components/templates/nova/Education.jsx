@@ -101,11 +101,11 @@ export default function Education({ education }) {
                   </p>
 
                   <div className="mt-3 text-sm text-zinc-500">
-                    {formatDate(item.startDate)}
+                    {formatDate(item.startYear)}
                     {" - "}
                     {item.current
                       ? "Present"
-                      : formatDate(item.endDate)}
+                      : formatDate(item.endYear)}
                   </div>
 
                   {item.description && (
