@@ -102,7 +102,7 @@ Example:
 about: {
   bio: "Full Stack Developer passionate about building modern web applications.",
   location: "Remote",
-  email: "raeen@example.com",
+  email: "John Doe@example.com",
   phone: "9876543210",
   github: "https://github.com/username",
   linkedin: "https://linkedin.com/in/username"

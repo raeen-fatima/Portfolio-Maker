@@ -143,7 +143,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 lg:p-12">
       <div>
         <h1 className="text-3xl font-bold">
           Settings
@@ -206,7 +206,7 @@ export default function SettingsPage() {
                           )
                         )
                       }
-                      placeholder="raeen-fatima"
+                      placeholder="John Doe"
                       className="w-full bg-transparent px-4 py-3.5 outline-none"
                     />
                   </div>

@@ -11,9 +11,11 @@ import {
   GraduationCap,
   LayoutTemplate,
   Eye,
-  Settings,ShieldCheck
+  Globe ,
+  Settings,
+  ShieldCheck,
 } from "lucide-react";
-import LogoutButton from "@/components/ui/LogoutButton";
+
 const links = [
   {
     name: "Dashboard",
@@ -55,7 +57,7 @@ const links = [
     href: "/dashboard/certifications",
     icon: ShieldCheck,
   },
-   {
+  {
     name: "Contact",
     href: "/dashboard/contact",
     icon: User,
@@ -71,6 +73,11 @@ const links = [
     icon: Eye,
   },
   {
+    name: "Publish",
+    href: "/dashboard/publish",
+    icon: Globe,
+  },
+  {
     name: "Settings",
     href: "/dashboard/settings",
     icon: Settings,
@@ -81,32 +88,85 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-full  flex flex-col">
-      <h1 className="text-2xl font-bold px-6 py-6 border-b">FolioForge</h1>
+    <div className="flex h-full flex-col bg-white">
+      {/* Logo */}
+      <div className="hidden lg:block border-b px-6 py-6">
+        <h1 className="text-2xl font-bold tracking-tight">FolioForge</h1>
 
-      <nav className="flex-1 p-4 space-y-2">
+        <p className="mt-1 text-sm text-zinc-500">Build. Preview. Publish.</p>
+      </div>
+
+      {/* Navigation */}
+      <nav
+        className="
+          flex-1
+          overflow-y-auto
+          p-4
+          space-y-2
+        "
+      >
         {links.map((link) => {
           const Icon = link.icon;
 
-          return (
-            
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  pathname === link.href
-                    ? "bg-black text-white"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <Icon size={18} />
-                <span>{link.name}</span>
-              </Link>
+          const active = pathname === link.href;
 
-            
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`
+                group
+                flex
+                items-center
+                gap-3
+                rounded-xl
+                px-4
+                py-3
+                text-sm
+                font-medium
+                transition-all
+
+                ${
+                  active
+                    ? "bg-black text-white shadow-md"
+                    : "text-zinc-700 hover:bg-zinc-100"
+                }
+              `}
+            >
+              <Icon
+                size={18}
+                className={`
+                  transition
+
+                  ${
+                    active
+                      ? "text-white"
+                      : "text-zinc-500 group-hover:text-black"
+                  }
+                `}
+              />
+
+              <span>{link.name}</span>
+            </Link>
           );
         })}
       </nav>
+
+      {/* Footer */}
+      <div className="border-t p-4">
+        <div
+          className="
+            rounded-xl
+            bg-zinc-100
+            px-4
+            py-3
+          "
+        >
+          <p className="text-sm font-medium">FolioForge</p>
+
+          <p className="mt-1 text-xs text-zinc-500">Portfolio Builder v1.0</p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -127,7 +127,7 @@ Example:
 
 ```javascript
 hero: {
-  name: "Raeen Fatima",
+  name: "John Doe",
   title: "Full Stack Developer",
   tagline: "Building modern web applications",
   resumeUrl: "https://example.com/resume",
@@ -207,7 +207,7 @@ Example Response:
 {
   "success": true,
   "hero": {
-    "name": "Raeen Fatima",
+    "name": "John Doe",
     "title": "Full Stack Developer",
     "tagline": "Building modern web applications",
     "resumeUrl": "https://example.com",

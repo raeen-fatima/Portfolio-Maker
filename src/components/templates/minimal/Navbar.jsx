@@ -22,7 +22,7 @@ export default function Navbar({
       className="
         sticky
         top-0
-        z-50
+        z-20
         border-b
         border-zinc-200
         bg-white/90
@@ -116,7 +116,7 @@ export default function Navbar({
               px-5
               py-2.5
               text-sm
-              font-semibold
+              font-bold
               text-black
               transition
               hover:bg-lime-400
@@ -131,7 +131,7 @@ export default function Navbar({
             onClick={() =>
               setOpen(!open)
             }
-            className="lg:hidden"
+            className="lg:hidden text-black"
           >
             {open ? (
               <X size={24} />
@@ -142,53 +142,88 @@ export default function Navbar({
         </div>
 
         {/* Mobile Menu */}
-        {open && (
-          <div
-            className="
-              border-t
-              border-zinc-200
-              py-6
-              lg:hidden
-            "
-          >
-            <nav className="flex flex-col gap-5">
-              {navItems.map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  onClick={() =>
-                    setOpen(false)
-                  }
-                  className="
-                    text-zinc-700
-                    transition
-                    hover:text-lime-500
-                  "
-                >
-                  {item}
-                </a>
-              ))}
+{/* Overlay */}
+{open && (
+  <div
+    onClick={() => setOpen(false)}
+    className="
+      fixed
+      inset-0
+      bg-black/40
+      z-30
+      lg:hidden
+    "
+  />
+)}
 
-              <a
-                href="#contact"
-                className="
-                  mt-2
-                  inline-flex
-                  w-fit
-                  rounded-full
-                  bg-lime-300
-                  px-5
-                  py-2.5
-                  text-sm
-                  font-semibold
-                  text-black
-                "
-              >
-                Let's Talk
-              </a>
-            </nav>
-          </div>
-        )}
+{/* Drawer */}
+<div
+  className={`
+    fixed
+    top-0
+    right-0
+    h-screen
+    w-72
+    bg-white/90
+    backdrop-blur-md
+    border-l
+    border-zinc-200
+    z-40
+    p-6
+    transition-transform
+    duration-300
+    lg:hidden
+
+    ${
+      open
+        ? "translate-x-0"
+        : "translate-x-full"
+    }
+  `}
+>
+  <div className="flex justify-end text-black">
+    <button
+      onClick={() => setOpen(false)}
+    >
+      <X size={24} />
+    </button>
+  </div>
+
+  <nav className="mt-10 flex flex-col gap-6">
+    {navItems.map((item) => (
+      <a
+        key={item}
+        href={`#${item.toLowerCase()}`}
+        onClick={() => setOpen(false)}
+        className="
+          text-lg
+          font-medium
+          text-zinc-700
+          hover:text-lime-500
+        "
+      >
+        {item}
+      </a>
+    ))}
+
+    <a
+      href="#contact"
+      className="
+        mt-4
+        rounded-full
+        bg-lime-300
+        px-5
+        py-3
+        text-center
+        font-semibold
+        text-black
+      "
+    >
+      Let's Talk
+    </a>
+  </nav>
+</div>
+        
       </div>
     </header>
   );

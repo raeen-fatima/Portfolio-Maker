@@ -20,19 +20,19 @@ Get Portfolio Link
 Example:
 
 ```text
-folioforge.com/raeen-fatima
+folioforge.com/John Doe
 ```
 
 or later:
 
 ```text
-raeen.folioforge.com
+John Doe.folioforge.com
 ```
 
 or even:
 
 ```text
-raeen.com
+John Doe.com
 ```
 
 (custom domain feature)
@@ -76,7 +76,7 @@ Published Website
 
   selectedTemplate: "template-1",
 
-  portfolioSlug: "raeen-fatima",
+  portfolioSlug: "John Doe",
 
   isPublished: true,
 
@@ -141,7 +141,7 @@ or
 Example:
 
 ```text
-folioforge.com/raeen-fatima
+folioforge.com/John Doe
 ```
 
 Route:
@@ -321,7 +321,7 @@ Mobile
 Sidebar opens as drawer
 
 
-Welcome Back, Raeen 👋
+Welcome Back, John Doe 👋
 
 Portfolio Completion: 15%
 

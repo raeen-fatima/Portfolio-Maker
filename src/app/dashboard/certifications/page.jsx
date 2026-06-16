@@ -42,7 +42,7 @@ export default function CertificationsPage() {
 }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-6 lg:p-12">
       <CertificationForm
         editingCertification={
           editingCertification

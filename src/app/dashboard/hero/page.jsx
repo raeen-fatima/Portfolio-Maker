@@ -108,7 +108,7 @@ export default function HeroPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 lg:p-12">
       {/* Page Header */}
       <div>
         <h1 className="text-3xl font-bold">Hero Section</h1>
@@ -132,7 +132,7 @@ export default function HeroPage() {
 
               <input
                 type="text"
-                placeholder="Raeen Fatima"
+                placeholder="John Doe"
                 {...register("name")}
                 className="
                   w-full

@@ -111,7 +111,7 @@ export default function AboutPage() {
   }, [reset]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6 lg:p-12">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">About Section</h1>
@@ -194,7 +194,7 @@ export default function AboutPage() {
 
               <input
                 type="email"
-                placeholder="raeen@example.com"
+                placeholder="John Doe@example.com"
                 {...register("email")}
                 className="
                   w-full

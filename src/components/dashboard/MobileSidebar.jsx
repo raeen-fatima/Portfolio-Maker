@@ -9,33 +9,102 @@ export default function MobileSidebar() {
 
   return (
     <>
+      {/* Menu Button */}
       <button
         onClick={() => setOpen(true)}
-        className="lg:hidden"
+        className="
+          rounded-lg
+          p-2
+          transition
+          hover:bg-zinc-100
+          lg:hidden
+        "
       >
-        <Menu size={24} />
+        <Menu size={22} />
       </button>
 
-      {open && (
-        <>
-          <div
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 bg-black/40 z-40"
-          />
+      {/* Overlay */}
+      <div
+        onClick={() => setOpen(false)}
+        className={`
+          fixed
+          inset-0
+          z-40
+          bg-black/50
+          backdrop-blur-sm
+          transition-opacity
+          duration-300
+          lg:hidden
 
-          <div className="fixed top-0 left-0 h-screen w-72 bg-white z-50 shadow-xl">
-            <div className="flex justify-end p-4">
-              <button
-                onClick={() => setOpen(false)}
-              >
-                <X size={24} />
-              </button>
-            </div>
+          ${
+            open
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }
+        `}
+      />
 
-            <Sidebar />
+      {/* Drawer */}
+      <div
+        className={`
+          fixed
+          top-0
+          left-0
+          z-50
+          h-screen
+          w-72
+          bg-white
+          shadow-2xl
+          transition-transform
+          duration-300
+          lg:hidden
+
+          ${
+            open
+              ? "translate-x-0"
+              : "-translate-x-full"
+          }
+        `}
+      >
+        {/* Header */}
+        <div
+          className="
+            flex
+            items-center
+            justify-between
+            border-b
+            px-5
+            py-4
+          "
+        >
+          <div>
+            <h2 className="font-bold text-lg">
+              FolioForge
+            </h2>
+
+            <p className="text-xs text-zinc-500">
+              Portfolio Builder
+            </p>
           </div>
-        </>
-      )}
+
+          <button
+            onClick={() => setOpen(false)}
+            className="
+              rounded-lg
+              p-2
+              transition
+              hover:bg-zinc-100
+            "
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Sidebar Content */}
+        <div className="h-[calc(100vh-73px)]">
+          <Sidebar />
+        </div>
+      </div>
     </>
   );
 }

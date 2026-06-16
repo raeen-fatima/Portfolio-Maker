@@ -13,9 +13,9 @@ const portfolioSchema = new mongoose.Schema(
       unique: true,
     },
 
-    template: {
+    selectedTemplate: {
       type: String,
-      default: "template-1",
+      default: "nova",
     },
 
     isPublished: {
@@ -105,39 +105,6 @@ const portfolioSchema = new mongoose.Schema(
         endYear: String,
       },
     ],
-    // certifications: [
-    //   {
-    //     title: {
-    //       type: String,
-    //       required: true,
-    //     },
-
-    //     issuer: {
-    //       type: String,
-    //       required: true,
-    //     },
-
-    //     issueDate: {
-    //       type: String,
-    //       required: true,
-    //     },
-
-    //     credentialId: {
-    //       type: String,
-    //       default: "",
-    //     },
-
-    //     credentialUrl: {
-    //       type: String,
-    //       default: "",
-    //     },
-
-    //     image: {
-    //       type: String,
-    //       default: "",
-    //     },
-    //   },
-    // ],
 
     certifications: [
       {
@@ -179,11 +146,6 @@ const portfolioSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
-
-      // contactFormEnabled: {
-      //   type: Boolean,
-      //   default: false,
-      // },
     },
   },
   {
