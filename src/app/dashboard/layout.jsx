@@ -37,7 +37,7 @@ export default function DashboardLayout({
           <Sidebar />
         </aside>
 
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 bg-">
           <Topbar />
 
           <main>

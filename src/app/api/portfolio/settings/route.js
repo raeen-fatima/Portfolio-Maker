@@ -16,8 +16,7 @@ function normalizeSlug(slug) {
 async function getLoggedInUser() {
   const cookieStore = await cookies();
 
-  const token =
-    cookieStore.get("token")?.value;
+  const token = cookieStore.get("token")?.value;
 
   if (!token) {
     return {
@@ -26,15 +25,13 @@ async function getLoggedInUser() {
           success: false,
           message: "Unauthorized",
         },
-        { status: 401 }
+        { status: 401 },
       ),
     };
   }
 
   const decoded = verifyToken(token);
-  const user = await User.findById(
-    decoded.id
-  ).select("name email image");
+  const user = await User.findById(decoded.id).select("name email image");
 
   if (!user) {
     return {
@@ -43,7 +40,7 @@ async function getLoggedInUser() {
           success: false,
           message: "User not found",
         },
-        { status: 404 }
+        { status: 404 },
       ),
     };
   }
@@ -55,23 +52,20 @@ export async function GET() {
   try {
     await connectDB();
 
-    const { user, error } =
-      await getLoggedInUser();
+    const { user, error } = await getLoggedInUser();
 
     if (error) return error;
 
-    let portfolio =
-      await Portfolio.findOne({
-        userId: user._id,
-      });
+    let portfolio = await Portfolio.findOne({
+      userId: user._id,
+    });
 
     if (!portfolio) {
-      portfolio =
-        await Portfolio.create({
-          userId: user._id,
-          template: "template-1",
-          isPublished: false,
-        });
+      portfolio = await Portfolio.create({
+        userId: user._id,
+        selectedTemplate: "nova",
+        isPublished: false,
+      });
     }
 
     return Response.json({
@@ -83,11 +77,8 @@ export async function GET() {
       },
       settings: {
         slug: portfolio.slug || "",
-        template:
-          portfolio.template ||
-          "template-1",
-        isPublished:
-          portfolio.isPublished,
+        selectedTemplate: portfolio.selectedTemplate || "nova",
+        isPublished: portfolio.isPublished,
       },
     });
   } catch (error) {
@@ -96,10 +87,9 @@ export async function GET() {
     return Response.json(
       {
         success: false,
-        message:
-          "Something went wrong",
+        message: "Something went wrong",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -108,77 +98,61 @@ export async function PUT(request) {
   try {
     await connectDB();
 
-    const { user, error } =
-      await getLoggedInUser();
+    const { user, error } = await getLoggedInUser();
 
     if (error) return error;
 
-    const { slug, isPublished } =
-      await request.json();
+    const { slug, isPublished } = await request.json();
 
-    const normalizedSlug =
-      normalizeSlug(slug || "");
+    const normalizedSlug = normalizeSlug(slug || "");
 
-    if (
-      normalizedSlug.length < 3 ||
-      normalizedSlug.length > 40
-    ) {
+    if (normalizedSlug.length < 3 || normalizedSlug.length > 40) {
       return Response.json(
         {
           success: false,
-          message:
-            "Slug must be between 3 and 40 characters",
+          message: "Slug must be between 3 and 40 characters",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    const existingPortfolio =
-      await Portfolio.findOne({
-        slug: normalizedSlug,
-        userId: { $ne: user._id },
-      });
+    const existingPortfolio = await Portfolio.findOne({
+      slug: normalizedSlug,
+      userId: { $ne: user._id },
+    });
 
     if (existingPortfolio) {
       return Response.json(
         {
           success: false,
-          message:
-            "This portfolio URL is already taken",
+          message: "This portfolio URL is already taken",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    let portfolio =
-      await Portfolio.findOne({
-        userId: user._id,
-      });
+    let portfolio = await Portfolio.findOne({
+      userId: user._id,
+    });
 
     if (!portfolio) {
-      portfolio =
-        await Portfolio.create({
-          userId: user._id,
-        });
+      portfolio = await Portfolio.create({
+        userId: user._id,
+      });
     }
 
     portfolio.slug = normalizedSlug;
-    portfolio.isPublished =
-      Boolean(isPublished);
+    portfolio.isPublished = Boolean(isPublished);
 
     await portfolio.save();
 
     return Response.json({
       success: true,
-      message:
-        "Settings saved successfully",
+      message: "Settings saved successfully",
       settings: {
         slug: portfolio.slug,
-        template:
-          portfolio.template ||
-          "template-1",
-        isPublished:
-          portfolio.isPublished,
+        selectedTemplate: portfolio.selectedTemplate || "nova",
+        isPublished: portfolio.isPublished,
       },
     });
   } catch (error) {
@@ -187,10 +161,9 @@ export async function PUT(request) {
     return Response.json(
       {
         success: false,
-        message:
-          "Something went wrong",
+        message: "Something went wrong",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
