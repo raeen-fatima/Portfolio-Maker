@@ -8,21 +8,6 @@ const portfolioSchema = new mongoose.Schema(
       required: true,
     },
 
-    slug: {
-      type: String,
-      unique: true,
-    },
-
-    selectedTemplate: {
-      type: String,
-      default: "nova",
-    },
-
-    isPublished: {
-      type: Boolean,
-      default: false,
-    },
-
     hero: {
       name: String,
       title: String,
@@ -147,7 +132,26 @@ const portfolioSchema = new mongoose.Schema(
         default: "",
       },
     },
+    slug: {
+      type: String,
+      unique: true,
+    },
+
+    selectedTemplate: {
+      type: String,
+      default: "nova",
+    },
+
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
+    views: {
+      type: Number,
+      default: 0,
+    },
   },
+
   {
     timestamps: true,
   },

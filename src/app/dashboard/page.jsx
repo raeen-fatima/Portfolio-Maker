@@ -1,142 +1,318 @@
+"use client";
+
 import Link from "next/link";
 import {
-  FolderKanban,
-  Code2,
-  Briefcase,
-  GraduationCap,
+  Eye,
+  CheckCircle2,
+  Palette,
+  Globe,
   ArrowRight,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
-  const completion = 15;
+  const [views, setViews] = useState(0);
 
-  const stats = [
+  const [dashboard, setDashboard] =
+    useState({
+      completion: 0,
+      template: "Nova",
+      isPublished: false,
+      slug: "",
+    });
+
+  useEffect(() => {
+    const loadDashboard =
+      async () => {
+        try {
+          const [
+            statsResponse,
+            dashboardResponse,
+          ] = await Promise.all([
+            fetch(
+              "/api/portfolio/stats"
+            ),
+            fetch(
+              "/api/portfolio/dashboard"
+            ),
+          ]);
+
+          const statsResult =
+            await statsResponse.json();
+
+          const dashboardResult =
+            await dashboardResponse.json();
+
+          if (
+            statsResponse.ok
+          ) {
+            setViews(
+              statsResult.views
+            );
+          }
+
+          if (
+            dashboardResponse.ok
+          ) {
+            setDashboard({
+              completion:
+                dashboardResult
+                  .stats
+                  .completion,
+              template:
+                dashboardResult
+                  .stats
+                  .template ||
+                "Nova",
+              isPublished:
+                dashboardResult
+                  .stats
+                  .isPublished ||
+                false,
+              slug:
+                dashboardResult
+                  .stats.slug ||
+                "",
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    loadDashboard();
+  }, []);
+
+  const cards = [
     {
-      title: "Projects",
-      value: 0,
-      icon: FolderKanban,
+      title:
+        "Portfolio Views",
+      value: views,
+      icon: Eye,
+      color:
+        "from-blue-500 to-cyan-500",
     },
     {
-      title: "Skills",
-      value: 0,
-      icon: Code2,
+      title: "Completion",
+      value: `${dashboard.completion}%`,
+      icon: CheckCircle2,
+      color:
+        "from-green-500 to-emerald-500",
     },
     {
-      title: "Experience",
-      value: 0,
-      icon: Briefcase,
+      title: "Template",
+      value:
+        dashboard.template,
+      icon: Palette,
+      color:
+        "from-purple-500 to-pink-500",
     },
     {
-      title: "Education",
-      value: 0,
-      icon: GraduationCap,
+      title: "Status",
+      value:
+        dashboard.isPublished
+          ? "Published"
+          : "Draft",
+      icon: Globe,
+      color:
+        "from-orange-500 to-red-500",
     },
   ];
 
   return (
-    <div className="space-y-8">
-      {/* Welcome Section */}
-      <div className="bg-white rounded-2xl p-8 shadow-sm border">
-        <h1 className="text-3xl font-bold">
-          Welcome Back 👋
+    <div className="space-y-8 p-6 lg:p-10">
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-bold">
+          Dashboard
         </h1>
 
-        <p className="text-gray-500 mt-2">
-          Continue building your portfolio and
-          showcase your work to the world.
+        <p className="mt-2 text-zinc-500">
+          Overview of your
+          portfolio performance
+          and progress.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-        {stats.map((item) => {
-          const Icon = item.icon;
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        {cards.map((card) => {
+          const Icon =
+            card.icon;
 
           return (
             <div
-              key={item.title}
-              className="bg-white p-6 rounded-2xl border shadow-sm"
+              key={card.title}
+              className="
+                overflow-hidden
+                rounded-3xl
+                border
+                bg-white
+                shadow-sm
+              "
             >
-              <div className="flex justify-between items-center">
-                <p className="text-gray-500 text-sm">
-                  {item.title}
-                </p>
+              <div
+                className={`h-2 bg-gradient-to-r ${card.color}`}
+              />
 
-                <Icon size={18} />
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-zinc-500">
+                    {card.title}
+                  </p>
+
+                  <Icon
+                    size={18}
+                  />
+                </div>
+
+                <h2 className="mt-4 text-3xl font-bold">
+                  {card.value}
+                </h2>
               </div>
-
-              <h2 className="text-3xl font-bold mt-4">
-                {item.value}
-              </h2>
             </div>
           );
         })}
       </div>
 
-      {/* Progress */}
-      <div className="bg-white rounded-2xl p-6 border shadow-sm">
-        <div className="flex justify-between mb-4">
-          <h2 className="font-semibold">
-            Portfolio Completion
-          </h2>
+      {/* URL Card */}
+      <div className="rounded-3xl border bg-white p-8">
+        <h2 className="text-xl font-bold">
+          Portfolio URL
+        </h2>
 
-          <span className="font-medium">
-            {completion}%
-          </span>
-        </div>
-
-        <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-black rounded-full"
-            style={{
-              width: `${completion}%`,
-            }}
-          />
-        </div>
-
-        <p className="text-sm text-gray-500 mt-3">
-          Complete your Hero, About and Projects
-          sections to improve your portfolio.
+        <p className="mt-2 text-zinc-500">
+          Share your portfolio
+          with recruiters and
+          clients.
         </p>
+
+        <div className="mt-5 rounded-2xl border bg-zinc-50 p-4">
+          {dashboard.slug
+            ? `${process.env.NEXT_PUBLIC_APP_URL}/u/${dashboard.slug}`
+            : "Slug not configured"}
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            href="/dashboard/settings"
+            className="
+              rounded-xl
+              bg-black
+              px-5
+              py-3
+              text-white
+            "
+          >
+            Manage Settings
+          </Link>
+
+          {dashboard.slug && (
+            <a
+              href={`/u/${dashboard.slug}`}
+              target="_blank"
+              className="
+                rounded-xl
+                border
+                px-5
+                py-3
+              "
+            >
+              Visit Portfolio
+            </a>
+          )}
+        </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-2xl p-6 border shadow-sm">
-        <h2 className="font-semibold mb-5">
+      <div className="rounded-3xl border bg-white p-8">
+        <h2 className="text-xl font-bold">
           Quick Actions
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
           <Link
-            href="/dashboard/hero"
-            className="flex items-center justify-between p-4 border rounded-xl hover:bg-gray-50 transition"
+            href="/dashboard/portfolio"
+            className="
+              flex
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              p-5
+              hover:bg-zinc-50
+            "
           >
-            <span>Complete Hero Section</span>
-            <ArrowRight size={18} />
-          </Link>
+            <span>
+              Continue Building
+            </span>
 
-          <Link
-            href="/dashboard/about"
-            className="flex items-center justify-between p-4 border rounded-xl hover:bg-gray-50 transition"
-          >
-            <span>Add About Information</span>
-            <ArrowRight size={18} />
-          </Link>
-
-          <Link
-            href="/dashboard/projects"
-            className="flex items-center justify-between p-4 border rounded-xl hover:bg-gray-50 transition"
-          >
-            <span>Add First Project</span>
-            <ArrowRight size={18} />
+            <ArrowRight
+              size={18}
+            />
           </Link>
 
           <Link
             href="/dashboard/templates"
-            className="flex items-center justify-between p-4 border rounded-xl hover:bg-gray-50 transition"
+            className="
+              flex
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              p-5
+              hover:bg-zinc-50
+            "
           >
-            <span>Choose Template</span>
-            <ArrowRight size={18} />
+            <span>
+              Change Template
+            </span>
+
+            <ArrowRight
+              size={18}
+            />
+          </Link>
+
+          <Link
+            href="/dashboard/preview"
+            className="
+              flex
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              p-5
+              hover:bg-zinc-50
+            "
+          >
+            <span>
+              Preview Portfolio
+            </span>
+
+            <ArrowRight
+              size={18}
+            />
+          </Link>
+
+          <Link
+            href="/dashboard/publish"
+            className="
+              flex
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              p-5
+              hover:bg-zinc-50
+            "
+          >
+            <span>
+              Publish Portfolio
+            </span>
+
+            <ArrowRight
+              size={18}
+            />
           </Link>
         </div>
       </div>

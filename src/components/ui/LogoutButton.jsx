@@ -1,5 +1,6 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -31,8 +32,18 @@ export default function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="bg-black text-white px-4 py-2 rounded-lg"
+      className="
+        flex
+        items-center
+        gap-2
+        text-sm
+        font-medium
+        text-zinc-400
+        transition
+        hover:text-red-400
+      "
     >
+      <LogOut size={16} />
       Logout
     </button>
   );
