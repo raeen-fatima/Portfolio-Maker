@@ -2,20 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import SkillForm from "@/components/skills/SkillForm";
 import SkillCard from "@/components/skills/SkillCard";
+import BuilderHeader from "@/components/builder/BuilderHeader";
 
 export default function SkillsPage() {
-  // Skills State
   const [skills, setSkills] = useState([]);
 
-  // Fetch Skills
+  const router = useRouter();
+
   const fetchSkills = async () => {
     try {
-      const response = await fetch("/api/portfolio/skills");
+      const response = await fetch(
+        "/api/portfolio/skills"
+      );
 
-      const result = await response.json();
+      const result =
+        await response.json();
 
       if (!result.success) return;
 
@@ -25,100 +30,274 @@ export default function SkillsPage() {
     }
   };
 
-  // Load Skills
   useEffect(() => {
-    const loadSkills = async () => {
-      await fetchSkills();
-    };
-
-    loadSkills();
+    fetchSkills();
   }, []);
 
-  // Delete Skill
-  const handleDelete = async (skillId) => {
+  const handleDelete = async (
+    skillId
+  ) => {
     try {
-      const response = await fetch("/api/portfolio/skills", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          skillId,
-        }),
-      });
+      const response = await fetch(
+        "/api/portfolio/skills",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            skillId,
+          }),
+        }
+      );
 
-      const result = await response.json();
+      const result =
+        await response.json();
 
       if (!response.ok) {
-        toast.error(result.message);
+        toast.error(
+          result.message
+        );
         return;
       }
 
-      toast.success(result.message);
+      toast.success(
+        result.message
+      );
 
       await fetchSkills();
     } catch (error) {
       console.log(error);
 
-      toast.error("Something went wrong");
+      toast.error(
+        "Something went wrong"
+      );
     }
   };
 
   return (
-    <div className="space-y-6 p-6 lg:p-12">
+    <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Skills</h1>
+      <BuilderHeader
+        title="Skills"
+        description="Add the technologies, frameworks and tools you use."
+        step={3}
+        totalSteps={7}
+      />
 
-        <p className="text-gray-500 mt-2">
-          Manage your skills and technologies.
-        </p>
-      </div>
+      {/* Add Skill */}
+      <div
+        className="
+          rounded-[28px]
+          border
+          border-white/10
+          bg-white/[0.03]
+          p-6
+          lg:p-8
+        "
+      >
+        <div>
+          <h2
+            className="
+              text-xl
+              font-semibold
+              text-white
+            "
+          >
+            Add Skills
+          </h2>
 
-      {/* Skill Form */}
-      <SkillForm fetchSkills={fetchSkills} />
-
-      {/* Skills Grid */}
-      <div className="bg-white border border-zinc-200 rounded-3xl p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Your Skills</h2>
-
-          <span className="px-3 py-1 bg-zinc-100 rounded-full text-sm font-medium">
-            {skills.length} Skills
-          </span>
+          <p
+            className="
+              mt-2
+              text-zinc-500
+            "
+          >
+            Add technologies that
+            showcase your expertise.
+          </p>
         </div>
 
-        <p className="text-gray-500 mt-2">Technologies you&apos;ve added.</p>
+        <div className="mt-6">
+          <SkillForm
+            fetchSkills={
+              fetchSkills
+            }
+          />
+        </div>
+      </div>
+
+      {/* Skills */}
+      <div
+        className="
+          rounded-[28px]
+          border
+          border-white/10
+          bg-white/[0.03]
+          p-6
+          lg:p-8
+        "
+      >
+        <div
+          className="
+            flex
+            flex-col
+            gap-4
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
+        >
+          <div>
+            <h2
+              className="
+                text-xl
+                font-semibold
+                text-white
+              "
+            >
+              Your Skills
+            </h2>
+
+            <p
+              className="
+                mt-2
+                text-zinc-500
+              "
+            >
+              Technologies currently
+              displayed on your
+              portfolio.
+            </p>
+          </div>
+
+          <div
+            className="
+              inline-flex
+              items-center
+              rounded-full
+              border
+              border-white/10
+              bg-white/[0.03]
+              px-4
+              py-2
+              text-sm
+              text-zinc-400
+            "
+          >
+            {skills.length} Skills
+          </div>
+        </div>
 
         {skills.length === 0 ? (
           <div
-            className="mt-8 border-2  border-dashed  border-zinc-200  rounded-2xl   p-10  text-center"
+            className="
+              mt-8
+              rounded-3xl
+              border
+              border-dashed
+              border-white/10
+              bg-white/[0.02]
+              p-12
+              text-center
+            "
           >
-            <h3 className="font-semibold">No Skills Added</h3>
+            <h3
+              className="
+                text-lg
+                font-semibold
+                text-white
+              "
+            >
+              No skills added yet
+            </h3>
 
-            <p className="text-zinc-500 mt-2">
-              Add your first skill to start building your portfolio.
+            <p
+              className="
+                mt-3
+                text-zinc-500
+              "
+            >
+              Add your first skill to
+              start building your
+              portfolio.
             </p>
           </div>
         ) : (
           <div
             className="
+              mt-8
               grid
-              sm:grid-cols-2
-              lg:grid-cols-3
               gap-3
-              mt-6
+              sm:grid-cols-2
+              xl:grid-cols-3
             "
           >
-            {skills.map((skill) => (
-              <SkillCard
-                key={skill._id}
-                skill={skill}
-                onDelete={handleDelete}
-              />
-            ))}
+            {skills.map(
+              (skill) => (
+                <SkillCard
+                  key={skill._id}
+                  skill={skill}
+                  onDelete={
+                    handleDelete
+                  }
+                />
+              )
+            )}
           </div>
         )}
+      </div>
+
+      {/* Footer */}
+      <div
+        className="
+          flex
+          flex-col
+          gap-3
+          sm:flex-row
+        "
+      >
+        <button
+        onClick={() =>
+            router.push(
+              "/dashboard/portfolio/about"
+            )
+          }
+          className="
+            flex-1
+            rounded-2xl
+            border
+            border-white/10
+            py-3.5
+            font-medium
+            text-white
+            transition
+            hover:bg-white/[0.04]
+          "
+        >
+         Back
+        </button>
+
+        <button
+          onClick={() =>
+            router.push(
+              "/dashboard/portfolio/projects"
+            )
+          }
+          className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+        >
+          Save & Continue →
+        </button>
       </div>
     </div>
   );

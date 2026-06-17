@@ -10,11 +10,13 @@ import { heroSchema } from "@/validators/portfolio";
 import { toast } from "sonner";
 import ImageUpload from "@/components/ui/ImageUpload";
 import Image from "next/image";
-
+import BuilderHeader from "@/components/builder/BuilderHeader";
+import { useRouter } from "next/navigation";
 export default function HeroPage() {
-   // Loading state for form submission
+  // Loading state for form submission
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(""); 
+  const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter();
 
   // Initialize form with Zod schema validation
   const {
@@ -100,6 +102,7 @@ export default function HeroPage() {
 
       // Show success message
       toast.success(result.message);
+      router.push("/dashboard/portfolio/about");
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -110,119 +113,139 @@ export default function HeroPage() {
   return (
     <div className="space-y-6 p-6 lg:p-12">
       {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Hero Section</h1>
 
-        <p className="text-gray-500 mt-2">
-          Customize the first thing visitors see when they open your portfolio.
-        </p>
-      </div>
+      <BuilderHeader
+        title="Hero Section"
+        description="Customize the first thing visitors see when they open your portfolio."
+        step={1}
+        totalSteps={7}
+      />
 
       {/* Main Layout - Two column grid: Editor on left, Preview on right */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Form Editor Section */}
-        <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
-          {/* Hero form with fields and validation */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            {/* Full Name Input */}
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Full Name
-              </label>
+      <div
+        className="
+    grid
+    gap-6
+    xl:grid-cols-[1fr_420px]
+  "
+      >
+        {/* Form Card */}
+        <div
+          className="
+      rounded-[28px]
+      border
+      border-white/10
+      bg-white/[0.03]
+      p-6
+      lg:p-8
+    "
+        >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Name + Title */}
+            <div className="grid gap-5 md:grid-cols-2">
+              {/* Full Name Input */}
+              <div>
+                <label className="mb-2 block text-sm font-medium">
+                  Full Name
+                </label>
 
-              <input
-                type="text"
-                placeholder="John Doe"
-                {...register("name")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  {...register("name")}
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              transition
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
 
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.name.message}
-                </p>
-              )}
+                {errors.name && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Professional Title */}
+              <div>
+                <label className="mb-2 block text-sm font-medium">
+                  Professional Title
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Full Stack Developer"
+                  {...register("title")}
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              transition
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+
+                {errors.title && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {errors.title.message}
+                  </p>
+                )}
+              </div>
             </div>
 
-            {/* Professional Title Input */}
+            {/* Tagline */}
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Professional Title
-              </label>
-
-              <input
-                type="text"
-                placeholder="Full Stack Developer"
-                {...register("title")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
-
-              {errors.title && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.title.message}
-                </p>
-              )}
-            </div>
-
-            {/* Tagline Input - Multi-line textarea */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Tagline</label>
+              <label className="mb-2 block text-sm font-medium">Tagline</label>
 
               <textarea
                 rows={4}
                 placeholder="Building modern web applications with Next.js and MongoDB."
                 {...register("tagline")}
                 className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                  resize-none
-                "
+            w-full
+            resize-none
+            rounded-2xl
+            border
+            border-white/10
+            bg-black
+            px-4
+            py-3.5
+            text-white
+            outline-none
+            transition
+            placeholder:text-zinc-600
+            focus:border-white/20
+          "
               />
 
               {errors.tagline && (
-                <p className="text-red-500 text-sm mt-2">
+                <p className="mt-2 text-sm text-red-500">
                   {errors.tagline.message}
                 </p>
               )}
             </div>
 
-            {/* Resume URL Input */}
+            {/* Resume URL */}
             <div>
-              <label className="block text-sm font-medium mb-2">
-                Resume Link
+              <label className="mb-2 block text-sm font-medium">
+                Resume URL
               </label>
 
               <input
@@ -230,105 +253,165 @@ export default function HeroPage() {
                 placeholder="https://drive.google.com/..."
                 {...register("resumeUrl")}
                 className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
+            w-full
+            rounded-2xl
+            border
+            border-white/10
+            bg-black
+            px-4
+            py-3.5
+            text-white
+            outline-none
+            transition
+            placeholder:text-zinc-600
+            focus:border-white/20
+          "
               />
 
               {errors.resumeUrl && (
-                <p className="text-red-500 text-sm mt-2">
+                <p className="mt-2 text-sm text-red-500">
                   {errors.resumeUrl.message}
                 </p>
               )}
             </div>
-            {/* Profile Image Upload */}
+
+            {/* Upload */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="mb-2 block text-sm font-medium">
                 Profile Image
               </label>
 
               <ImageUpload onUpload={setImageUrl} />
             </div>
 
-            {/* Submit Button - Disabled during loading */}
-            <button
-              type="submit"
-              disabled={loading}
+            {/* Footer */}
+            <div
               className="
-                w-full
-                bg-black
-                text-white
-                py-3.5
-                rounded-2xl
-                font-medium
-                hover:opacity-90
-                transition
-                disabled:opacity-50
-              "
+          flex
+          flex-col
+          gap-3
+          pt-4
+          sm:flex-row
+        "
             >
-              {loading ? "Saving..." : <>Save Hero Section</>}
-            </button>
+              <button
+                type="button"
+                className="
+            flex-1
+            rounded-2xl
+            border
+            border-white/10
+            py-3.5
+            font-medium
+            text-white
+            transition
+            hover:bg-white/[0.04]
+          "
+              >
+                Save Draft
+              </button>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+              >
+                {loading ? "Saving..." : "Save & Continue →"}
+              </button>
+            </div>
           </form>
         </div>
 
-        {/* Live Preview Section - Shows real-time hero preview */}
+        {/* Preview Card */}
         <div
           className="
-            bg-linear-to-br from-black via-zinc-900 to-black text-white  rounded-3xl  p-8  min-h-500px  flex flex-col  justify-center"
+      h-fit
+      rounded-[28px]
+      border
+      border-white/10
+      bg-white/[0.03]
+      p-8
+
+      xl:sticky
+      xl:top-24
+    "
         >
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            {/* Preview Content - Name, title, tagline */}
-            <div className="flex-1">
-              <p className="text-zinc-400 text-lg">Hi, I&#39;m</p>
+          <div className="flex flex-col items-center text-center">
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt="Profile"
+                width={120}
+                height={120}
+                className="
+            h-32
+            w-32
+            rounded-full
+            object-cover
+          "
+              />
+            ) : (
+              <div
+                className="
+            h-32
+            w-32
+            rounded-full
+            border
+            border-dashed
+            border-white/10
+            bg-white/[0.03]
+          "
+              />
+            )}
 
-              {/* Display name from form or placeholder */}
-              <h1 className="text-3xl font-bold mt-3">{name || "Your Name"}</h1>
+            <p className="mt-6 text-zinc-500">Hi, I'm</p>
 
-              {/* Display professional title from form or placeholder */}
-              <h2 className="text-xl text-zinc-300 mt-4">
-                {title || "Professional Title"}
-              </h2>
+            <h1 className="mt-2 text-3xl font-bold">{name || "Your Name"}</h1>
 
-              {/* Display tagline from form or placeholder */}
-              <p className="text-zinc-400 mt-6 leading-relaxed">
-                {tagline || "Your professional summary will appear here."}
-              </p>
+            <h2 className="mt-3 text-zinc-400">
+              {title || "Professional Title"}
+            </h2>
 
-              {/* Resume download button with dynamic URL */}
-              <a
-                href={resumeUrl || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex mt-6 items-center px-5 py-2 bg-white text-black rounded-xl font-medium"
-              >
-                Download Resume
-              </a>
-            </div>
+            <p
+              className="
+          mt-6
+          max-w-sm
+          leading-relaxed
+          text-zinc-400
+        "
+            >
+              {tagline || "Your professional summary will appear here."}
+            </p>
 
-            {/* Preview Image Section */}
-            <div className="shrink-0">
-              {/* Show uploaded image or placeholder if no image */}
-              {imageUrl ? (
-                <Image
-                  src={imageUrl}
-                  alt="Profile"
-                  width={180}
-                  height={180}
-                  className="rounded-xl object-cover border-4 border-zinc-700"
-                />
-              ) : (
-                <div className="w-45 h-45 rounded-full  bg-zinc-800   border-2 border-dashed  border-zinc-600" />
-              )}
-            </div>
+            <a
+              href={resumeUrl || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+          mt-8
+          inline-flex
+          items-center
+          rounded-2xl
+          bg-white
+          px-5
+          py-3
+          font-medium
+          text-black
+          transition
+          hover:opacity-90
+        "
+            >
+              Download Resume
+            </a>
           </div>
         </div>
       </div>

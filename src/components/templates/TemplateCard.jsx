@@ -60,7 +60,7 @@
 //         overflow-hidden
 //         rounded-3xl
 //         border
-//         border-zinc-200
+//         border-zinc-900
 //         bg-white
 //       "
 //     >
@@ -97,7 +97,7 @@
 //               flex-1
 //               rounded-xl
 //               border
-//               border-zinc-200
+//               border-zinc-900
 //               py-3
 //               font-medium
 //               transition

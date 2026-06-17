@@ -88,7 +88,7 @@ export default function CertificationCard({
           relative
           rounded-3xl
           border
-          border-zinc-200
+          border-zinc-900
           bg-white
           p-5
         "
@@ -121,7 +121,7 @@ export default function CertificationCard({
                 overflow-hidden
                 rounded-2xl
                 border
-                border-zinc-200
+                border-zinc-900
                 bg-white
                 shadow-lg
               "

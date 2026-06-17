@@ -17,7 +17,7 @@ export default function SkillCard({ skill, onDelete }) {
         py-3
         bg-white
         border
-        border-zinc-200
+        border-zinc-900
         rounded-2xl
         hover:border-black
         hover:shadow-md

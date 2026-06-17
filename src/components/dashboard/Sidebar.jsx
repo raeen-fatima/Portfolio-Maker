@@ -244,8 +244,8 @@ export default function Sidebar() {
   return (
     <aside
       className="
-        hidden
-        h-full
+        fixed left-0 top-0 z-40 hidden 
+        h-screen
         w-72
         shrink-0
         border-r
@@ -298,13 +298,9 @@ export default function Sidebar() {
                 tracking-tight
               "
             >
-              <span className="text-white">
-                Folio
-              </span>
+              <span className="text-white">Folio</span>
 
-              <span className="text-zinc-500">
-                Forge
-              </span>
+              <span className="text-zinc-500">Forge</span>
             </h2>
 
             <p
@@ -322,10 +318,7 @@ export default function Sidebar() {
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto p-4">
         {navigation.map((group) => (
-          <div
-            key={group.section}
-            className="mb-8"
-          >
+          <div key={group.section} className="mb-8">
             <p
               className="
                 mb-3
@@ -344,8 +337,7 @@ export default function Sidebar() {
               {group.items.map((item) => {
                 const Icon = item.icon;
 
-                const active =
-                  pathname === item.href;
+                const active = pathname === item.href;
 
                 return (
                   <Link
@@ -398,7 +390,7 @@ export default function Sidebar() {
         {/* Progress Card */}
         <div
           className="
-            mb-4
+            mb-2
             rounded-2xl
             border
             border-white/10
@@ -413,12 +405,12 @@ export default function Sidebar() {
                 font-medium
               "
             >
-              Progress
+              Portfolio Completion
             </span>
 
             <span
               className="
-                text-xs
+                font-medium
                 text-zinc-500
               "
             >
@@ -428,8 +420,8 @@ export default function Sidebar() {
 
           <div
             className="
-              mt-3
-              h-2
+              mt-2
+              h-1.5
               overflow-hidden
               rounded-full
               bg-white/10
@@ -444,20 +436,11 @@ export default function Sidebar() {
               "
             />
           </div>
-
-          <p
-            className="
-              mt-3
-              text-xs
-              text-zinc-500
-            "
-          >
-            Complete your portfolio to
-            publish it publicly.
-          </p>
         </div>
 
-        <LogoutButton />
+        <div className="px-2">
+          <LogoutButton />
+        </div>
       </div>
     </aside>
   );

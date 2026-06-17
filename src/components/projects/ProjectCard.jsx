@@ -28,7 +28,19 @@ export default function ProjectCard({ project, onDelete, onEdit }) {
 
   return (
     <>
-      <div className="group bg-white border border-zinc-200 rounded-3xl overflow-hidden h-full flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
+      <div className="group
+    flex
+    h-full
+    flex-col
+    overflow-hidden
+    rounded-[28px]
+    border
+    border-white/10
+    bg-white/[0.03]
+    transition-all
+    duration-300
+    hover:-translate-y-1
+    hover:border-white/20">
         {/* Project image section */}
         {project.image && (
           <div className="relative overflow-hidden">
@@ -106,25 +118,50 @@ export default function ProjectCard({ project, onDelete, onEdit }) {
           </div>
 
           {/* External action links */}
-          <div className="flex gap-3 mt-6">
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex-1 text-center px-4 py-2.5 bg-black text-white rounded-xl font-medium hover:opacity-90 transition"
-            >
-              GitHub
-            </a>
+<div className="mt-6 flex gap-3">
+  <a
+    href={project.githubUrl}
+    target="_blank"
+    rel="noreferrer"
+    className="
+      flex-1
+      rounded-xl
+      border
+      border-white/10
+      px-4
+      py-2.5
+      text-center
+      text-sm
+      font-medium
+      text-white
+      transition
+      hover:bg-white/[0.04]
+    "
+  >
+    GitHub
+  </a>
 
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="flex-1 text-center px-4 py-2.5 border rounded-xl font-medium hover:bg-zinc-100 transition"
-            >
-              Live Demo
-            </a>
-          </div>
+  <a
+    href={project.liveUrl}
+    target="_blank"
+    rel="noreferrer"
+    className="
+      flex-1
+      rounded-xl
+      bg-white
+      px-4
+      py-2.5
+      text-center
+      text-sm
+      font-medium
+      text-black
+      transition
+      hover:opacity-90
+    "
+  >
+    Live Demo
+  </a>
+</div>
         </div>
       </div>
 

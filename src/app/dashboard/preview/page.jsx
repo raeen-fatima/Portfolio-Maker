@@ -31,7 +31,7 @@ export default async function PreviewPage() {
   const Template = templateMap[portfolio.selectedTemplate] || templateMap.nova;
 
   return (
-    <div className="w-full  max-w-full bg-white overflow-x-hidden">
+    <div className="w-full  max-w-full bg-black overflow-x-hidden">
       <Template
         heroData={safePortfolio.hero || {}}
         aboutData={safePortfolio.about || {}}

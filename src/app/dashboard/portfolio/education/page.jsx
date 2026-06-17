@@ -92,7 +92,7 @@ export default function EducationPage() {
         fetchEducation={fetchEducation}
       />
 
-      <div className="bg-white border border-zinc-200 rounded-3xl p-6">
+      <div className="bg-black border border-zinc-900 rounded-3xl p-6">
         <div className="flex items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold">
@@ -111,7 +111,7 @@ export default function EducationPage() {
         </div>
 
         {education.length === 0 ? (
-          <div className="mt-8 border-2 border-dashed border-zinc-200 rounded-2xl p-10 text-center">
+          <div className="mt-8 border-2 border-dashed border-zinc-900 rounded-2xl p-10 text-center">
             <h3 className="font-semibold">
               No Education Added
             </h3>

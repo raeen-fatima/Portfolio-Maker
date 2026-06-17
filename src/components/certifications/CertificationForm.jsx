@@ -89,7 +89,7 @@ export default function CertificationForm({
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
+    <div className="bg-black border border-zinc-900 rounded-3xl p-6 lg:p-8">
       <div className="mb-6">
         <h2 className="text-2xl font-bold">
           {editingCertification
@@ -119,15 +119,15 @@ export default function CertificationForm({
             {...register("title")}
             className="
               w-full
-              bg-zinc-50
+              bg-back
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
               focus:border-black
-              focus:bg-white
+              focus:bg-black
               transition
             "
           />
@@ -151,15 +151,15 @@ export default function CertificationForm({
             {...register("issuer")}
             className="
               w-full
-              bg-zinc-50
+              bg-back
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
               focus:border-black
-              focus:bg-white
+              focus:bg-black
               transition
             "
           />
@@ -182,15 +182,15 @@ export default function CertificationForm({
             {...register("issueDate")}
             className="
               w-full
-              bg-zinc-50
+              bg-back
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
               focus:border-black
-              focus:bg-white
+              focus:bg-black
               transition
             "
           />
@@ -214,15 +214,15 @@ export default function CertificationForm({
             {...register("credentialUrl")}
             className="
               w-full
-              bg-zinc-50
+              bg-back
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
               focus:border-black
-              focus:bg-white
+              focus:bg-black
               transition
             "
           />
@@ -265,7 +265,7 @@ export default function CertificationForm({
                 px-6
                 py-3.5
                 border
-                border-zinc-200
+                border-zinc-900
                 rounded-2xl
                 font-medium
                 hover:bg-zinc-100

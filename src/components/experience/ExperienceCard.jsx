@@ -67,7 +67,7 @@ export default function ExperienceCard({
 
   return (
     <>
-      <div className="bg-white border border-zinc-200 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
+      <div className="bg-white border border-zinc-900 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
         <div className="flex justify-between items-start gap-4">
           <div>
             <p className="text-sm font-medium text-zinc-500">

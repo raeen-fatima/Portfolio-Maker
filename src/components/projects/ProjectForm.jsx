@@ -98,7 +98,7 @@ export default function ProjectForm({
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
+    <div className="bg-black border border-zinc-900 rounded-3xl p-6 lg:p-8">
       <div className="mb-6">
         <h2 className="text-2xl font-bold">
           {editingProject ? "Edit Project" : "Add New Project"}
@@ -123,15 +123,15 @@ export default function ProjectForm({
             {...register("title")}
             className="
               w-full
-              bg-zinc-50
+              bg-black
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
               focus:border-black
-              focus:bg-white
+              focus:bg-zinc-800
               transition
             "
           />
@@ -151,15 +151,15 @@ export default function ProjectForm({
             {...register("description")}
             className="
               w-full
-              bg-zinc-50
+              bg-black
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
-              focus:border-black
-              focus:bg-white
+              focus:border-zinc-800
+              focus:bg-zinc-800
               transition
               resize-none
             "
@@ -182,15 +182,15 @@ export default function ProjectForm({
             {...register("githubUrl")}
             className="
               w-full
-              bg-zinc-50
+              bg-black
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
-              focus:border-black
-              focus:bg-white
+              focus:border-zinc-900
+              focus:bg-zinc-800
               transition
             "
           />
@@ -214,15 +214,15 @@ export default function ProjectForm({
             {...register("liveUrl")}
             className="
               w-full
-              bg-zinc-50
+              bg-black
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
-              focus:border-black
-              focus:bg-white
+              focus:border-zinc-900
+              focus:bg-zinc-800
               transition
             "
           />
@@ -244,15 +244,15 @@ export default function ProjectForm({
             {...register("technologies")}
             className="
               w-full
-              bg-zinc-50
+              bg-black
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
-              focus:border-black
-              focus:bg-white
+              focus:border-zinc-900
+              focus:bg-zinc-800
               transition
             "
           />
@@ -293,8 +293,8 @@ export default function ProjectForm({
           type="submit"
           className="
     w-full
-    bg-black
-    text-white
+    bg-white
+    text-black
     py-3.5
     rounded-2xl
     font-medium

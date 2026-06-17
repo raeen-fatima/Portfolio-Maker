@@ -107,7 +107,7 @@ export default function ExperienceForm({
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
+    <div className="bg-white border border-zinc-900 rounded-3xl p-6 lg:p-8">
       <div className="mb-6">
         <h2 className="text-2xl font-bold">
           {editingExperience
@@ -134,7 +134,7 @@ export default function ExperienceForm({
               type="text"
               placeholder="Acme Studio"
               {...register("company")}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
             />
 
             {errors.company && (
@@ -153,7 +153,7 @@ export default function ExperienceForm({
               type="text"
               placeholder="Frontend Developer"
               {...register("role")}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
             />
 
             {errors.role && (
@@ -173,7 +173,7 @@ export default function ExperienceForm({
             type="text"
             placeholder="Remote, Mumbai, India"
             {...register("location")}
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
           />
         </div>
 
@@ -186,7 +186,7 @@ export default function ExperienceForm({
             <input
               type="month"
               {...register("startDate")}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
             />
 
             {errors.startDate && (
@@ -205,7 +205,7 @@ export default function ExperienceForm({
               type="month"
               disabled={isCurrent}
               {...register("endDate")}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition disabled:opacity-60"
+              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition disabled:opacity-60"
             />
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function ExperienceForm({
             rows={5}
             placeholder="Describe your responsibilities and achievements..."
             {...register("description")}
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition resize-none"
+            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition resize-none"
           />
 
           {errors.description && (
@@ -255,7 +255,7 @@ export default function ExperienceForm({
                 setEditingExperience(null);
                 reset();
               }}
-              className="px-6 py-3.5 border border-zinc-200 rounded-2xl font-medium hover:bg-zinc-100 transition"
+              className="px-6 py-3.5 border border-zinc-900 rounded-2xl font-medium hover:bg-zinc-100 transition"
             >
               Cancel
             </button>

@@ -89,7 +89,7 @@ export default function EducationForm({
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
+    <div className="bg-white border border-zinc-900 rounded-3xl p-6 lg:p-8">
       <div className="mb-6">
         <h2 className="text-2xl font-bold">
           {editingEducation
@@ -116,7 +116,7 @@ export default function EducationForm({
             type="text"
             placeholder="University of Mumbai"
             {...register("institution")}
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
           />
 
           {errors.institution && (
@@ -135,7 +135,7 @@ export default function EducationForm({
             type="text"
             placeholder="Bachelor of Computer Applications"
             {...register("degree")}
-            className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
           />
 
           {errors.degree && (
@@ -157,7 +157,7 @@ export default function EducationForm({
               max="2100"
               placeholder="2022"
               {...register("startYear")}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
             />
 
             {errors.startYear && (
@@ -178,7 +178,7 @@ export default function EducationForm({
               max="2100"
               placeholder="2026"
               {...register("endYear")}
-              className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
             />
 
             {errors.endYear && (
@@ -206,7 +206,7 @@ export default function EducationForm({
                 setEditingEducation(null);
                 reset();
               }}
-              className="px-6 py-3.5 border border-zinc-200 rounded-2xl font-medium hover:bg-zinc-100 transition"
+              className="px-6 py-3.5 border border-zinc-900 rounded-2xl font-medium hover:bg-zinc-100 transition"
             >
               Cancel
             </button>

@@ -65,7 +65,7 @@ export default function DashboardLayout({
     >
       <Sidebar />
 
-      <div className="flex-1">
+      <div className="flex-1  lg:ml-72">
         <Topbar />
 
         <main

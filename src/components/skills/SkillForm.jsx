@@ -53,7 +53,7 @@ export default function SkillForm({ fetchSkills }) {
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-3xl p-6">
+    <div className="bg-black border border-zinc-900 rounded-3xl p-6">
       <h2 className="text-xl font-bold">Add Skill</h2>
 
       <p className="text-gray-500 mt-2">
@@ -73,15 +73,15 @@ export default function SkillForm({ fetchSkills }) {
             className="
             
               w-full
-              bg-zinc-50
+              bg-back
               border
-              border-zinc-200
+              border-zinc-900
               rounded-2xl
               px-4
               py-3.5
               outline-none
               focus:border-black
-              focus:bg-white
+              focus:bg-zinc-800
               transition
             "
           />
@@ -96,8 +96,8 @@ export default function SkillForm({ fetchSkills }) {
           type="submit"
           className="
             w-full
-            bg-black
-            text-white
+            bg-white
+            text-black
             py-3.5
             rounded-2xl
             font-medium

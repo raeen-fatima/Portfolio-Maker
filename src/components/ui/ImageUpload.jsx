@@ -16,7 +16,7 @@ export default function ImageUpload({
         <button
           type="button"
           onClick={() => open()}
-          className="w-full border-2 border-dashed rounded-2xl p-6 hover:bg-gray-50 transition"
+          className="w-full border-2 border-dashed border-zinc-900 rounded-2xl p-6 hover:bg-zinc-900 transition"
         >
           Upload Image
         </button>

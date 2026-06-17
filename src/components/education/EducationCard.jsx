@@ -50,7 +50,7 @@ export default function EducationCard({
 
   return (
     <>
-      <div className="bg-white border border-zinc-200 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
+      <div className="bg-white border border-zinc-900 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
         <div className="flex justify-between items-start gap-4">
           <div className="flex gap-4">
             <div className="h-12 w-12 rounded-2xl bg-zinc-100 flex items-center justify-center shrink-0">

@@ -6,10 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { aboutSchema } from "@/validators/portfolio";
 import { toast } from "sonner";
 import ImageUpload from "@/components/ui/ImageUpload";
-
+import BuilderHeader from "@/components/builder/BuilderHeader";
+import { useRouter } from "next/navigation";
 export default function AboutPage() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter();
 
   const {
     register,
@@ -82,6 +84,7 @@ export default function AboutPage() {
       toast.success(result.message);
 
       toast.success("About section saved successfully");
+      router.push("/dashboard/portfolio/skills");
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -113,278 +116,275 @@ export default function AboutPage() {
   return (
     <div className="space-y-6 p-6 lg:p-12">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">About Section</h1>
 
-        <p className="text-gray-500 mt-2">
-          Tell visitors more about yourself, your background, and how they can
-          contact you.
-        </p>
-      </div>
+      <BuilderHeader
+        title="About Section"
+        description="Tell visitors more about yourself, your background, and how they can contact you."
+        step={2}
+        totalSteps={7}
+      />
 
       {/* Main Layout */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      {/* Main Layout */}
+      <div
+        className="
+    grid
+    gap-6
+    xl:grid-cols-[1fr_420px]
+  "
+      >
         {/* Form Section */}
-        <div className="bg-white border border-zinc-200 rounded-3xl p-6 lg:p-8">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <div
+          className="
+      rounded-[28px]
+      border
+      border-white/10
+      bg-white/[0.03]
+      p-6
+      lg:p-8
+    "
+        >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Bio */}
             <div>
-              <label className="block text-sm font-medium mb-2">Bio</label>
+              <label className="mb-2 block text-sm font-medium">Bio</label>
 
               <textarea
                 rows={5}
                 placeholder="Tell visitors about yourself..."
                 {...register("bio")}
                 className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                  resize-none
-                "
+            w-full
+            rounded-2xl
+            border
+            border-white/10
+            bg-black
+            px-4
+            py-3.5
+            text-white
+            outline-none
+            transition
+            placeholder:text-zinc-600
+            focus:border-white/20
+            resize-none
+          "
               />
-
-              {errors.bio && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.bio.message}
-                </p>
-              )}
             </div>
 
-            {/* Location */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Location</label>
+            {/* Location + Email */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-medium">
+                  Location
+                </label>
 
-              <input
-                type="text"
-                placeholder="New Delhi, India"
-                {...register("location")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
+                <input
+                  {...register("location")}
+                  placeholder="New Delhi, India"
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+              </div>
 
-              {errors.location && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.location.message}
-                </p>
-              )}
+              <div>
+                <label className="mb-2 block text-sm font-medium">Email</label>
+
+                <input
+                  {...register("email")}
+                  placeholder="john@example.com"
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+              </div>
             </div>
 
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+            {/* Phone + Github */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-medium">Phone</label>
 
-              <input
-                type="email"
-                placeholder="John Doe@example.com"
-                {...register("email")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
+                <input
+                  {...register("phone")}
+                  placeholder="+91 9876543210"
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+              </div>
 
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.email.message}
-                </p>
-              )}
+              <div>
+                <label className="mb-2 block text-sm font-medium">GitHub</label>
+
+                <input
+                  {...register("github")}
+                  placeholder="https://github.com/username"
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+              </div>
             </div>
 
-            {/* Phone */}
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Phone Number
-              </label>
+            {/* Linkedin + Instagram */}
+            <div className="grid gap-5 md:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-medium">
+                  LinkedIn
+                </label>
 
-              <input
-                type="text"
-                placeholder="+91 9876543210"
-                {...register("phone")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
+                <input
+                  {...register("linkedin")}
+                  placeholder="https://linkedin.com/in/username"
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+              </div>
 
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.phone.message}
-                </p>
-              )}
+              <div>
+                <label className="mb-2 block text-sm font-medium">
+                  Instagram
+                </label>
+
+                <input
+                  {...register("instagram")}
+                  placeholder="https://instagram.com/username"
+                  className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-black
+              px-4
+              py-3.5
+              text-white
+              outline-none
+              placeholder:text-zinc-600
+              focus:border-white/20
+            "
+                />
+              </div>
             </div>
 
-            {/* GitHub */}
+            {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium mb-2">
-                GitHub URL
-              </label>
-
-              <input
-                type="text"
-                placeholder="https://github.com/username"
-                {...register("github")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
-
-              {errors.github && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.github.message}
-                </p>
-              )}
-            </div>
-
-            {/* LinkedIn */}
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                LinkedIn URL
-              </label>
-
-              <input
-                type="text"
-                placeholder="https://linkedin.com/in/username"
-                {...register("linkedin")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
-
-              {errors.linkedin && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.linkedin.message}
-                </p>
-              )}
-            </div>
-            {/* Instagram */}
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Instagram URL
-              </label>
-
-              <input
-                type="text"
-                placeholder="https://instagram.com/username"
-                {...register("instagram")}
-                className="
-                  w-full
-                  bg-zinc-50
-                  border
-                  border-zinc-200
-                  rounded-2xl
-                  px-4
-                  py-3.5
-                  outline-none
-                  focus:border-black
-                  focus:bg-white
-                  transition
-                "
-              />
-
-              {errors.instagram && (
-                <p className="text-red-500 text-sm mt-2">
-                  {errors.instagram.message}
-                </p>
-              )}
-            </div>
-            {/* Profile Image Upload */}
-            <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="mb-2 block text-sm font-medium">
                 About Image
               </label>
 
               <ImageUpload onUpload={setImageUrl} />
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
+            {/* Footer */}
+            <div
               className="
-                w-full
-                bg-black
-                text-white
-                py-3.5
-                rounded-2xl
-                font-medium
-                hover:opacity-90
-                transition
-                disabled:opacity-50
-              "
+          flex
+          flex-col
+          gap-3
+          pt-4
+          sm:flex-row
+        "
             >
-              {loading ? "Saving..." : "Save About Section"}
-            </button>
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/portfolio/hero")}
+                className="
+            flex-1
+            rounded-2xl
+            border
+            border-white/10
+            py-3.5
+            font-medium
+            text-white
+            transition
+            hover:bg-white/[0.04]
+          "
+              >
+                ← Back
+              </button>
+
+              <button
+                type="submit"
+                className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+              >
+                Save & Continue →
+              </button>
+            </div>
           </form>
         </div>
 
         {/* Live Preview */}
         <div
           className="
-            bg-linear-to-br
-            from-black
-            via-zinc-900
-            to-black
-            text-white
-            rounded-3xl
-            p-8
-            min-h-125
+            sticky
+      top-24
+      h-fit
+      rounded-[28px]
+      border
+      border-white/10
+      bg-white/[0.03]
+      p-8
           "
         >
           <h2 className="text-3xl font-bold">About Me</h2>
@@ -395,16 +395,16 @@ export default function AboutPage() {
           </p>
 
           <div className="mt-8 space-y-4">
-            <p>📍 {location || "Your Location"}</p>
+            <p> {location || "Your Location"}</p>
 
-            <p>📧 {email || "Your Email"}</p>
+            <p> {email || "Your Email"}</p>
 
-            <p>📱 {phone || "Your Phone"}</p>
+            <p> {phone || "Your Phone"}</p>
           </div>
 
           <div className="mt-8 border-t border-zinc-700 pt-6 space-y-3">
             <p>
-              🔗 GitHub:
+              GitHub:
               <br />
               <span className="text-zinc-400 break-all">
                 {github || "GitHub Profile URL"}
@@ -412,7 +412,7 @@ export default function AboutPage() {
             </p>
 
             <p>
-              💼 LinkedIn:
+              LinkedIn:
               <br />
               <span className="text-zinc-400 break-all">
                 {linkedin || "LinkedIn Profile URL"}
@@ -420,19 +420,35 @@ export default function AboutPage() {
             </p>
           </div>
           {/* Preview Image Section */}
-          <div className="shrink-0">
-            {/* Show uploaded image or placeholder if no image */}
+          <div className="flex flex-col items-center text-center">
             {imageUrl ? (
               <Image
                 src={imageUrl}
                 alt="Profile"
-                width={180}
-                height={180}
-                className="rounded-xl object-cover border-4 border-zinc-700"
+                width={120}
+                height={120}
+                className="
+        h-32
+        w-32
+        rounded-full
+        object-cover
+      "
               />
             ) : (
-              <div className="w-45 h-45 rounded-full  bg-zinc-800   border-2 border-dashed  border-zinc-600" />
+              <div
+                className="
+        h-32
+        w-32
+        rounded-full
+        border
+        border-dashed
+        border-white/10
+        bg-white/[0.03]
+      "
+              />
             )}
+
+            <h2 className="mt-6 text-2xl font-bold">About Me</h2>
           </div>
         </div>
       </div>

@@ -79,7 +79,7 @@ export default function PublishPage() {
         </p>
       </div>
 
-      <div className="rounded-3xl border bg-white p-8">
+      <div className="rounded-3xl border bg-black p-8">
         <h2 className="text-xl font-semibold">Portfolio Status</h2>
 
         <div
@@ -102,7 +102,7 @@ export default function PublishPage() {
           <div className="mt-6">
             <p className="text-sm font-medium">Portfolio URL</p>
 
-            <div className="mt-2 rounded-xl border bg-zinc-50 p-3">
+            <div className="mt-2 rounded-xl border bg-back p-3">
               {process.env.NEXT_PUBLIC_APP_URL}/u/{slug}
             </div>
             <button
