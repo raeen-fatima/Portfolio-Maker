@@ -50,15 +50,23 @@ import { portfolioTemplates } from "@/lib/templates";
 
 import TemplateCard from "@/components/templates/TemplateCard";
 
-export default async function TemplatesPage({}) {
+import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+
+export default async function TemplatesPage() {
   await connectDB();
 
   const user = await getCurrentUser();
+  // console.log("USER:", user);
 
-  const portfolio =
-    await Portfolio.findOne({
-      user: user.id,
-    });
+  if (!user) {
+    redirect("/login");
+  }
+
+  const portfolio = await Portfolio.findOne({
+    user: user.id,
+  });
 
   const currentTemplate =
     portfolioTemplates.find(
