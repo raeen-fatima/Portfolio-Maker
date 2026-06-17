@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { Blocks } from "lucide-react";
+
 import UserDropdown from "../ui/UserDropdown";
 import MobileMenu from "../ui/MobileMenu";
+
 import { getCurrentUser } from "@/lib/auth";
 
 export default async function Navbar() {
@@ -9,7 +12,7 @@ export default async function Navbar() {
   const links = [
     {
       name: "Home",
-      href: "#/",
+      href: "/",
     },
     {
       name: "Features",
@@ -30,37 +33,86 @@ export default async function Navbar() {
   ];
 
   return (
-    <header className="fixed bg-black/60 backdrop:blur-lg inset-x-0 top-0 z-50 ">
-      <div className="mx-auto max-w-7xl px-6 ">
+    <header
+      className="
+        fixed
+        inset-x-0
+        top-0
+        z-50
+        border-b
+        border-white/10
+        bg-black/60
+        backdrop-blur-lg
+      "
+    >
+      <div className="mx-auto max-w-7xl px-6">
         <div
           className="
             flex
-            h-24
+            h-20
             items-center
-            justify-between rounded-2xl
-            border-b  px-5  py- transition
-            border-white/10 hover:border-white/10  hover:bg-white/[0.03]
-           
+            justify-between
+            transition
           "
         >
+          {/* Logo */}
           <Link
             href="/"
             className="
-              text-xl
-              font-semibold
-              text-white
+              flex
+              items-center
+              gap-3
+              transition
+              hover:opacity-90
             "
           >
-            <span className="text-white">Folio</span>
+            <div
+              className="
+                flex
+                h-11
+                w-11
+                items-center
+                justify-center
+                rounded-xl
+                text-white
+                border
+                border-white/10
+                bg-white/[0.03]
+                shadow-[0_0_25px_rgba(255,255,255,0.06)]
+              "
+            >
+              <Blocks size={20} />
+            </div>
 
-            <span className="text-zinc-500">Forge</span>
+            <div>
+              <h2
+                className="
+                  text-lg
+                  font-semibold
+                  tracking-tight
+                "
+              >
+                <span className="text-white">Folio</span>
+                <span className="text-zinc-500">Forge</span>
+              </h2>
+
+              <p
+                className="
+                  text-xs
+                  text-zinc-600
+                "
+              >
+                Portfolio Builder
+              </p>
+            </div>
           </Link>
 
+          {/* Desktop Navigation */}
           <nav
             className="
               hidden
               items-center
-              gap-10
+              gap-8
               lg:flex
             "
           >
@@ -70,7 +122,9 @@ export default async function Navbar() {
                 href={link.href}
                 className="
                   text-sm
+                  font-medium
                   text-zinc-400
+                  transition-colors
                   hover:text-white
                 "
               >
@@ -79,6 +133,7 @@ export default async function Navbar() {
             ))}
           </nav>
 
+          {/* Desktop Actions */}
           <div className="hidden lg:block">
             {user ? (
               <UserDropdown user={user} />
@@ -88,7 +143,9 @@ export default async function Navbar() {
                   href="/auth/login"
                   className="
                     text-sm
+                    font-medium
                     text-zinc-400
+                    transition-colors
                     hover:text-white
                   "
                 >
@@ -105,6 +162,10 @@ export default async function Navbar() {
                     text-sm
                     font-medium
                     text-black
+                    transition-all
+                    duration-300
+                    hover:scale-105
+                    hover:bg-zinc-200
                   "
                 >
                   Start Building
@@ -113,6 +174,7 @@ export default async function Navbar() {
             )}
           </div>
 
+          {/* Mobile Menu */}
           <MobileMenu user={user} />
         </div>
       </div>
