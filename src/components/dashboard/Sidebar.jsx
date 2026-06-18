@@ -1,180 +1,9 @@
-// "use client";
-
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-// import {
-//   LayoutDashboard,
-//   User,
-//   FolderKanban,
-//   Code2,
-//   Briefcase,
-//   GraduationCap,
-//   LayoutTemplate,
-//   Eye,
-//   Globe ,
-//   Settings,
-//   ShieldCheck,
-// } from "lucide-react";
-
-// const links = [
-//   {
-//     name: "Dashboard",
-//     href: "/dashboard",
-//     icon: LayoutDashboard,
-//   },
-//   {
-//     name: "Hero",
-//     href: "/dashboard/hero",
-//     icon: User,
-//   },
-//   {
-//     name: "About",
-//     href: "/dashboard/about",
-//     icon: User,
-//   },
-//   {
-//     name: "Projects",
-//     href: "/dashboard/projects",
-//     icon: FolderKanban,
-//   },
-//   {
-//     name: "Skills",
-//     href: "/dashboard/skills",
-//     icon: Code2,
-//   },
-//   {
-//     name: "Experience",
-//     href: "/dashboard/experience",
-//     icon: Briefcase,
-//   },
-//   {
-//     name: "Education",
-//     href: "/dashboard/education",
-//     icon: GraduationCap,
-//   },
-//   {
-//     name: "Certifications",
-//     href: "/dashboard/certifications",
-//     icon: ShieldCheck,
-//   },
-//   {
-//     name: "Contact",
-//     href: "/dashboard/contact",
-//     icon: User,
-//   },
-//   {
-//     name: "Templates",
-//     href: "/dashboard/templates",
-//     icon: LayoutTemplate,
-//   },
-//   {
-//     name: "Preview",
-//     href: "/dashboard/preview",
-//     icon: Eye,
-//   },
-//   {
-//     name: "Publish",
-//     href: "/dashboard/publish",
-//     icon: Globe,
-//   },
-//   {
-//     name: "Settings",
-//     href: "/dashboard/settings",
-//     icon: Settings,
-//   },
-// ];
-
-// export default function Sidebar() {
-//   const pathname = usePathname();
-
-//   return (
-//     <div className="flex h-full flex-col bg-white">
-//       {/* Logo */}
-//       <div className="hidden lg:block border-b px-6 py-6">
-//         <h1 className="text-2xl font-bold tracking-tight">FolioForge</h1>
-
-//         <p className="mt-1 text-sm text-zinc-500">Build. Preview. Publish.</p>
-//       </div>
-
-//       {/* Navigation */}
-//       <nav
-//         className="
-//           flex-1
-//           overflow-y-auto
-//           p-4
-//           space-y-2
-//         "
-//       >
-//         {links.map((link) => {
-//           const Icon = link.icon;
-
-//           const active = pathname === link.href;
-
-//           return (
-//             <Link
-//               key={link.href}
-//               href={link.href}
-//               className={`
-//                 group
-//                 flex
-//                 items-center
-//                 gap-3
-//                 rounded-xl
-//                 px-4
-//                 py-3
-//                 text-sm
-//                 font-medium
-//                 transition-all
-
-//                 ${
-//                   active
-//                     ? "bg-black text-white shadow-md"
-//                     : "text-zinc-700 hover:bg-zinc-100"
-//                 }
-//               `}
-//             >
-//               <Icon
-//                 size={18}
-//                 className={`
-//                   transition
-
-//                   ${
-//                     active
-//                       ? "text-white"
-//                       : "text-zinc-500 group-hover:text-black"
-//                   }
-//                 `}
-//               />
-
-//               <span>{link.name}</span>
-//             </Link>
-//           );
-//         })}
-//       </nav>
-
-//       {/* Footer */}
-//       <div className="border-t p-4">
-//         <div
-//           className="
-//             rounded-xl
-//             bg-zinc-100
-//             px-4
-//             py-3
-//           "
-//         >
-//           <p className="text-sm font-medium">FolioForge</p>
-
-//           <p className="mt-1 text-xs text-zinc-500">Portfolio Builder v1.0</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 import LogoutButton from "../ui/LogoutButton";
 
 import {
@@ -205,12 +34,48 @@ const navigation = [
         title: "Portfolio Builder",
         href: "/dashboard/portfolio",
         icon: FolderKanban,
-      },
-
-      {
-        title: "Templates",
-        href: "/dashboard/templates",
-        icon: Palette,
+        children: [
+          {
+            title: "Hero",
+            href: "/dashboard/portfolio/hero",
+          },
+          {
+            title: "About",
+            href: "/dashboard/portfolio/about",
+          },
+          {
+            title: "Skills",
+            href: "/dashboard/portfolio/skills",
+          },
+          {
+            title: "Projects",
+            href: "/dashboard/portfolio/projects",
+          },
+          {
+            title: "Experience",
+            href: "/dashboard/portfolio/experience",
+          },
+          {
+            title: "Education",
+            href: "/dashboard/portfolio/education",
+          },
+          {
+            title: "Certifications",
+            href: "/dashboard/portfolio/certifications",
+          },
+          {
+            title: "Templates",
+            href: "/dashboard/templates",
+          },
+          {
+            title: "Preview",
+            href: "/dashboard/portfolio/preview",
+          },
+          {
+            title: "Publish",
+            href: "/dashboard/portfolio/publish",
+          },
+        ],
       },
     ],
   },
@@ -240,6 +105,8 @@ const navigation = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+
+  const [builderOpen, setBuilderOpen] = useState(true);
 
   return (
     <aside
@@ -337,6 +204,91 @@ export default function Sidebar() {
               {group.items.map((item) => {
                 const Icon = item.icon;
 
+                if (item.children) {
+                  return (
+                    <div key={item.title}>
+                      <button
+                        onClick={() => setBuilderOpen(!builderOpen)}
+                        className="
+            flex
+            w-full
+            items-center
+            justify-between
+            rounded-xl
+            px-4
+            py-3
+            text-sm
+            font-medium
+            text-zinc-400
+            transition
+            hover:bg-white/[0.04]
+            hover:text-white
+          "
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon size={18} />
+                          {item.title}
+                        </div>
+
+                        <ChevronDown
+                          size={16}
+                          className={`transition ${
+                            builderOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {builderOpen && (
+                        <div className="mt-2 pl-3">
+                          <div className="space-y-1">
+                            {item.children.map((child) => {
+                              const active = pathname === child.href;
+
+                              return (
+                                <Link
+                                  key={child.href}
+                                  href={child.href}
+                                  className={`
+                     flex items-center gap-3 
+                    rounded-xl 
+                    px-3
+                    py-2
+                    text-sm
+                    transition-all duration-200
+                    ${
+                      active
+                        ? `
+                          bg-white
+                          text-black font-medium
+                        `
+                        : `
+                          text-zinc-500
+                          hover:text-white
+                          hover:bg-white/[0.04]
+                        `
+                    }
+                  `}
+                                >
+                                  <div
+                                    className={`
+                h-2
+                w-2
+                rounded-full
+                shrink-0
+                ${active ? "bg-black" : "bg-zinc-700"}
+              `}
+                                  />
+                                  {child.title}
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+
                 const active = pathname === item.href;
 
                 return (
@@ -344,32 +296,31 @@ export default function Sidebar() {
                     key={item.title}
                     href={item.href}
                     className={`
-                      flex
-                      items-center
-                      gap-3
-                      rounded-xl
-                      px-4
-                      py-3
-                      text-sm
-                      font-medium
-                      transition-all
-                      duration-200
-                      ${
-                        active
-                          ? `
-                            bg-white
-                            text-black
-                          `
-                          : `
-                            text-zinc-500
-                            hover:bg-white/[0.04]
-                            hover:text-white
-                          `
-                      }
-                    `}
+        flex
+        items-center
+        gap-3
+        rounded-xl
+        px-4
+        py-3
+        text-sm
+        font-medium
+        transition-all
+        duration-200
+        ${
+          active
+            ? `
+              bg-white
+              text-black
+            `
+            : `
+              text-zinc-500
+              hover:bg-white/[0.04]
+              hover:text-white
+            `
+        }
+      `}
                   >
                     <Icon size={18} />
-
                     {item.title}
                   </Link>
                 );

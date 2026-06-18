@@ -77,7 +77,7 @@ export default function SkillsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-6 lg:p-10">
       {/* Header */}
       <BuilderHeader
         title="Skills"

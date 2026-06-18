@@ -24,12 +24,12 @@ export default async function TemplatesPage() {
     userId: user.id,
   });
 
-  const currentTemplate = portfolioTemplates.find(
-    (template) => template.id === portfolio?.selectedTemplate,
-  );
+  // const currentTemplate = portfolioTemplates.find(
+  //   (template) => template.id === portfolio?.selectedTemplate,
+  // );
 
   return(
-    <div className="mx-auto max-w-7xl space-y-10">
+    <div className="mx-auto max-w-7xl space-y-10 p-6 lg:p-10">
       {/* Header */}
       <div>
         <BuilderHeader
