@@ -50,7 +50,7 @@ export default function EducationCard({
 
   return (
     <>
-      <div className="bg-white border border-zinc-900 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
+      {/* <div className="bg-white border border-zinc-900 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:border-zinc-300">
         <div className="flex justify-between items-start gap-4">
           <div className="flex gap-4">
             <div className="h-12 w-12 rounded-2xl bg-zinc-100 flex items-center justify-center shrink-0">
@@ -115,7 +115,170 @@ export default function EducationCard({
             )}
           </div>
         </div>
+      </div> */}
+      <div
+  className="
+    group
+    relative
+    overflow-hidden
+    rounded-[28px]
+    border
+    border-white/10
+    bg-white/[0.03]
+    p-6
+    transition-all
+    duration-300
+    hover:border-white/20
+  "
+>
+  {/* Timeline Dot */}
+  <div
+    className="
+      absolute
+      left-7
+      top-8
+      h-3
+      w-3
+      rounded-full
+      bg-white
+    "
+  />
+
+  <div className="ml-8">
+    <div className="flex items-start justify-between gap-4">
+      <div>
+        <p
+          className="
+            text-xs
+            uppercase
+            tracking-[0.2em]
+            text-zinc-600
+          "
+        >
+          {education.institution}
+        </p>
+
+        <h3
+          className="
+            mt-2
+            text-xl
+            font-semibold
+            tracking-tight
+            text-white
+          "
+        >
+          {education.degree}
+        </h3>
+
+        {yearRange && (
+          <div
+            className="
+              mt-4
+              inline-flex
+              items-center
+              gap-2
+              rounded-full
+              border
+              border-white/10
+              bg-white/[0.03]
+              px-3
+              py-1.5
+              text-xs
+              text-zinc-400
+            "
+          >
+            <GraduationCap size={14} />
+            {yearRange}
+          </div>
+        )}
       </div>
+
+      {/* Menu */}
+      <div
+        className="relative shrink-0"
+        ref={menuRef}
+      >
+        <button
+          type="button"
+          onClick={() =>
+            setShowMenu((prev) => !prev)
+          }
+          className="
+            rounded-xl
+            p-2
+            text-zinc-500
+            transition
+            hover:bg-white/[0.04]
+            hover:text-white
+          "
+        >
+          <MoreVertical size={18} />
+        </button>
+
+        {showMenu && (
+          <div
+            className="
+              absolute
+              right-7
+              top-6
+              z-50
+              w-38
+              overflow-hidden
+              rounded-2xl
+              border
+              border-white/10
+              bg-zinc-950
+              shadow-[0_0_0_1px_rgba(255,255,255,0.05)]
+              backdrop-blur-xl
+            "
+          >
+            <button
+              type="button"
+              onClick={() => {
+                onEdit(education);
+                setShowMenu(false);
+              }}
+              className="
+                w-full
+                px-4
+                py-3
+                text-left
+                text-sm
+                text-zinc-300
+                transition
+                hover:bg-white/[0.04]
+              "
+            >
+              Edit Education
+            </button>
+            <div className="h-px bg-white/10" />
+
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowDelete(true);
+                setShowMenu(false);
+              }}
+              className="
+                w-full
+                px-4
+                py-3
+                text-left
+                text-sm
+                text-red-400
+                transition
+                hover:bg-red-500/10
+              "
+            >
+              Delete Education
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
 
       <DeleteModal
         isOpen={showDelete}

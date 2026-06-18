@@ -4,10 +4,13 @@ import ProjectCard from "@/components/projects/ProjectCard";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import BuilderHeader from "@/components/builder/BuilderHeader";
+import { useRouter } from "next/navigation";
+
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
+  const router = useRouter();
 
   const fetchProjects = async () => {
     try {
@@ -64,7 +67,7 @@ export default function ProjectsPage() {
         title="Projects"
         description="Showcase your best work and highlight projects that represent your skills."
         step={4}
-        totalSteps={7}
+        totalSteps={8}
       />
 
       {/* Project Form */}
@@ -197,7 +200,7 @@ export default function ProjectsPage() {
       >
         <button
           type="button"
-          onClick={() => router.push("/dashboard/builder/skills")}
+          onClick={() => router.push("/dashboard/portfolio/skills")}
           className="
           flex-1
           rounded-2xl
@@ -215,7 +218,7 @@ export default function ProjectsPage() {
 
         <button
           type="button"
-          onClick={() => router.push("/dashboard/builder/experience")}
+          onClick={() => router.push("/dashboard/portfolio/experience")}
           className="
           flex-1
           rounded-2xl

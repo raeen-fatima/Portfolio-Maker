@@ -2,10 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import {
-  useForm,
-  useWatch,
-} from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { experienceSchema } from "@/validators/portfolio";
 
@@ -32,6 +29,7 @@ export default function ExperienceForm({
       description: "",
     },
   });
+  
 
   const isCurrent = useWatch({
     control,
@@ -54,9 +52,7 @@ export default function ExperienceForm({
 
   const onSubmit = async (data) => {
     try {
-      const method = editingExperience
-        ? "PUT"
-        : "POST";
+      const method = editingExperience ? "PUT" : "POST";
 
       const body = {
         ...data,
@@ -64,20 +60,16 @@ export default function ExperienceForm({
       };
 
       if (editingExperience) {
-        body.experienceId =
-          editingExperience._id;
+        body.experienceId = editingExperience._id;
       }
 
-      const response = await fetch(
-        "/api/portfolio/experience",
-        {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch("/api/portfolio/experience", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
 
       const result = await response.json();
 
@@ -105,149 +97,207 @@ export default function ExperienceForm({
       toast.error("Something went wrong");
     }
   };
+  const inputStyles = `
+  w-full
+  rounded-2xl
+  border
+  border-white/10
+  bg-black
+  px-4
+  py-3.5
+  text-white
+  outline-none
+  transition
+  placeholder:text-zinc-600
+  focus:border-white/20
+`;
+  
 
   return (
-    <div className="bg-white border border-zinc-900 rounded-3xl p-6 lg:p-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">
-          {editingExperience
-            ? "Edit Experience"
-            : "Add Experience"}
+    <>
+      <div className="mb-8">
+        <div
+          className="
+          mb-4
+          inline-flex
+          items-center
+          rounded-full
+          border
+          border-white/10
+          bg-white/[0.03]
+          px-3
+          py-1.5
+          text-xs
+          uppercase
+          tracking-[0.15em]
+          text-zinc-500
+        "
+        >
+          Experience Builder
+        </div>
+
+        <h2
+          className="
+          text-xl
+          font-semibold
+          tracking-tight
+          text-white
+        "
+        >
+          {editingExperience ? "Edit Experience" : "Add Experience"}
         </h2>
 
-        <p className="text-gray-500 mt-2">
-          Add jobs, internships, freelance work, or volunteer roles.
+        <p className="mt-2 text-zinc-500">
+          Add jobs, internships, freelance work, or volunteer experience.
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
-        <div className="grid md:grid-cols-2 gap-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Company + Role */}
+        <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Company
-            </label>
+            <label className="mb-2 block text-sm font-medium">Company</label>
 
             <input
               type="text"
               placeholder="Acme Studio"
               {...register("company")}
-              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className={inputStyles}
             />
 
             {errors.company && (
-              <p className="text-red-500 text-sm mt-2">
+              <p className="mt-2 text-sm text-red-500">
                 {errors.company.message}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Role
-            </label>
+            <label className="mb-2 block text-sm font-medium">Role</label>
 
             <input
               type="text"
               placeholder="Frontend Developer"
               {...register("role")}
-              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className={inputStyles}
             />
 
             {errors.role && (
-              <p className="text-red-500 text-sm mt-2">
-                {errors.role.message}
-              </p>
+              <p className="mt-2 text-sm text-red-500">{errors.role.message}</p>
             )}
           </div>
         </div>
 
+        {/* Location */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Location
-          </label>
+          <label className="mb-2 block text-sm font-medium">Location</label>
 
           <input
             type="text"
-            placeholder="Remote, Mumbai, India"
+            placeholder="Remote, Delhi, India"
             {...register("location")}
-            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+            className={inputStyles}
           />
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        {/* Dates */}
+        <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Start Date
-            </label>
+            <label className="mb-2 block text-sm font-medium">Start Date</label>
 
             <input
               type="month"
               {...register("startDate")}
-              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className={inputStyles}
             />
 
             {errors.startDate && (
-              <p className="text-red-500 text-sm mt-2">
+              <p className="mt-2 text-sm text-red-500">
                 {errors.startDate.message}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              End Date
-            </label>
+            <label className="mb-2 block text-sm font-medium">End Date</label>
 
             <input
               type="month"
               disabled={isCurrent}
               {...register("endDate")}
-              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition disabled:opacity-60"
+              className={`${inputStyles} disabled:opacity-50`}
             />
           </div>
         </div>
 
-        <label className="flex items-center gap-3 text-sm font-medium">
+        {/* Current Job */}
+        <label
+          className="
+          flex
+          items-center
+          gap-3
+          rounded-2xl
+          border
+          border-white/10
+          bg-white/[0.02]
+          p-4
+        "
+        >
           <input
             type="checkbox"
             {...register("current")}
-            className="h-4 w-4 accent-black"
+            className="
+            h-4
+            w-4
+            accent-white
+          "
           />
-          I currently work here
+
+          <span className="text-sm text-zinc-300">I currently work here</span>
         </label>
 
+        {/* Description */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Description
-          </label>
+          <label className="mb-2 block text-sm font-medium">Description</label>
 
           <textarea
             rows={5}
-            placeholder="Describe your responsibilities and achievements..."
+            placeholder="Describe your responsibilities, achievements, and impact..."
             {...register("description")}
-            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition resize-none"
+            className="
+            w-full
+            resize-none
+            rounded-2xl
+            border
+            border-white/10
+            bg-black
+            px-4
+            py-3.5
+            text-white
+            outline-none
+            transition
+            placeholder:text-zinc-600
+            focus:border-white/20
+          "
           />
 
           {errors.description && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className="mt-2 text-sm text-red-500">
               {errors.description.message}
             </p>
           )}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            type="submit"
-            className="flex-1 bg-black text-white py-3.5 rounded-2xl font-medium hover:opacity-90 transition"
-          >
-            {editingExperience
-              ? "Update Experience"
-              : "Save Experience"}
-          </button>
-
+        {/* Footer */}
+        <div
+          className="
+          flex
+          flex-col-reverse
+          gap-3
+          pt-2
+          sm:flex-row
+        "
+        >
           {editingExperience && (
             <button
               type="button"
@@ -255,13 +305,38 @@ export default function ExperienceForm({
                 setEditingExperience(null);
                 reset();
               }}
-              className="px-6 py-3.5 border border-zinc-900 rounded-2xl font-medium hover:bg-zinc-100 transition"
+              className="
+              rounded-2xl
+              border
+              border-white/10
+              px-6
+              py-3.5
+              text-white
+              transition
+              hover:bg-white/[0.04]
+            "
             >
               Cancel
             </button>
           )}
+
+          <button
+            type="submit"
+            className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+          >
+            {editingExperience ? "Update Experience" : "Save Experience"}
+          </button>
         </div>
       </form>
-    </div>
+    </>
   );
 }

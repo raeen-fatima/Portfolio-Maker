@@ -25,44 +25,49 @@ export default function EducationForm({
       endYear: "",
     },
   });
+  const inputStyles = `
+  w-full
+  rounded-2xl
+  border
+  border-white/10
+  bg-black
+  px-4
+  py-3.5
+  text-white
+  outline-none
+  transition
+  placeholder:text-zinc-600
+  focus:border-white/20
+`;
 
   useEffect(() => {
     if (!editingEducation) return;
 
     reset({
-      institution:
-        editingEducation.institution || "",
+      institution: editingEducation.institution || "",
       degree: editingEducation.degree || "",
-      startYear:
-        editingEducation.startYear || "",
-      endYear:
-        editingEducation.endYear || "",
+      startYear: editingEducation.startYear || "",
+      endYear: editingEducation.endYear || "",
     });
   }, [editingEducation, reset]);
 
   const onSubmit = async (data) => {
     try {
-      const method = editingEducation
-        ? "PUT"
-        : "POST";
+      const method = editingEducation ? "PUT" : "POST";
 
       const body = { ...data };
 
       if (editingEducation) {
-        body.educationId =
-          editingEducation._id;
+        body.educationId = editingEducation._id;
       }
 
-      const response = await fetch(
-        "/api/portfolio/education",
-        {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch("/api/portfolio/education", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
 
       const result = await response.json();
 
@@ -89,67 +94,83 @@ export default function EducationForm({
   };
 
   return (
-    <div className="bg-white border border-zinc-900 rounded-3xl p-6 lg:p-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">
-          {editingEducation
-            ? "Edit Education"
-            : "Add Education"}
+    <>
+      <div className="mb-8">
+        <div
+          className="
+          mb-4
+          inline-flex
+          items-center
+          rounded-full
+          border
+          border-white/10
+          bg-white/[0.03]
+          px-3
+          py-1.5
+          text-xs
+          uppercase
+          tracking-[0.15em]
+          text-zinc-500
+        "
+        >
+          Education Builder
+        </div>
+
+        <h2
+          className="
+          text-xl
+          font-semibold
+          tracking-tight
+          text-white
+        "
+        >
+          {editingEducation ? "Edit Education" : "Add Education"}
         </h2>
 
-        <p className="text-gray-500 mt-2">
-          Add degrees, diplomas,
-          certifications, and school history.
+        <p className="mt-2 text-zinc-500">
+          Add your degrees, diplomas, certifications, and academic history.
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Institution */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Institution
-          </label>
+          <label className="mb-2 block text-sm font-medium">Institution</label>
 
           <input
             type="text"
             placeholder="University of Mumbai"
             {...register("institution")}
-            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+            className={inputStyles}
           />
 
           {errors.institution && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className="mt-2 text-sm text-red-500">
               {errors.institution.message}
             </p>
           )}
         </div>
 
+        {/* Degree */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Degree
-          </label>
+          <label className="mb-2 block text-sm font-medium">Degree</label>
 
           <input
             type="text"
             placeholder="Bachelor of Computer Applications"
             {...register("degree")}
-            className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+            className={inputStyles}
           />
 
           {errors.degree && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.degree.message}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.degree.message}</p>
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        {/* Years */}
+        <div className="grid gap-5 md:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Start Year
-            </label>
+            <label className="mb-2 block text-sm font-medium">Start Year</label>
 
             <input
               type="number"
@@ -157,20 +178,18 @@ export default function EducationForm({
               max="2100"
               placeholder="2022"
               {...register("startYear")}
-              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className={inputStyles}
             />
 
             {errors.startYear && (
-              <p className="text-red-500 text-sm mt-2">
+              <p className="mt-2 text-sm text-red-500">
                 {errors.startYear.message}
               </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              End Year
-            </label>
+            <label className="mb-2 block text-sm font-medium">End Year</label>
 
             <input
               type="number"
@@ -178,27 +197,27 @@ export default function EducationForm({
               max="2100"
               placeholder="2026"
               {...register("endYear")}
-              className="w-full bg-back border border-zinc-900 rounded-2xl px-4 py-3.5 outline-none focus:border-black focus:bg-white transition"
+              className={inputStyles}
             />
 
             {errors.endYear && (
-              <p className="text-red-500 text-sm mt-2">
+              <p className="mt-2 text-sm text-red-500">
                 {errors.endYear.message}
               </p>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            type="submit"
-            className="flex-1 bg-black text-white py-3.5 rounded-2xl font-medium hover:opacity-90 transition"
-          >
-            {editingEducation
-              ? "Update Education"
-              : "Save Education"}
-          </button>
-
+        {/* Footer */}
+        <div
+          className="
+          flex
+          flex-col-reverse
+          gap-3
+          pt-2
+          sm:flex-row
+        "
+        >
           {editingEducation && (
             <button
               type="button"
@@ -206,13 +225,38 @@ export default function EducationForm({
                 setEditingEducation(null);
                 reset();
               }}
-              className="px-6 py-3.5 border border-zinc-900 rounded-2xl font-medium hover:bg-zinc-100 transition"
+              className="
+              rounded-2xl
+              border
+              border-white/10
+              px-6
+              py-3.5
+              text-white
+              transition
+              hover:bg-white/[0.04]
+            "
             >
               Cancel
             </button>
           )}
+
+          <button
+            type="submit"
+            className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+          >
+            {editingEducation ? "Update Education" : "Save Education"}
+          </button>
         </div>
       </form>
-    </div>
+    </>
   );
 }

@@ -4,20 +4,17 @@ import ExperienceCard from "@/components/experience/ExperienceCard";
 import ExperienceForm from "@/components/experience/ExperienceForm";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import BuilderHeader from "@/components/builder/BuilderHeader";
+import { useRouter } from "next/navigation";
 
 export default function ExperiencePage() {
-  const [experience, setExperience] =
-    useState([]);
-  const [
-    editingExperience,
-    setEditingExperience,
-  ] = useState(null);
+  const router = useRouter();
+  const [experience, setExperience] = useState([]);
+  const [editingExperience, setEditingExperience] = useState(null);
 
   const fetchExperience = async () => {
     try {
-      const response = await fetch(
-        "/api/portfolio/experience"
-      );
+      const response = await fetch("/api/portfolio/experience");
 
       const result = await response.json();
 
@@ -37,22 +34,17 @@ export default function ExperiencePage() {
     loadExperience();
   }, []);
 
-  const handleDelete = async (
-    experienceId
-  ) => {
+  const handleDelete = async (experienceId) => {
     try {
-      const response = await fetch(
-        "/api/portfolio/experience",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            experienceId,
-          }),
-        }
-      );
+      const response = await fetch("/api/portfolio/experience", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          experienceId,
+        }),
+      });
 
       const result = await response.json();
 
@@ -71,71 +63,171 @@ export default function ExperiencePage() {
   };
 
   return (
-    <div className="space-y-6 p-6 lg:p-12">
-      <div>
-        <h1 className="text-3xl font-bold">
-          Experience
-        </h1>
-
-        <p className="text-gray-500 mt-2">
-          Add your work history,
-          internships, and professional roles.
-        </p>
-      </div>
-
-      <ExperienceForm
-        editingExperience={
-          editingExperience
-        }
-        setEditingExperience={
-          setEditingExperience
-        }
-        fetchExperience={fetchExperience}
+    <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10">
+      <BuilderHeader
+        title="Experience"
+        description="Add your work experience, internships, freelance work, and professional roles."
+        step={5}
+        totalSteps={8}
       />
 
-      <div className="bg-black border border-zinc-900 rounded-3xl p-6">
-        <div className="flex items-center justify-between gap-4">
+      {/* Form */}
+      <div
+        className="
+        rounded-[28px]
+        border
+        border-white/10
+        bg-white/[0.03]
+        p-6
+        lg:p-8
+      "
+      >
+        <div>
+          <h2 className="text-xl font-semibold text-white">
+            {editingExperience ? "Edit Experience" : "Add Experience"}
+          </h2>
+
+          <p className="mt-2 text-zinc-500">
+            Highlight your professional journey and achievements.
+          </p>
+        </div>
+
+        <div className="mt-6">
+          <ExperienceForm
+            editingExperience={editingExperience}
+            setEditingExperience={setEditingExperience}
+            fetchExperience={fetchExperience}
+          />
+        </div>
+      </div>
+
+      {/* Experience List */}
+      <div
+        className="
+        rounded-[28px]
+        border
+        border-white/10
+        bg-white/[0.03]
+        p-6
+        lg:p-8
+      "
+      >
+        <div
+          className="
+          flex
+          flex-col
+          gap-4
+          sm:flex-row
+          sm:items-center
+          sm:justify-between
+        "
+        >
           <div>
-            <h2 className="text-xl font-bold">
+            <h2 className="text-xl font-semibold text-white">
               Your Experience
             </h2>
 
-            <p className="text-gray-500 mt-2">
-              Roles you have added to your
-              portfolio.
+            <p className="mt-2 text-zinc-500">
+              Experience currently displayed on your portfolio.
             </p>
           </div>
 
-          <span className="px-3 py-1 bg-zinc-100 rounded-full text-sm font-medium shrink-0">
+          <div
+            className="
+            inline-flex
+            items-center
+            rounded-full
+            border
+            border-white/10
+            bg-white/[0.03]
+            px-4
+            py-2
+            text-sm
+            text-zinc-400
+          "
+          >
             {experience.length} Roles
-          </span>
+          </div>
         </div>
 
         {experience.length === 0 ? (
-          <div className="mt-8 border-2 border-dashed border-zinc-900 rounded-2xl p-10 text-center">
-            <h3 className="font-semibold">
-              No Experience Added
+          <div
+            className="
+            mt-8
+            rounded-3xl
+            border
+            border-dashed
+            border-white/10
+            bg-white/[0.02]
+            p-12
+            text-center
+          "
+          >
+            <h3 className="text-lg font-semibold text-white">
+              No experience added yet
             </h3>
 
-            <p className="text-zinc-500 mt-2">
-              Add your first role to make
-              your portfolio stronger.
+            <p className="mt-3 text-zinc-500">
+              Add your first role, internship, or freelance project.
             </p>
           </div>
         ) : (
-          <div className="grid gap-5 mt-6">
+          <div className="mt-8 space-y-4">
             {experience.map((item) => (
               <ExperienceCard
                 key={item._id}
                 experience={item}
                 onDelete={handleDelete}
-                onEdit={
-                  setEditingExperience
-                }
+                onEdit={setEditingExperience}
               />
             ))}
           </div>
         )}
+      </div>
+
+      {/* Navigation */}
+      <div
+        className="
+        flex
+        flex-col
+        gap-3
+        sm:flex-row
+      "
+      >
+        <button
+          type="button"
+          onClick={() => router.push("/dashboard/portfolio/projects")}
+          className="
+          flex-1
+          rounded-2xl
+          border
+          border-white/10
+          py-3.5
+          font-medium
+          text-white
+          transition
+          hover:bg-white/[0.04]
+        "
+        >
+          ← Back
+        </button>
+
+        <button
+          type="button"
+          onClick={() => router.push("/dashboard/portfolio/education")}
+          className="
+          flex-1
+          rounded-2xl
+          bg-white
+          py-3.5
+          font-medium
+          text-black
+          transition
+          hover:opacity-90
+        "
+        >
+          Continue →
+        </button>
       </div>
     </div>
   );

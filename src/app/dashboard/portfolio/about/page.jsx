@@ -121,7 +121,7 @@ export default function AboutPage() {
         title="About Section"
         description="Tell visitors more about yourself, your background, and how they can contact you."
         step={2}
-        totalSteps={7}
+        totalSteps={8}
       />
 
       {/* Main Layout */}

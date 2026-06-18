@@ -118,7 +118,7 @@ export default function HeroPage() {
         title="Hero Section"
         description="Customize the first thing visitors see when they open your portfolio."
         step={1}
-        totalSteps={7}
+        totalSteps={8}
       />
 
       {/* Main Layout - Two column grid: Editor on left, Preview on right */}

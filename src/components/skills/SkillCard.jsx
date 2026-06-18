@@ -6,63 +6,65 @@ import DeleteModal from "@/components/ui/DeleteModal";
 export default function SkillCard({ skill, onDelete }) {
   const [showDelete, setShowDelete] = useState(false);
   return (
-    <div
-      className="
+    <>
+      <div
+        className="
         group
         flex
         items-center
         justify-between
         gap-4
-        px-4
-        py-3
-        bg-white
-        border
-        border-zinc-900
         rounded-2xl
-        hover:border-black
-        hover:shadow-md
+        border
+        border-white/10
+        bg-white/[0.03]
+        px-5
+        py-4
         transition-all
-        duration-200
+        duration-300
+        hover:border-white/20
       "
-    >
-      {/* Skill Name */}
-      <div className="flex items-center gap-3">
-        <div
-          className="
-            w-2.5
+      >
+        {/* Skill */}
+        <div className="flex items-center gap-3">
+          <div
+            className="
             h-2.5
+            w-2.5
             rounded-full
-            bg-black
+            bg-white
           "
-        />
+          />
 
-        <span
-          className="
+          <span
+            className="
             font-medium
-            text-zinc-800
+            text-white
           "
+          >
+            {skill.name}
+          </span>
+        </div>
+
+        {/* Actions */}
+        <button
+          onClick={() => setShowDelete(true)}
+          className="
+          rounded-xl
+          p-2
+          text-zinc-500
+          opacity-0
+          transition-all
+          duration-200
+          group-hover:opacity-100
+          hover:bg-red-500/10
+          hover:text-red-400
+        "
         >
-          {skill.name}
-        </span>
+          <Trash2 size={16} />
+        </button>
       </div>
 
-      {/* Delete Button */}
-      <button
-        onClick={() => setShowDelete(true)}
-        className="
-          opacity-0
-          group-hover:opacity-100
-          p-2
-          rounded-xl
-          text-zinc-500
-          hover:bg-red-50
-          hover:text-red-500
-          transition-all
-        "
-      >
-        <Trash2 className="text-red-500" size={16} />
-      </button>
-      {/* Delete Modal */}
       <DeleteModal
         isOpen={showDelete}
         onClose={() => setShowDelete(false)}
@@ -72,8 +74,8 @@ export default function SkillCard({ skill, onDelete }) {
         }}
         title="Delete Skill"
         description={`Are you sure you want to delete "${skill.name}"? This action cannot be undone.`}
-        confirmText="Delete"
+        confirmText="Delete Skill"
       />
-    </div>
+    </>
   );
 }

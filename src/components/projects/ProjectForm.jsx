@@ -20,6 +20,36 @@ export default function ProjectForm({
 }) {
   // Project Image State
   const [imageUrl, setImageUrl] = useState("");
+  const inputStyles = `
+  w-full
+  rounded-2xl
+  border
+  border-white/10
+  bg-black
+  px-4
+  py-3.5
+  text-white
+  outline-none
+  transition
+  placeholder:text-zinc-600
+  focus:border-white/20
+`;
+
+  const textareaStyles = `
+  w-full
+  resize-none
+  rounded-2xl
+  border
+  border-white/10
+  bg-black
+  px-4
+  py-3.5
+  text-white
+  outline-none
+  transition
+  placeholder:text-zinc-600
+  focus:border-white/20
+`;
 
   // React Hook Form
   const {
@@ -97,23 +127,260 @@ export default function ProjectForm({
     }
   };
 
+  // return (
+  //   <div className="bg-black border border-zinc-900 rounded-3xl p-6 lg:p-8">
+  //     <div className="mb-6">
+  //       <h2 className="text-2xl font-bold">
+  //         {editingProject ? "Edit Project" : "Add New Project"}
+  //       </h2>
+  //       <p className="text-gray-500 mt-2">
+  //         {editingProject
+  //           ? "Update your existing project."
+  //           : "Showcase your best work."}
+  //       </p>
+  //     </div>
+
+  //     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+  //       {/* Project Title */}
+  //       <div>
+  //         <label className="block text-sm font-medium mb-2">
+  //           Project Title
+  //         </label>
+
+  //         <input
+  //           type="text"
+  //           placeholder="Portfolio Builder"
+  //           {...register("title")}
+  //           className="
+  //             w-full
+  //             bg-black
+  //             border
+  //             border-zinc-900
+  //             rounded-2xl
+  //             px-4
+  //             py-3.5
+  //             outline-none
+  //             focus:border-black
+  //             focus:bg-zinc-800
+  //             transition
+  //           "
+  //         />
+
+  //         {errors.title && (
+  //           <p className="text-red-500 text-sm mt-2">{errors.title.message}</p>
+  //         )}
+  //       </div>
+
+  //       {/* Description */}
+  //       <div>
+  //         <label className="block text-sm font-medium mb-2">Description</label>
+
+  //         <textarea
+  //           rows={5}
+  //           placeholder="Describe your project..."
+  //           {...register("description")}
+  //           className="
+  //             w-full
+  //             bg-black
+  //             border
+  //             border-zinc-900
+  //             rounded-2xl
+  //             px-4
+  //             py-3.5
+  //             outline-none
+  //             focus:border-zinc-800
+  //             focus:bg-zinc-800
+  //             transition
+  //             resize-none
+  //           "
+  //         />
+
+  //         {errors.description && (
+  //           <p className="text-red-500 text-sm mt-2">
+  //             {errors.description.message}
+  //           </p>
+  //         )}
+  //       </div>
+
+  //       {/* GitHub URL */}
+  //       <div>
+  //         <label className="block text-sm font-medium mb-2">GitHub URL</label>
+
+  //         <input
+  //           type="text"
+  //           placeholder="https://github.com/..."
+  //           {...register("githubUrl")}
+  //           className="
+  //             w-full
+  //             bg-black
+  //             border
+  //             border-zinc-900
+  //             rounded-2xl
+  //             px-4
+  //             py-3.5
+  //             outline-none
+  //             focus:border-zinc-900
+  //             focus:bg-zinc-800
+  //             transition
+  //           "
+  //         />
+
+  //         {errors.githubUrl && (
+  //           <p className="text-red-500 text-sm mt-2">
+  //             {errors.githubUrl.message}
+  //           </p>
+  //         )}
+  //       </div>
+
+  //       {/* Live URL */}
+  //       <div>
+  //         <label className="block text-sm font-medium mb-2">
+  //           Live Demo URL
+  //         </label>
+
+  //         <input
+  //           type="text"
+  //           placeholder="https://your-project.vercel.app"
+  //           {...register("liveUrl")}
+  //           className="
+  //             w-full
+  //             bg-black
+  //             border
+  //             border-zinc-900
+  //             rounded-2xl
+  //             px-4
+  //             py-3.5
+  //             outline-none
+  //             focus:border-zinc-900
+  //             focus:bg-zinc-800
+  //             transition
+  //           "
+  //         />
+
+  //         {errors.liveUrl && (
+  //           <p className="text-red-500 text-sm mt-2">
+  //             {errors.liveUrl.message}
+  //           </p>
+  //         )}
+  //       </div>
+
+  //       {/* Technologies */}
+  //       <div>
+  //         <label className="block text-sm  font-medium mb-2">Technologies</label>
+
+  //         <input
+  //           type="text"
+  //           placeholder="Next.js, MongoDB, Tailwind CSS"
+  //           {...register("technologies")}
+  //           className="
+  //             w-full
+  //             bg-black
+  //             border
+  //             border-zinc-900
+  //             rounded-2xl
+  //             px-4
+  //             py-3.5
+  //             outline-none
+  //             focus:border-zinc-900
+  //             focus:bg-zinc-800
+  //             transition
+  //           "
+  //         />
+
+  //         {errors.technologies && (
+  //           <p className="text-red-500 text-sm mt-2">
+  //             {errors.technologies.message}
+  //           </p>
+  //         )}
+  //       </div>
+
+  //       {/* Project Image */}
+  //       <div>
+  //         <label className="block text-sm font-medium mb-2">
+  //           Project Image
+  //         </label>
+
+  //         <ImageUpload onUpload={setImageUrl} />
+  //         {displayImageUrl && (
+  //           <Image
+  //             src={displayImageUrl}
+  //             alt="Project Preview"
+  //             width={400}
+  //             height={300}
+  //             className="w-full h-40 object-cover rounded-xl mt-3"
+  //           />
+  //         )}
+
+  //         {imageUrl && (
+  //           <p className="text-green-600 text-sm mt-2">
+  //             ✓ Image uploaded successfully
+  //           </p>
+  //         )}
+  //       </div>
+
+  //       {/* Submit Button */}
+  //       <button
+  //         type="submit"
+  //         className="
+  //   w-full
+  //   bg-white
+  //   text-black
+  //   py-3.5
+  //   rounded-2xl
+  //   font-medium
+  //   hover:opacity-90
+  //   transition
+  // "
+  //       >
+  //         {editingProject ? "Update Project" : "Save Project"}
+  //       </button>
+  //     </form>
+  //   </div>
+  // );
+
   return (
-    <div className="bg-black border border-zinc-900 rounded-3xl p-6 lg:p-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">
-          {editingProject ? "Edit Project" : "Add New Project"}
+    <>
+      <div className="mb-8">
+        <div
+          className="
+          mb-4
+          inline-flex
+          items-center
+          rounded-full
+          border
+          border-white/10
+          bg-white/[0.03]
+          px-3
+          py-1.5
+          text-xs
+          uppercase
+          tracking-[0.15em]
+          text-zinc-500
+        "
+        >
+          Project Builder
+        </div>
+
+        <h2
+          className="
+          text-xl
+          font-semibold
+          tracking-tight
+          text-white
+        "
+        >
+          {editingProject ? "Edit Project" : "Add Project"}
         </h2>
-        <p className="text-gray-500 mt-2">
-          {editingProject
-            ? "Update your existing project."
-            : "Showcase your best work."}
+
+        <p className="mt-2 text-zinc-500">
+          Showcase projects that best represent your skills and experience.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Project Title */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="mb-2 block text-sm font-medium">
             Project Title
           </label>
 
@@ -121,190 +388,197 @@ export default function ProjectForm({
             type="text"
             placeholder="Portfolio Builder"
             {...register("title")}
-            className="
-              w-full
-              bg-black
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-zinc-800
-              transition
-            "
+            className={inputStyles}
           />
 
           {errors.title && (
-            <p className="text-red-500 text-sm mt-2">{errors.title.message}</p>
+            <p className="mt-2 text-sm text-red-500">{errors.title.message}</p>
           )}
         </div>
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium mb-2">Description</label>
+          <label className="mb-2 block text-sm font-medium">Description</label>
 
           <textarea
             rows={5}
             placeholder="Describe your project..."
             {...register("description")}
-            className="
-              w-full
-              bg-black
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-zinc-800
-              focus:bg-zinc-800
-              transition
-              resize-none
-            "
+            className={textareaStyles}
           />
 
           {errors.description && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className="mt-2 text-sm text-red-500">
               {errors.description.message}
             </p>
           )}
         </div>
 
-        {/* GitHub URL */}
-        <div>
-          <label className="block text-sm font-medium mb-2">GitHub URL</label>
+        {/* URLs */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block text-sm font-medium">GitHub URL</label>
 
-          <input
-            type="text"
-            placeholder="https://github.com/..."
-            {...register("githubUrl")}
-            className="
-              w-full
-              bg-black
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-zinc-900
-              focus:bg-zinc-800
-              transition
-            "
-          />
+            <input
+              type="text"
+              placeholder="https://github.com/..."
+              {...register("githubUrl")}
+              className={inputStyles}
+            />
 
-          {errors.githubUrl && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.githubUrl.message}
-            </p>
-          )}
-        </div>
+            {errors.githubUrl && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.githubUrl.message}
+              </p>
+            )}
+          </div>
 
-        {/* Live URL */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Live Demo URL
-          </label>
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Live Demo URL
+            </label>
 
-          <input
-            type="text"
-            placeholder="https://your-project.vercel.app"
-            {...register("liveUrl")}
-            className="
-              w-full
-              bg-black
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-zinc-900
-              focus:bg-zinc-800
-              transition
-            "
-          />
+            <input
+              type="text"
+              placeholder="https://project.vercel.app"
+              {...register("liveUrl")}
+              className={inputStyles}
+            />
 
-          {errors.liveUrl && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.liveUrl.message}
-            </p>
-          )}
+            {errors.liveUrl && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.liveUrl.message}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Technologies */}
         <div>
-          <label className="block text-sm  font-medium mb-2">Technologies</label>
+          <label className="mb-2 block text-sm font-medium">Technologies</label>
 
           <input
             type="text"
             placeholder="Next.js, MongoDB, Tailwind CSS"
             {...register("technologies")}
-            className="
-              w-full
-              bg-black
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-zinc-900
-              focus:bg-zinc-800
-              transition
-            "
+            className={inputStyles}
           />
 
+          <p className="mt-2 text-xs text-zinc-500">
+            Separate technologies using commas.
+          </p>
+
           {errors.technologies && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className="mt-2 text-sm text-red-500">
               {errors.technologies.message}
             </p>
           )}
         </div>
 
-        {/* Project Image */}
+        {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="mb-3 block text-sm font-medium">
             Project Image
           </label>
 
           <ImageUpload onUpload={setImageUrl} />
+
           {displayImageUrl && (
-            <Image
-              src={displayImageUrl}
-              alt="Project Preview"
-              width={400}
-              height={300}
-              className="w-full h-40 object-cover rounded-xl mt-3"
-            />
+            <div
+              className="
+              mt-4
+              overflow-hidden
+              rounded-2xl
+              border
+              border-white/10
+            "
+            >
+              <Image
+                src={displayImageUrl}
+                alt="Project Preview"
+                width={800}
+                height={500}
+                className="
+                h-56
+                w-full
+                object-cover
+              "
+              />
+            </div>
           )}
 
           {imageUrl && (
-            <p className="text-green-600 text-sm mt-2">
+            <div
+              className="
+              mt-3
+              inline-flex
+              items-center
+              rounded-full
+              border
+              border-green-500/20
+              bg-green-500/10
+              px-3
+              py-1
+              text-xs
+              font-medium
+              text-green-400
+            "
+            >
               ✓ Image uploaded successfully
-            </p>
+            </div>
           )}
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
+        {/* Footer */}
+        <div
           className="
-    w-full
-    bg-white
-    text-black
-    py-3.5
-    rounded-2xl
-    font-medium
-    hover:opacity-90
-    transition
-  "
+          flex
+          flex-col-reverse
+          gap-3
+          pt-2
+          sm:flex-row
+        "
         >
-          {editingProject ? "Update Project" : "Save Project"}
-        </button>
+          {editingProject && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditingProject(null);
+                reset();
+                setImageUrl("");
+              }}
+              className="
+              rounded-2xl
+              border
+              border-white/10
+              px-6
+              py-3.5
+              text-white
+              transition
+              hover:bg-white/[0.04]
+            "
+            >
+              Cancel
+            </button>
+          )}
+
+          <button
+            type="submit"
+            className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+          >
+            {editingProject ? "Update Project" : "Save Project"}
+          </button>
+        </div>
       </form>
-    </div>
+    </>
   );
 }

@@ -25,6 +25,20 @@ export default function CertificationForm({
       credentialUrl: "",
     },
   });
+  const inputStyles = `
+  w-full
+  rounded-2xl
+  border
+  border-white/10
+  bg-black
+  px-4
+  py-3.5
+  text-white
+  outline-none
+  transition
+  placeholder:text-zinc-600
+  focus:border-white/20
+`;
 
   useEffect(() => {
     if (!editingCertification) return;
@@ -33,34 +47,27 @@ export default function CertificationForm({
       title: editingCertification.title || "",
       issuer: editingCertification.issuer || "",
       issueDate: editingCertification.issueDate || "",
-      credentialUrl:
-        editingCertification.credentialUrl || "",
+      credentialUrl: editingCertification.credentialUrl || "",
     });
   }, [editingCertification, reset]);
 
   const onSubmit = async (data) => {
     try {
-      const method = editingCertification
-        ? "PUT"
-        : "POST";
+      const method = editingCertification ? "PUT" : "POST";
 
       const body = { ...data };
 
       if (editingCertification) {
-        body.certificationId =
-          editingCertification._id;
+        body.certificationId = editingCertification._id;
       }
 
-      const response = await fetch(
-        "/api/portfolio/certifications",
-        {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch("/api/portfolio/certifications", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
 
       const result = await response.json();
 
@@ -89,27 +96,48 @@ export default function CertificationForm({
   };
 
   return (
-    <div className="bg-black border border-zinc-900 rounded-3xl p-6 lg:p-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">
-          {editingCertification
-            ? "Edit Certification"
-            : "Add Certification"}
+    <>
+      <div className="mb-8">
+        <div
+          className="
+          mb-4
+          inline-flex
+          items-center
+          rounded-full
+          border
+          border-white/10
+          bg-white/[0.03]
+          px-3
+          py-1.5
+          text-xs
+          uppercase
+          tracking-[0.15em]
+          text-zinc-500
+        "
+        >
+          Certification Builder
+        </div>
+
+        <h2
+          className="
+          text-xl
+          font-semibold
+          tracking-tight
+          text-white
+        "
+        >
+          {editingCertification ? "Edit Certification" : "Add Certification"}
         </h2>
 
-        <p className="text-gray-500 mt-2">
-          Showcase certifications, licenses, and
-          professional credentials.
+        <p className="mt-2 text-zinc-500">
+          Showcase certifications, licenses, and professional credentials.
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
-        {/* Certification Title */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Title */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="mb-2 block text-sm font-medium">
             Certification Title
           </label>
 
@@ -117,94 +145,53 @@ export default function CertificationForm({
             type="text"
             placeholder="Google Cybersecurity Professional Certificate"
             {...register("title")}
-            className="
-              w-full
-              bg-back
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-black
-              transition
-            "
+            className={inputStyles}
           />
 
           {errors.title && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.title.message}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.title.message}</p>
           )}
         </div>
 
-        {/* Issuer */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Issuer
-          </label>
+        {/* Issuer + Date */}
+        <div className="grid gap-5 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block text-sm font-medium">Issuer</label>
 
-          <input
-            type="text"
-            placeholder="Google"
-            {...register("issuer")}
-            className="
-              w-full
-              bg-back
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-black
-              transition
-            "
-          />
+            <input
+              type="text"
+              placeholder="Google"
+              {...register("issuer")}
+              className={inputStyles}
+            />
 
-          {errors.issuer && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.issuer.message}
-            </p>
-          )}
-        </div>
+            {errors.issuer && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.issuer.message}
+              </p>
+            )}
+          </div>
 
-        {/* Issue Date */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Issue Date
-          </label>
+          <div>
+            <label className="mb-2 block text-sm font-medium">Issue Date</label>
 
-          <input
-            type="month"
-            {...register("issueDate")}
-            className="
-              w-full
-              bg-back
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-black
-              transition
-            "
-          />
+            <input
+              type="month"
+              {...register("issueDate")}
+              className={inputStyles}
+            />
 
-          {errors.issueDate && (
-            <p className="text-red-500 text-sm mt-2">
-              {errors.issueDate.message}
-            </p>
-          )}
+            {errors.issueDate && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.issueDate.message}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Credential URL */}
         <div>
-          <label className="block text-sm font-medium mb-2">
+          <label className="mb-2 block text-sm font-medium">
             Credential URL
           </label>
 
@@ -212,48 +199,68 @@ export default function CertificationForm({
             type="text"
             placeholder="https://coursera.org/verify/..."
             {...register("credentialUrl")}
-            className="
-              w-full
-              bg-back
-              border
-              border-zinc-900
-              rounded-2xl
-              px-4
-              py-3.5
-              outline-none
-              focus:border-black
-              focus:bg-black
-              transition
-            "
+            className={inputStyles}
           />
 
+          <p className="mt-2 text-xs text-zinc-500">
+            Optional. Add a verification or credential link.
+          </p>
+
           {errors.credentialUrl && (
-            <p className="text-red-500 text-sm mt-2">
+            <p className="mt-2 text-sm text-red-500">
               {errors.credentialUrl.message}
             </p>
           )}
         </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <button
-            type="submit"
+        {/* Preview */}
+        <div
+          className="
+          rounded-2xl
+          border
+          border-white/10
+          bg-white/[0.02]
+          p-5
+        "
+        >
+          <p
             className="
-              flex-1
-              bg-black
-              text-white
-              py-3.5
-              rounded-2xl
-              font-medium
-              hover:opacity-90
-              transition
-            "
+            text-xs
+            uppercase
+            tracking-[0.2em]
+            text-zinc-600
+          "
           >
-            {editingCertification
-              ? "Update Certification"
-              : "Save Certification"}
-          </button>
+            Preview
+          </p>
 
+          <h3
+            className="
+            mt-3
+            text-lg
+            font-semibold
+            text-white
+          "
+          >
+            Certification Card
+          </h3>
+
+          <p className="mt-2 text-zinc-500">
+            Your certification will appear in the portfolio exactly like the
+            certification cards shown below.
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div
+          className="
+          flex
+          flex-col-reverse
+          gap-3
+          pt-2
+          sm:flex-row
+        "
+        >
           {editingCertification && (
             <button
               type="button"
@@ -262,21 +269,39 @@ export default function CertificationForm({
                 reset();
               }}
               className="
-                px-6
-                py-3.5
-                border
-                border-zinc-900
-                rounded-2xl
-                font-medium
-                hover:bg-zinc-100
-                transition
-              "
+              rounded-2xl
+              border
+              border-white/10
+              px-6
+              py-3.5
+              text-white
+              transition
+              hover:bg-white/[0.04]
+            "
             >
               Cancel
             </button>
           )}
+
+          <button
+            type="submit"
+            className="
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
+          >
+            {editingCertification
+              ? "Update Certification"
+              : "Save Certification"}
+          </button>
         </div>
       </form>
-    </div>
+    </>
   );
 }
