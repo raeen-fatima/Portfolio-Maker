@@ -9,8 +9,7 @@ export default function ResetPasswordPage() {
   const router = useRouter();
 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -25,23 +24,18 @@ export default function ResetPasswordPage() {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        "/api/auth/reset-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            token,
-            password,
-          }),
-        }
-      );
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token,
+          password,
+        }),
+      });
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
       if (!response.ok) {
         toast.error(result.message);
@@ -61,52 +55,193 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5] px-6">
-      <div className="w-full text-black  max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          Reset Password
-        </h1>
+    <div
+      className="
+        relative flex items-center justify-center overflow-hidden
+        min-h-screen
+        px-6
+        bg-black
+      "
+    >
+      {/* Background Glow */}
+      <div
+        className="
+          absolute left-0 top-0
+          h-96 w-96
+          bg-white/5
+          rounded-full
+          blur-3xl
+        "
+        /
+      >
+      <div
+        className="
+          absolute bottom-0 right-0
+          h-96 w-96
+          bg-white/5
+          rounded-full
+          blur-3xl
+        "
+        /
+      >
 
-        <p className="text-center text-gray-500 mb-8">
-          Enter your new password.
-        </p>
+      <div
+        className="
+          relative z-10
+          w-full max-w-md
+          p-8 md:p-10
+          bg-white/[0.03]
+          rounded-[32px] border border-white/10
+          backdrop-blur-xl
+        "
+      >
+        {/* Header */}
+        <div
+          className="
+            text-center
+          "
+        >
+          <h1
+            className="
+              text-4xl text-white font-bold
+            "
+          >
+            Reset Password
+          </h1>
 
+          <p
+            className="
+              mt-3
+              text-sm text-zinc-500
+            "
+          >
+            Create a new password for your account.
+          </p>
+        </div>
+
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="space-y-6"
+          className="
+            mt-10 space-y-6
+          "
         >
-          <input
-            type="password"
-            placeholder="New Password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            className="w-full border-b border-gray-400 bg-transparent py-2 outline-none"
-          />
+          {/* New Password */}
+          <div>
+            <label
+              className="
+                block
+                mb-2
+                text-xs text-zinc-500 font-medium uppercase tracking-wider
+              "
+            >
+              New Password
+            </label>
 
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) =>
-              setConfirmPassword(
-                e.target.value
-              )
-            }
-            className="w-full border-b border-gray-400 bg-transparent py-2 outline-none"
-          />
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-white/[0.03]
+              px-4
+              py-3.5
+              text-white
+              placeholder:text-zinc-600
+              outline-none
+              transition
+              focus:border-white/20
+              focus:bg-white/[0.05]
+            "
+            />
+          </div>
 
+          {/* Confirm Password */}
+          <div>
+            <label
+              className="
+                block
+                mb-2
+                text-xs text-zinc-500 font-medium uppercase tracking-wider
+              "
+            >
+              Confirm Password
+            </label>
+
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="
+              w-full
+              rounded-2xl
+              border
+              border-white/10
+              bg-white/[0.03]
+              px-4
+              py-3.5
+              text-white
+              placeholder:text-zinc-600
+              outline-none
+              transition
+              focus:border-white/20
+              focus:bg-white/[0.05]
+            "
+            />
+          </div>
+
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-3"
+            className="
+              w-full
+              py-3.5
+              font-medium text-black
+              bg-white
+              rounded-2xl
+              transition-all duration-200 hover:opacity-95 disabled:opacity-50
+              hover:scale-[1.01] active:scale-[0.99]
+            "
           >
-            {loading
-              ? "Updating..."
-              : "Update Password"}
+            {loading ? (
+              <span
+                className="
+                  flex items-center justify-center
+                  gap-2
+                "
+              >
+                <span
+                  className="
+                    h-4 w-4
+                    rounded-full border-2 border-black border-t-transparent
+                    animate-spin
+                  "
+                  /
+                >
+                Updating Password...
+              </span>
+            ) : (
+              "Update Password"
+            )}
           </button>
         </form>
+
+        {/* Footer */}
+        <p
+          className="
+            mt-8
+            text-center text-xs text-zinc-600
+          "
+        >
+          Secure your account with a strong password.
+        </p>
       </div>
     </div>
   );

@@ -83,7 +83,7 @@ export default function SkillsPage() {
         title="Skills"
         description="Add the technologies, frameworks and tools you use."
         step={3}
-        totalSteps={7}
+        totalSteps={8}
       />
 
       {/* Add Skill */}

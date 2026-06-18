@@ -309,7 +309,7 @@ export default function Sidebar() {
         ${
           active
             ? `
-              bg-white
+              bg-white 
               text-black
             `
             : `
