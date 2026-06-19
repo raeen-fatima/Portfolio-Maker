@@ -63,7 +63,12 @@ export default function ExperiencePage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10">
+    <div
+      className="
+        max-w-7xl
+        mx-auto space-y-8 p-6 lg:p-10
+      "
+    >
       <BuilderHeader
         title="Experience"
         description="Add your work experience, internships, freelance work, and professional roles."
@@ -74,25 +79,35 @@ export default function ExperiencePage() {
       {/* Form */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          p-6 lg:p-8
+          bg-white/[0.03]
+          rounded-[28px] border border-white/10
+        "
       >
         <div>
-          <h2 className="text-xl font-semibold text-white">
+          <h2
+            className="
+              text-xl text-white font-semibold
+            "
+          >
             {editingExperience ? "Edit Experience" : "Add Experience"}
           </h2>
 
-          <p className="mt-2 text-zinc-500">
+          <p
+            className="
+              mt-2
+              text-zinc-500
+            "
+          >
             Highlight your professional journey and achievements.
           </p>
         </div>
 
-        <div className="mt-6">
+        <div
+          className="
+            mt-6
+          "
+        >
           <ExperienceForm
             editingExperience={editingExperience}
             setEditingExperience={setEditingExperience}
@@ -104,47 +119,44 @@ export default function ExperiencePage() {
       {/* Experience List */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          p-6 lg:p-8
+          bg-white/[0.03]
+          rounded-[28px] border border-white/10
+        "
       >
         <div
           className="
-          flex
-          flex-col
-          gap-4
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        "
+            flex flex-col sm:flex-row sm:items-center sm:justify-between
+            gap-4
+          "
         >
           <div>
-            <h2 className="text-xl font-semibold text-white">
+            <h2
+              className="
+                text-xl text-white font-semibold
+              "
+            >
               Your Experience
             </h2>
 
-            <p className="mt-2 text-zinc-500">
+            <p
+              className="
+                mt-2
+                text-zinc-500
+              "
+            >
               Experience currently displayed on your portfolio.
             </p>
           </div>
 
           <div
             className="
-            inline-flex
-            items-center
-            rounded-full
-            border
-            border-white/10
-            bg-white/[0.03]
-            px-4
-            py-2
-            text-sm
-            text-zinc-400
-          "
+              inline-flex items-center
+              px-4 py-2
+              text-sm text-zinc-400
+              bg-white/[0.03]
+              rounded-full border border-white/10
+            "
           >
             {experience.length} Roles
           </div>
@@ -153,26 +165,35 @@ export default function ExperiencePage() {
         {experience.length === 0 ? (
           <div
             className="
-            mt-8
-            rounded-3xl
-            border
-            border-dashed
-            border-white/10
-            bg-white/[0.02]
-            p-12
-            text-center
-          "
+              mt-8 p-12
+              text-center
+              bg-white/[0.02]
+              rounded-3xl border border-dashed border-white/10
+            "
           >
-            <h3 className="text-lg font-semibold text-white">
+            <h3
+              className="
+                text-lg text-white font-semibold
+              "
+            >
               No experience added yet
             </h3>
 
-            <p className="mt-3 text-zinc-500">
+            <p
+              className="
+                mt-3
+                text-zinc-500
+              "
+            >
               Add your first role, internship, or freelance project.
             </p>
           </div>
         ) : (
-          <div className="mt-8 space-y-4">
+          <div
+            className="
+              mt-8 space-y-4
+            "
+          >
             {experience.map((item) => (
               <ExperienceCard
                 key={item._id}
@@ -188,11 +209,9 @@ export default function ExperiencePage() {
       {/* Navigation */}
       <div
         className="
-        flex
-        flex-col
-        gap-3
-        sm:flex-row
-      "
+          flex flex-col sm:flex-row
+          gap-3
+        "
       >
         <button
           type="button"

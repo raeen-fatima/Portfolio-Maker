@@ -62,7 +62,12 @@ export default function EducationPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10">
+    <div
+      className="
+        max-w-7xl
+        mx-auto space-y-8 p-6 lg:p-10
+      "
+    >
       <BuilderHeader
         title="Education"
         description="Add your academic background, degrees, diplomas, and certifications."
@@ -73,13 +78,10 @@ export default function EducationPage() {
       {/* Form Section */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          p-6 lg:p-8
+          bg-white/[0.03]
+          rounded-[28px] border border-white/10
+        "
       >
         <EducationForm
           editingEducation={editingEducation}
@@ -91,53 +93,44 @@ export default function EducationPage() {
       {/* Education List */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          p-6 lg:p-8
+          bg-white/[0.03]
+          rounded-[28px] border border-white/10
+        "
       >
         <div
           className="
-          flex
-          flex-col
-          gap-4
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        "
+            flex flex-col sm:flex-row sm:items-center sm:justify-between
+            gap-4
+          "
         >
           <div>
             <h2
               className="
-              text-xl
-              font-semibold
-              text-white
-            "
+                text-xl text-white font-semibold
+              "
             >
               Your Education
             </h2>
 
-            <p className="mt-2 text-zinc-500">
+            <p
+              className="
+                mt-2
+                text-zinc-500
+              "
+            >
               Academic qualifications displayed on your portfolio.
             </p>
           </div>
 
           <div
             className="
-            inline-flex
-            items-center
-            rounded-full
-            border
-            border-white/10
-            bg-white/[0.03]
-            px-4
-            py-2
-            text-sm
-            text-zinc-400
-          "
+              inline-flex items-center
+              px-4 py-2
+              text-sm text-zinc-400
+              bg-white/[0.03]
+              rounded-full border border-white/10
+            "
           >
             {education.length} Entries
           </div>
@@ -146,32 +139,35 @@ export default function EducationPage() {
         {education.length === 0 ? (
           <div
             className="
-            mt-8
-            rounded-3xl
-            border
-            border-dashed
-            border-white/10
-            bg-white/[0.02]
-            p-12
-            text-center
-          "
+              mt-8 p-12
+              text-center
+              bg-white/[0.02]
+              rounded-3xl border border-dashed border-white/10
+            "
           >
             <h3
               className="
-              text-lg
-              font-semibold
-              text-white
-            "
+                text-lg text-white font-semibold
+              "
             >
               No education added yet
             </h3>
 
-            <p className="mt-3 text-zinc-500">
+            <p
+              className="
+                mt-3
+                text-zinc-500
+              "
+            >
               Add your first education record to strengthen your portfolio.
             </p>
           </div>
         ) : (
-          <div className="mt-8 space-y-4">
+          <div
+            className="
+              mt-8 space-y-4
+            "
+          >
             {education.map((item) => (
               <EducationCard
                 key={item._id}
@@ -187,11 +183,9 @@ export default function EducationPage() {
       {/* Navigation */}
       <div
         className="
-        flex
-        flex-col
-        gap-3
-        sm:flex-row
-      "
+          flex flex-col sm:flex-row
+          gap-3
+        "
       >
         <button
           type="button"

@@ -33,14 +33,10 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       className="
-        flex
-        items-center
-        gap-2
-        text-sm
-        font-medium
-        text-zinc-400
+        flex items-center
+        text-md text-zinc-400 hover:text-red-400 font-bold
         transition
-        hover:text-red-400
+        gap-2
       "
     >
       <LogOut size={16} />

@@ -35,71 +35,79 @@ export default async function Navbar() {
   return (
     <header
       className="
-        fixed
-        inset-x-0
-        top-0
-        z-50
-        border-b
-        border-white/10
-        bg-black/60
-        backdrop-blur-lg
+        fixed inset-x-0 top-0 z-[100]
+        px-4 pt-4
       "
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div
+        className="
+          max-w-7xl
+          mx-auto
+          bg-black/70
+          rounded-2xl border border-white/10
+          backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.4)]
+        "
+      >
         <div
           className="
-            flex
-            h-20
-            items-center
-            justify-between
-            transition
+            flex items-center justify-between
+            h-18
+            px-6
           "
         >
           {/* Logo */}
           <Link
             href="/"
             className="
-              flex
-              items-center
-              gap-3
-              transition
-              hover:opacity-90
+              relative z-50 flex items-center
+              group gap-3
             "
           >
             <div
               className="
-                flex
-                h-11
-                w-11
-                items-center
-                justify-center
-                rounded-xl
-                text-white
-                border
-                border-white/10
-                bg-white/[0.03]
-                shadow-[0_0_25px_rgba(255,255,255,0.06)]
+                flex items-center justify-center
+                h-11 w-11
+                bg-white/[0.04]
+                rounded-xl border border-white/10
+                transition-all duration-300
+                group-hover:scale-105 group-hover:bg-white/[0.08]
               "
             >
-              <Blocks size={20} />
+              <Blocks
+                size={20}
+                className="
+                  text-white
+                "
+                /
+              >
             </div>
 
             <div>
               <h2
                 className="
-                  text-lg
-                  font-semibold
-                  tracking-tight
+                  text-lg font-semibold tracking-tight
                 "
               >
-                <span className="text-white">Folio</span>
-                <span className="text-zinc-500">Forge</span>
+                <span
+                  className="
+                    text-white
+                  "
+                >
+                  Folio
+                </span>
+
+                <span
+                  className="
+                    text-zinc-500
+                  "
+                >
+                  Forge
+                </span>
               </h2>
 
               <p
                 className="
-                  text-xs
-                  text-zinc-600
+                  text-xs text-zinc-600
                 "
               >
                 Portfolio Builder
@@ -107,13 +115,11 @@ export default async function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <nav
             className="
-              hidden
-              items-center
+              hidden lg:flex items-center
               gap-8
-              lg:flex
             "
           >
             {links.map((link) => (
@@ -121,11 +127,12 @@ export default async function Navbar() {
                 key={link.name}
                 href={link.href}
                 className="
-                  text-sm
-                  font-medium
-                  text-zinc-400
-                  transition-colors
-                  hover:text-white
+                  relative after:absolute after:left-0
+                  after:h-px after:w-0 hover:after:w-full
+                  text-sm text-zinc-400 hover:text-white font-medium
+                  after:bg-white
+                  transition after:transition-all
+                  after:-bottom-2
                 "
               >
                 {link.name}
@@ -133,20 +140,26 @@ export default async function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:block">
+          {/* Actions */}
+          <div
+            className="
+              hidden lg:block
+            "
+          >
             {user ? (
               <UserDropdown user={user} />
             ) : (
-              <div className="flex items-center gap-4">
+              <div
+                className="
+                  flex items-center
+                  gap-4
+                "
+              >
                 <Link
                   href="/auth/login"
                   className="
-                    text-sm
-                    font-medium
-                    text-zinc-400
-                    transition-colors
-                    hover:text-white
+                    text-sm text-zinc-400 hover:text-white font-medium
+                    transition
                   "
                 >
                   Sign In
@@ -155,17 +168,13 @@ export default async function Navbar() {
                 <Link
                   href="/auth/register"
                   className="
-                    rounded-full
+                    px-5 py-2.5
+                    text-sm text-black font-medium
                     bg-white
-                    px-5
-                    py-3
-                    text-sm
-                    font-medium
-                    text-black
-                    transition-all
-                    duration-300
+                    rounded-xl
+                    transition-all duration-300
+                    hover:shadow-[0_0_25px_rgba(255,255,255,0.25)]
                     hover:scale-105
-                    hover:bg-zinc-200
                   "
                 >
                   Start Building
@@ -177,7 +186,7 @@ export default async function Navbar() {
           {/* Mobile Menu */}
           <MobileMenu user={user} />
         </div>
-      </div>
+      </div> 
     </header>
   );
 }

@@ -32,7 +32,12 @@ export default function CertificationsPage() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10">
+    <div
+      className="
+        max-w-7xl
+        mx-auto space-y-8 p-6 lg:p-10
+      "
+    >
       <BuilderHeader
         title="Certifications"
         description="Showcase certifications, licenses, and professional credentials."
@@ -43,13 +48,10 @@ export default function CertificationsPage() {
       {/* Form */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          p-6 lg:p-8
+          bg-white/[0.03]
+          rounded-[28px] border border-white/10
+        "
       >
         <CertificationForm
           editingCertification={editingCertification}
@@ -61,53 +63,44 @@ export default function CertificationsPage() {
       {/* Certifications List */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          p-6 lg:p-8
+          bg-white/[0.03]
+          rounded-[28px] border border-white/10
+        "
       >
         <div
           className="
-          flex
-          flex-col
-          gap-4
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        "
+            flex flex-col sm:flex-row sm:items-center sm:justify-between
+            gap-4
+          "
         >
           <div>
             <h2
               className="
-              text-xl
-              font-semibold
-              text-white
-            "
+                text-xl text-white font-semibold
+              "
             >
               Your Certifications
             </h2>
 
-            <p className="mt-2 text-zinc-500">
+            <p
+              className="
+                mt-2
+                text-zinc-500
+              "
+            >
               Certifications and credentials displayed on your portfolio.
             </p>
           </div>
 
           <div
             className="
-            inline-flex
-            items-center
-            rounded-full
-            border
-            border-white/10
-            bg-white/[0.03]
-            px-4
-            py-2
-            text-sm
-            text-zinc-400
-          "
+              inline-flex items-center
+              px-4 py-2
+              text-sm text-zinc-400
+              bg-white/[0.03]
+              rounded-full border border-white/10
+            "
           >
             {certifications.length} Certificates
           </div>
@@ -116,38 +109,36 @@ export default function CertificationsPage() {
         {certifications.length === 0 ? (
           <div
             className="
-            mt-8
-            rounded-3xl
-            border
-            border-dashed
-            border-white/10
-            bg-white/[0.02]
-            p-12
-            text-center
-          "
+              mt-8 p-12
+              text-center
+              bg-white/[0.02]
+              rounded-3xl border border-dashed border-white/10
+            "
           >
             <h3
               className="
-              text-lg
-              font-semibold
-              text-white
-            "
+                text-lg text-white font-semibold
+              "
             >
               No certifications added yet
             </h3>
 
-            <p className="mt-3 text-zinc-500">
+            <p
+              className="
+                mt-3
+                text-zinc-500
+              "
+            >
               Add your first certification to strengthen your credibility.
             </p>
           </div>
         ) : (
           <div
             className="
-            mt-8
-            grid
-            gap-5
-            md:grid-cols-2
-          "
+              grid md:grid-cols-2
+              mt-8
+              gap-5
+            "
           >
             {certifications.map((certification) => (
               <CertificationCard
@@ -164,11 +155,9 @@ export default function CertificationsPage() {
       {/* Navigation */}
       <div
         className="
-        flex
-        flex-col
-        gap-3
-        sm:flex-row
-      "
+          flex flex-col sm:flex-row
+          gap-3
+        "
       >
         <button
           type="button"

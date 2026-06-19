@@ -111,7 +111,11 @@ export default function HeroPage() {
   };
 
   return (
-    <div className="space-y-6 p-6 lg:p-12">
+    <div
+      className="
+        space-y-6 p-6 lg:p-12
+      "
+    >
       {/* Page Header */}
 
       <BuilderHeader
@@ -124,28 +128,40 @@ export default function HeroPage() {
       {/* Main Layout - Two column grid: Editor on left, Preview on right */}
       <div
         className="
-    grid
-    gap-6
-    xl:grid-cols-[1fr_420px]
-  "
+          grid xl:grid-cols-[1fr_420px]
+          gap-6
+        "
       >
         {/* Form Card */}
         <div
           className="
-      rounded-[28px]
-      border
-      border-white/10
-      bg-white/[0.03]
-      p-6
-      lg:p-8
-    "
+            p-6 lg:p-8
+            bg-white/[0.03]
+            rounded-[28px] border border-white/10
+          "
         >
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="
+              space-y-6
+            "
+          >
             {/* Name + Title */}
-            <div className="grid gap-5 md:grid-cols-2">
+            <div
+              className="
+                grid md:grid-cols-2
+                gap-5
+              "
+            >
               {/* Full Name Input */}
               <div>
-                <label className="mb-2 block text-sm font-medium">
+                <label
+                  className="
+                    block
+                    mb-2
+                    text-sm font-medium
+                  "
+                >
                   Full Name
                 </label>
 
@@ -154,23 +170,24 @@ export default function HeroPage() {
                   placeholder="John Doe"
                   {...register("name")}
                   className="
-              w-full
-              rounded-2xl
-              border
-              border-white/10
-              bg-black
-              px-4
-              py-3.5
-              text-white
-              outline-none
-              transition
-              placeholder:text-zinc-600
-              focus:border-white/20
-            "
-                />
+                    w-full
+                    px-4 py-3.5
+                    text-white placeholder:text-zinc-600
+                    bg-black
+                    rounded-2xl border border-white/10 focus:border-white/20
+                    outline-none
+                    transition
+                  "
+                  /
+                >
 
                 {errors.name && (
-                  <p className="mt-2 text-sm text-red-500">
+                  <p
+                    className="
+                      mt-2
+                      text-sm text-red-500
+                    "
+                  >
                     {errors.name.message}
                   </p>
                 )}
@@ -178,7 +195,13 @@ export default function HeroPage() {
 
               {/* Professional Title */}
               <div>
-                <label className="mb-2 block text-sm font-medium">
+                <label
+                  className="
+                    block
+                    mb-2
+                    text-sm font-medium
+                  "
+                >
                   Professional Title
                 </label>
 
@@ -187,23 +210,24 @@ export default function HeroPage() {
                   placeholder="Full Stack Developer"
                   {...register("title")}
                   className="
-              w-full
-              rounded-2xl
-              border
-              border-white/10
-              bg-black
-              px-4
-              py-3.5
-              text-white
-              outline-none
-              transition
-              placeholder:text-zinc-600
-              focus:border-white/20
-            "
-                />
+                    w-full
+                    px-4 py-3.5
+                    text-white placeholder:text-zinc-600
+                    bg-black
+                    rounded-2xl border border-white/10 focus:border-white/20
+                    outline-none
+                    transition
+                  "
+                  /
+                >
 
                 {errors.title && (
-                  <p className="mt-2 text-sm text-red-500">
+                  <p
+                    className="
+                      mt-2
+                      text-sm text-red-500
+                    "
+                  >
                     {errors.title.message}
                   </p>
                 )}
@@ -212,31 +236,38 @@ export default function HeroPage() {
 
             {/* Tagline */}
             <div>
-              <label className="mb-2 block text-sm font-medium">Tagline</label>
+              <label
+                className="
+                  block
+                  mb-2
+                  text-sm font-medium
+                "
+              >Tagline</label>
 
               <textarea
                 rows={4}
                 placeholder="Building modern web applications with Next.js and MongoDB."
                 {...register("tagline")}
                 className="
-            w-full
-            resize-none
-            rounded-2xl
-            border
-            border-white/10
-            bg-black
-            px-4
-            py-3.5
-            text-white
-            outline-none
-            transition
-            placeholder:text-zinc-600
-            focus:border-white/20
-          "
-              />
+                  w-full
+                  px-4 py-3.5
+                  text-white placeholder:text-zinc-600
+                  bg-black
+                  rounded-2xl border border-white/10 focus:border-white/20
+                  outline-none
+                  transition
+                  resize-none
+                "
+                /
+              >
 
               {errors.tagline && (
-                <p className="mt-2 text-sm text-red-500">
+                <p
+                  className="
+                    mt-2
+                    text-sm text-red-500
+                  "
+                >
                   {errors.tagline.message}
                 </p>
               )}
@@ -244,7 +275,13 @@ export default function HeroPage() {
 
             {/* Resume URL */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label
+                className="
+                  block
+                  mb-2
+                  text-sm font-medium
+                "
+              >
                 Resume URL
               </label>
 
@@ -253,23 +290,24 @@ export default function HeroPage() {
                 placeholder="https://drive.google.com/..."
                 {...register("resumeUrl")}
                 className="
-            w-full
-            rounded-2xl
-            border
-            border-white/10
-            bg-black
-            px-4
-            py-3.5
-            text-white
-            outline-none
-            transition
-            placeholder:text-zinc-600
-            focus:border-white/20
-          "
-              />
+                  w-full
+                  px-4 py-3.5
+                  text-white placeholder:text-zinc-600
+                  bg-black
+                  rounded-2xl border border-white/10 focus:border-white/20
+                  outline-none
+                  transition
+                "
+                /
+              >
 
               {errors.resumeUrl && (
-                <p className="mt-2 text-sm text-red-500">
+                <p
+                  className="
+                    mt-2
+                    text-sm text-red-500
+                  "
+                >
                   {errors.resumeUrl.message}
                 </p>
               )}
@@ -277,7 +315,13 @@ export default function HeroPage() {
 
             {/* Upload */}
             <div>
-              <label className="mb-2 block text-sm font-medium">
+              <label
+                className="
+                  block
+                  mb-2
+                  text-sm font-medium
+                "
+              >
                 Profile Image
               </label>
 
@@ -287,26 +331,21 @@ export default function HeroPage() {
             {/* Footer */}
             <div
               className="
-          flex
-          flex-col
-          gap-3
-          pt-4
-          sm:flex-row
-        "
+                flex flex-col sm:flex-row
+                pt-4
+                gap-3
+              "
             >
               <button
                 type="button"
                 className="
-            flex-1
-            rounded-2xl
-            border
-            border-white/10
-            py-3.5
-            font-medium
-            text-white
-            transition
-            hover:bg-white/[0.04]
-          "
+                  flex-1
+                  py-3.5
+                  font-medium text-white
+                  hover:bg-white/[0.04]
+                  rounded-2xl border border-white/10
+                  transition
+                "
               >
                 Save Draft
               </button>
@@ -315,15 +354,13 @@ export default function HeroPage() {
                 type="submit"
                 disabled={loading}
                 className="
-            flex-1
-            rounded-2xl
-            bg-white
-            py-3.5
-            font-medium
-            text-black
-            transition
-            hover:opacity-90
-          "
+                  flex-1
+                  py-3.5
+                  font-medium text-black
+                  bg-white
+                  rounded-2xl
+                  transition hover:opacity-90
+                "
               >
                 {loading ? "Saving..." : "Save & Continue →"}
               </button>
@@ -334,18 +371,19 @@ export default function HeroPage() {
         {/* Preview Card */}
         <div
           className="
-      h-fit
-      rounded-[28px]
-      border
-      border-white/10
-      bg-white/[0.03]
-      p-8
-
-      xl:sticky
-      xl:top-24
-    "
+            xl:sticky xl:top-24
+            h-fit
+            p-8
+            bg-white/[0.03]
+            rounded-[28px] border border-white/10
+          "
         >
-          <div className="flex flex-col items-center text-center">
+          <div
+            className="
+              flex flex-col items-center
+              text-center
+            "
+          >
             {imageUrl ? (
               <Image
                 src={imageUrl}
@@ -353,41 +391,52 @@ export default function HeroPage() {
                 width={120}
                 height={120}
                 className="
-            h-32
-            w-32
-            rounded-full
-            object-cover
-          "
-              />
+                  object-cover
+                  h-32 w-32
+                  rounded-full
+                "
+                /
+              >
             ) : (
               <div
                 className="
-            h-32
-            w-32
-            rounded-full
-            border
-            border-dashed
-            border-white/10
-            bg-white/[0.03]
-          "
-              />
+                  h-32 w-32
+                  bg-white/[0.03]
+                  rounded-full border border-dashed border-white/10
+                "
+                /
+              >
             )}
 
-            <p className="mt-6 text-zinc-500">Hi, I'm</p>
+            <p
+              className="
+                mt-6
+                text-zinc-500
+              "
+            >Hi, I'm</p>
 
-            <h1 className="mt-2 text-3xl font-bold">{name || "Your Name"}</h1>
+            <h1
+              className="
+                mt-2
+                text-3xl font-bold
+              "
+            >{name || "Your Name"}</h1>
 
-            <h2 className="mt-3 text-zinc-400">
+            <h2
+              className="
+                mt-3
+                text-zinc-400
+              "
+            >
               {title || "Professional Title"}
             </h2>
 
             <p
               className="
-          mt-6
-          max-w-sm
-          leading-relaxed
-          text-zinc-400
-        "
+                max-w-sm
+                mt-6
+                leading-relaxed text-zinc-400
+              "
             >
               {tagline || "Your professional summary will appear here."}
             </p>
@@ -397,18 +446,13 @@ export default function HeroPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="
-          mt-8
-          inline-flex
-          items-center
-          rounded-2xl
-          bg-white
-          px-5
-          py-3
-          font-medium
-          text-black
-          transition
-          hover:opacity-90
-        "
+                inline-flex items-center
+                mt-8 px-5 py-3
+                font-medium text-black
+                bg-white
+                rounded-2xl
+                transition hover:opacity-90
+              "
             >
               Download Resume
             </a>
