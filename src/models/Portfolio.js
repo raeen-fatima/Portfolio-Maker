@@ -139,7 +139,7 @@ const portfolioSchema = new mongoose.Schema(
 
     selectedTemplate: {
       type: String,
-      default: "nova",
+      default: "",
     },
 
     isPublished: {

@@ -1,618 +1,571 @@
-// "use client";
-
-// import Link from "next/link";
-// import {
-//   FolderKanban,
-//   Code2,
-//   Briefcase,
-//   GraduationCap,
-//   ArrowRight,
-//   Eye,
-//   Sparkles,
-// } from "lucide-react";
-// import { useState, useEffect } from "react";
-
-// export default function PortfolioPage() {
-//   const [views, setViews] = useState(0);
-
-//   const [completion, setCompletion] =
-//     useState(0);
-
-//   const [stats, setStats] = useState({
-//     projects: 0,
-//     skills: 0,
-//     experience: 0,
-//     education: 0,
-//   });
-
-//   const fetchViews = async () => {
-//     try {
-//       const response = await fetch(
-//         "/api/portfolio/stats"
-//       );
-
-//       const result =
-//         await response.json();
-
-//       if (response.ok) {
-//         setViews(result.views);
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const fetchDashboardData =
-//     async () => {
-//       try {
-//         const response = await fetch(
-//           "/api/portfolio/dashboard"
-//         );
-
-//         const result =
-//           await response.json();
-
-//         if (response.ok) {
-//           setCompletion(
-//             result.stats.completion
-//           );
-
-//           setStats({
-//             projects:
-//               result.stats.projects,
-//             skills:
-//               result.stats.skills,
-//             experience:
-//               result.stats.experience,
-//             education:
-//               result.stats.education,
-//           });
-//         }
-//       } catch (error) {
-//         console.log(error);
-//       }
-//     };
-
-//   useEffect(() => {
-//     const loadData = async () => {
-//       await Promise.all([
-//         fetchViews(),
-//         fetchDashboardData(),
-//       ]);
-//     };
-
-//     loadData();
-//   }, []);
-
-//   const statCards = [
-//     {
-//       title: "Projects",
-//       value: stats.projects,
-//       icon: FolderKanban,
-//       color:
-//         "bg-blue-50 text-blue-600",
-//     },
-//     {
-//       title: "Skills",
-//       value: stats.skills,
-//       icon: Code2,
-//       color:
-//         "bg-green-50 text-green-600",
-//     },
-//     {
-//       title: "Experience",
-//       value: stats.experience,
-//       icon: Briefcase,
-//       color:
-//         "bg-purple-50 text-purple-600",
-//     },
-//     {
-//       title: "Education",
-//       value: stats.education,
-//       icon: GraduationCap,
-//       color:
-//         "bg-orange-50 text-orange-600",
-//     },
-//   ];
-
-//   const actions = [
-//     {
-//       title: "Hero Section",
-//       description:
-//         "Introduce yourself",
-//       href: "/dashboard/hero",
-//     },
-//     {
-//       title: "About Section",
-//       description:
-//         "Tell your story",
-//       href: "/dashboard/about",
-//     },
-//     {
-//       title: "Projects",
-//       description:
-//         "Showcase your work",
-//       href: "/dashboard/projects",
-//     },
-//     {
-//       title: "Templates",
-//       description:
-//         "Customize design",
-//       href: "/dashboard/templates",
-//     },
-//   ];
-
-//   return (
-//     <div className="space-y-8 p-6 lg:p-10">
-//       {/* Hero Banner */}
-//       <div
-//         className="
-//           relative
-//           overflow-hidden
-//           rounded-3xl
-//           bg-gradient-to-r
-//           from-black
-//           via-zinc-900
-//           to-zinc-800
-//           p-8
-//           text-white
-//         "
-//       >
-//         <div className="relative z-10">
-//           <div
-//             className="
-//               inline-flex
-//               items-center
-//               gap-2
-//               rounded-full
-//               bg-white/10
-//               px-4
-//               py-2
-//               text-sm
-//             "
-//           >
-//             <Sparkles size={16} />
-//             Portfolio Builder
-//           </div>
-
-//           <h1 className="mt-5 text-4xl font-bold">
-//             Build your professional
-//             portfolio
-//           </h1>
-
-//           <p className="mt-3 max-w-2xl text-zinc-300">
-//             Showcase your skills,
-//             projects and experience.
-//             Complete your portfolio and
-//             publish it to the world.
-//           </p>
-
-//           <div className="mt-6 flex flex-wrap gap-3">
-//             <Link
-//               href="/dashboard/preview"
-//               className="
-//                 rounded-xl
-//                 bg-white
-//                 px-5
-//                 py-3
-//                 font-medium
-//                 text-black
-//                 transition
-//                 hover:bg-zinc-100
-//               "
-//             >
-//               Preview Portfolio
-//             </Link>
-
-//             <Link
-//               href="/dashboard/publish"
-//               className="
-//                 rounded-xl
-//                 border
-//                 border-white/20
-//                 px-5
-//                 py-3
-//                 transition
-//                 hover:bg-white/10
-//               "
-//             >
-//               Publish Portfolio
-//             </Link>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Stats */}
-//       <div
-//         className="
-//           grid
-//           grid-cols-1
-//           gap-5
-//           sm:grid-cols-2
-//           xl:grid-cols-4
-//         "
-//       >
-//         {statCards.map((item) => {
-//           const Icon = item.icon;
-
-//           return (
-//             <div
-//               key={item.title}
-//               className="
-//                 rounded-3xl
-//                 border
-//                 bg-white
-//                 p-6
-//                 transition-all
-//                 hover:-translate-y-1
-//                 hover:shadow-lg
-//               "
-//             >
-//               <div className="flex items-center justify-between">
-//                 <div
-//                   className={`${item.color} rounded-xl p-3`}
-//                 >
-//                   <Icon size={20} />
-//                 </div>
-
-//                 <span className="text-sm text-zinc-500">
-//                   {item.title}
-//                 </span>
-//               </div>
-
-//               <h2 className="mt-5 text-4xl font-bold">
-//                 {item.value}
-//               </h2>
-//             </div>
-//           );
-//         })}
-//       </div>
-
-//       {/* Completion + Views */}
-//       <div className="grid gap-5 lg:grid-cols-2">
-//         <div className="rounded-3xl border bg-white p-8">
-//           <div className="flex items-start justify-between">
-//             <div>
-//               <h2 className="text-xl font-bold">
-//                 Portfolio Completion
-//               </h2>
-
-//               <p className="mt-2 text-zinc-500">
-//                 Complete all sections to
-//                 improve your profile.
-//               </p>
-//             </div>
-
-//             <div className="text-4xl font-bold">
-//               {completion}%
-//             </div>
-//           </div>
-
-//           <div
-//             className="
-//               mt-6
-//               h-3
-//               overflow-hidden
-//               rounded-full
-//               bg-zinc-200
-//             "
-//           >
-//             <div
-//               className="
-//                 h-full
-//                 rounded-full
-//                 bg-black
-//                 transition-all
-//               "
-//               style={{
-//                 width: `${completion}%`,
-//               }}
-//             />
-//           </div>
-//         </div>
-
-//         <div
-//           className="
-//             rounded-3xl
-//             bg-gradient-to-r
-//             from-indigo-500
-//             to-purple-600
-//             p-8
-//             text-white
-//           "
-//         >
-//           <div className="flex items-center gap-2">
-//             <Eye size={18} />
-
-//             <span className="text-white/80">
-//               Portfolio Views
-//             </span>
-//           </div>
-
-//           <h2 className="mt-4 text-5xl font-bold">
-//             {views}
-//           </h2>
-
-//           <p className="mt-2 text-white/80">
-//             Total public visits
-//           </p>
-//         </div>
-//       </div>
-
-//       {/* Quick Actions */}
-//       <div className="rounded-3xl border bg-white p-8">
-//         <h2 className="text-xl font-bold">
-//           Quick Actions
-//         </h2>
-
-//         <p className="mt-2 text-zinc-500">
-//           Continue building your
-//           portfolio.
-//         </p>
-
-//         <div className="mt-6 grid gap-4 md:grid-cols-2">
-//           {actions.map((item) => (
-//             <Link
-//               key={item.title}
-//               href={item.href}
-//               className="
-//                 flex
-//                 items-center
-//                 justify-between
-//                 rounded-2xl
-//                 border
-//                 p-5
-//                 transition-all
-//                 hover:bg-zinc-50
-//                 hover:shadow-sm
-//               "
-//             >
-//               <div>
-//                 <h3 className="font-semibold">
-//                   {item.title}
-//                 </h3>
-
-//                 <p className="mt-1 text-sm text-zinc-500">
-//                   {item.description}
-//                 </p>
-//               </div>
-
-//               <ArrowRight size={18} />
-//             </Link>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+"use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
 import {
   ArrowRight,
   CheckCircle2,
   Circle,
   Eye,
   Rocket,
+  FolderKanban,
+  Code2,
+  Briefcase,
+  Award,
+  TrendingUp,
 } from "lucide-react";
 
-const sections = [
-  {
-    title: "Hero",
-    description:
-      "Your portfolio introduction and call to action.",
-    href: "/dashboard/portfolio/hero",
-    completed: true,
-  },
-
-  {
-    title: "About",
-    description:
-      "Tell your story and introduce yourself.",
-    href: "/dashboard/portfolio/about",
-    completed: true,
-  },
-
-  {
-    title: "Skills",
-    description:
-      "Showcase your technical expertise.",
-    href: "/dashboard/portfolio/skills",
-    completed: true,
-  },
-
-  {
-    title: "Projects",
-    description:
-      "Highlight your best work and achievements.",
-    href: "/dashboard/portfolio/projects",
-    completed: true,
-  },
-
-  {
-    title: "Experience",
-    description:
-      "Add internships and work experience.",
-    href: "/dashboard/portfolio/experience",
-    completed: false,
-  },
-
-  {
-    title: "Education",
-    description:
-      "Add your educational background.",
-    href: "/dashboard/portfolio/education",
-    completed: false,
-  },
-];
-
 export default function PortfolioBuilderPage() {
-  const completedSections =
-    sections.filter(
-      (section) => section.completed
-    ).length;
+  const [dashboard, setDashboard] = useState(null);
 
-  const completion =
-    Math.round(
-      (completedSections /
-        sections.length) *
-        100
-    );
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <div className="space-y-8 ">
-      {/* Hero */}
-      <div>
-        <p
-          className="
-            text-sm
-            uppercase
-            tracking-[0.2em]
-            text-zinc-500
-          "
-        >
-          Portfolio Builder
-        </p>
+  const fetchDashboard = async () => {
+    try {
+      const response = await fetch("/api/portfolio/dashboard");
 
-        <h1
-          className="
-            mt-3
-            text-4xl
-            font-bold
-            tracking-tight
-            text-white
-          "
-        >
-          Build your portfolio.
-        </h1>
+      const result = await response.json();
 
-        <p
-          className="
-            mt-3
-            max-w-2xl
-            text-zinc-500
-          "
-        >
-          Manage every section of your
-          portfolio and prepare it for
-          publishing.
-        </p>
-      </div>
+      if (response.ok) {
+        setDashboard(result);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      {/* Progress */}
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  if (loading) {
+    return (
       <div
         className="
-          rounded-[32px]
-          border
-          border-white/10
-          bg-white/[0.03]
-          p-8
+          space-y-6
         "
       >
         <div
           className="
-            flex
-            flex-col
-            gap-6
-            lg:flex-row
-            lg:items-center
-            lg:justify-between
+            h-64
+            bg-white/[0.03]
+            rounded-[32px]
+            animate-pulse
+          "
+        />
+
+        <div
+          className="
+            grid md:grid-cols-4
+            gap-5
+          "
+        >
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className="
+                h-32
+                bg-white/[0.03]
+                rounded-[28px]
+                animate-pulse
+              "
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!dashboard) {
+    return (
+      <div
+        className="
+        flex min-h-[70vh]
+        items-center justify-center
+      "
+      >
+        <div
+          className="
+          max-w-md
+          text-center
+        "
+        >
+          <h2
+            className="
+            text-3xl
+            font-bold
+            text-white
+          "
+          >
+            No Portfolio Found
+          </h2>
+
+          <p
+            className="
+            mt-3
+            text-zinc-500
+          "
+          >
+            Create your portfolio to start building your professional presence.
+          </p>
+
+          <Link
+            href="/dashboard/portfolio/hero"
+            className="
+            inline-flex
+            items-center
+            gap-2
+            mt-6
+            rounded-xl
+            bg-white
+            px-5
+            py-3
+            font-medium
+            text-black
+          "
+          >
+            Start Building
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const roadmap = [
+    {
+      title: "Hero",
+      href: "/dashboard/portfolio/hero",
+      completed: dashboard.sections.hero,
+    },
+
+    {
+      title: "About",
+      href: "/dashboard/portfolio/about",
+      completed: dashboard.sections.about,
+    },
+
+    {
+      title: "Skills",
+      href: "/dashboard/portfolio/skills",
+      completed: dashboard.sections.skills,
+    },
+
+    {
+      title: "Projects",
+      href: "/dashboard/portfolio/projects",
+      completed: dashboard.sections.projects,
+    },
+
+    {
+      title: "Experience",
+      href: "/dashboard/portfolio/experience",
+      completed: dashboard.sections.experience,
+    },
+
+    {
+      title: "Education",
+      href: "/dashboard/portfolio/education",
+      completed: dashboard.sections.education,
+    },
+
+    {
+      title: "Certifications",
+      href: "/dashboard/portfolio/certifications",
+      completed: dashboard.sections.certifications,
+    },
+    {
+      title: "Templates",
+      href: "/dashboard/templates",
+      completed: !!dashboard.selectedTemplate,
+    },
+
+    {
+      title: "Publish",
+      href: "/dashboard/portfolio/publish",
+      completed: dashboard.isPublished,
+    },
+  ];
+
+  const stats = [
+    {
+      title: "Projects",
+      value: dashboard.stats.projects,
+      icon: FolderKanban,
+    },
+
+    {
+      title: "Skills",
+      value: dashboard.stats.skills,
+      icon: Code2,
+    },
+
+    {
+      title: "Experience",
+      value: dashboard.stats.experience,
+      icon: Briefcase,
+    },
+
+    {
+      title: "Certificates",
+      value: dashboard.stats.certifications,
+      icon: Award,
+    },
+  ];
+
+  return (
+    <div
+      className="
+        space-y-8
+      "
+    >
+      {/* Hero Card */}
+      <div
+        className="
+          p-8
+          bg-white/[0.03]
+          rounded-[32px] border border-white/10
+        "
+      >
+        <div
+          className="
+            flex flex-col lg:flex-row lg:items-center lg:justify-between
+            gap-8
           "
         >
           <div>
-            <h2
-              className="
-                text-xl
-                font-semibold
-                text-white
-              "
-            >
-              Portfolio Completion
-            </h2>
-
             <p
               className="
-                mt-2
-                text-zinc-500
+                text-sm text-zinc-500 uppercase tracking-[0.2em]
               "
             >
-              {completedSections} of{" "}
-              {sections.length}
-              {" "}
-              sections completed
+              Portfolio Builder
             </p>
+
+            <h1
+              className="
+                mt-3
+                text-4xl text-white font-bold tracking-tight
+              "
+            >
+              {dashboard.portfolioName}
+            </h1>
+
+            <div
+              className="
+                flex flex-wrap
+                mt-4
+                gap-3
+              "
+            >
+              <span
+                className="
+                  px-3 py-1
+                  text-sm
+                  bg-white/[0.03]
+                  rounded-full border border-white/10
+                "
+              >
+                {dashboard.isPublished ? "Published" : "Draft"}
+              </span>
+
+              <span
+                className="
+                  px-3 py-1
+                  text-sm
+                  bg-white/[0.03]
+                  rounded-full border border-white/10
+                "
+              >
+                {dashboard.selectedTemplate}
+              </span>
+            </div>
           </div>
 
           <div
             className="
-              text-5xl
-              font-bold
-              text-white
+              flex
+              gap-3
             "
           >
-            {completion}%
+            <Link
+              href={`/u/${dashboard.slug}`}
+              className="
+                inline-flex items-center
+                px-5 py-3
+                text-white
+                hover:bg-white/[0.04]
+                rounded-xl border border-white/10
+                transition
+                gap-2
+              "
+            >
+              <Eye size={18} />
+              Preview
+            </Link>
+
+            <Link
+              href="/dashboard/portfolio/publish"
+              className="
+                inline-flex items-center
+                px-5 py-3
+                font-medium text-black
+                bg-white
+                rounded-xl
+                gap-2
+              "
+            >
+              <Rocket size={18} />
+              Publish
+            </Link>
+          </div>
+        </div>
+        {/* {dashboard.completion < 100 && (
+          <div
+            className="
+              p-6
+              bg-blue-500/5
+              rounded-[32px] border border-blue-500/20
+            "
+          >
+            <div
+              className="
+                flex flex-col lg:flex-row lg:items-center lg:justify-between
+                gap-4
+              "
+            >
+              <div>
+                <p
+                  className="
+                    text-sm text-blue-400 uppercase tracking-[0.15em]
+                  "
+                >
+                  Next Step
+                </p>
+
+                <h3
+                  className="
+                    mt-2
+                    text-2xl font-semibold
+                  "
+                >
+                  Continue Building Your Portfolio
+                </h3>
+
+                <p
+                  className="
+                    mt-2
+                    text-zinc-400
+                  "
+                >
+                  Complete the next unfinished section to improve your portfolio
+                  score.
+                </p>
+              </div>
+
+              <Link
+                href={dashboard.nextStep}
+                className="
+                  inline-flex items-center
+                  px-5 py-3
+                  font-medium text-black
+                  bg-white
+                  rounded-xl
+                  gap-2
+                "
+              >
+                Start Building
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+          </div>
+        )} */}
+
+        <div
+          className="
+            grid md:grid-cols-3
+            mt-10
+            gap-6
+          "
+        >
+          <div>
+            <p
+              className="
+                text-zinc-500
+              "
+            >
+              Completion
+            </p>
+
+            <h2
+              className="
+                mt-2
+                text-5xl font-bold
+              "
+            >
+              {dashboard.completion}%
+            </h2>
+          </div>
+
+          <div>
+            <p
+              className="
+                text-zinc-500
+              "
+            >
+              Portfolio Score
+            </p>
+
+            <h2
+              className="
+                mt-2
+                text-5xl font-bold
+              "
+            >
+              {dashboard.score}
+            </h2>
+          </div>
+
+          <div>
+            <p
+              className="
+                text-zinc-500
+              "
+            >
+              Views
+            </p>
+
+            <h2
+              className="
+                mt-2
+                text-5xl font-bold
+              "
+            >
+              {dashboard.views}
+            </h2>
           </div>
         </div>
 
         <div
           className="
-            mt-8
-            h-3
             overflow-hidden
-            rounded-full
+            h-3
+            mt-8
             bg-white/10
+            rounded-full
           "
         >
           <div
             className="
               h-full
-              rounded-full
               bg-white
+              rounded-full
             "
             style={{
-              width: `${completion}%`,
+              width: `${dashboard.completion}%`,
             }}
           />
         </div>
       </div>
 
-      {/* Sections */}
+      {/* Stats */}
       <div
         className="
-          grid
+          grid md:grid-cols-2 xl:grid-cols-4
           gap-5
-          md:grid-cols-2
         "
       >
-        {sections.map((section) => (
-          <Link
-            key={section.title}
-            href={section.href}
-            className="
-              group
-              rounded-[28px]
-              border
-              border-white/10
-              bg-white/[0.03]
-              p-6
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              hover:border-white/20
-              hover:bg-white/[0.05]
-            "
-          >
+        {stats.map((item) => {
+          const Icon = item.icon;
+
+          return (
             <div
+              key={item.title}
               className="
-                flex
-                items-start
-                justify-between
+                p-6
+                bg-white/[0.03]
+                rounded-[28px] border border-white/10
               "
             >
-              <div>
+              <div
+                className="
+                  flex items-center justify-between
+                "
+              >
+                <Icon
+                  size={20}
+                  className="
+                    text-zinc-500
+                  "
+                />
+
+                <span
+                  className="
+                    text-zinc-500
+                  "
+                >
+                  {item.title}
+                </span>
+              </div>
+
+              <h3
+                className="
+                  mt-6
+                  text-4xl font-bold
+                "
+              >
+                {item.value}
+              </h3>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        className="
+          grid lg:grid-cols-2
+          gap-6
+        "
+      >
+        {/* Roadmap */}
+        <div
+          className="
+            p-6
+            bg-white/[0.03]
+            rounded-[32px] border border-white/10
+          "
+        >
+          <h2
+            className="
+              text-xl font-semibold
+            "
+          >
+            Builder Roadmap
+          </h2>
+
+          <div
+            className="
+              mt-6 space-y-3
+            "
+          >
+            {roadmap.map((section) => (
+              <Link
+                key={section.title}
+                href={section.href}
+                className="
+                  flex items-center justify-between
+                  px-4 py-3
+                  hover:bg-white/[0.04]
+                  rounded-xl border border-white/10
+                  transition
+                "
+              >
                 <div
                   className="
-                    flex
-                    items-center
+                    flex items-center
                     gap-3
                   "
                 >
@@ -632,62 +585,87 @@ export default function PortfolioBuilderPage() {
                     />
                   )}
 
-                  <h3
-                    className="
-                      text-xl
-                      font-semibold
-                      text-white
-                    "
-                  >
-                    {section.title}
-                  </h3>
+                  <span>{section.title}</span>
                 </div>
 
-                <p
+                <ArrowRight size={16} />
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Insights */}
+        <div
+          className="
+            p-6
+            bg-white/[0.03]
+            rounded-[32px] border border-white/10
+          "
+        >
+          <div
+            className="
+              flex items-center
+              gap-2
+            "
+          >
+            <TrendingUp size={18} />
+
+            <h2
+              className="
+                text-xl font-semibold
+              "
+            >
+              Portfolio Insights
+            </h2>
+          </div>
+
+          <div
+            className="
+              mt-6 space-y-3
+            "
+          >
+            {dashboard.insights?.length > 0 ? (
+              dashboard.insights.map((item) => (
+                <div
+                  key={item}
                   className="
-                    mt-4
-                    max-w-sm
-                    text-sm
-                    leading-relaxed
-                    text-zinc-500
+                    px-4 py-3
+                    rounded-xl border border-white/10
                   "
                 >
-                  {section.description}
-                </p>
-              </div>
-
-              <ArrowRight
-                size={18}
+                  {item}
+                </div>
+              ))
+            ) : (
+              <div
                 className="
-                  text-zinc-600
-                  transition
-                  group-hover:translate-x-1
-                  group-hover:text-white
+                  px-4 py-3
+                  text-green-400
+                  bg-green-500/10
+                  rounded-xl border border-green-500/20
                 "
-              />
-            </div>
-          </Link>
-        ))}
+              >
+                Portfolio looks great. Ready for publishing 🚀
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Actions */}
+      {/* CTA */}
       <div
         className="
-          rounded-[32px]
-          border
-          border-white/10
-          bg-white/[0.03]
-          p-6
+          p-8
+          bg-gradient-to-r from-white/[0.04] to-white/[0.02]
+          rounded-[32px] border border-white/10
         "
       >
         <h2
           className="
-            text-lg
-            font-semibold
-            text-white
+            text-2xl font-semibold
           "
         >
-          Ready to go live?
+          Continue Building
         </h2>
 
         <p
@@ -696,57 +674,36 @@ export default function PortfolioBuilderPage() {
             text-zinc-500
           "
         >
-          Preview your portfolio before
-          publishing it publicly.
+          Complete the remaining sections to improve your portfolio score and
+          get ready for publishing.
         </p>
 
-        <div
+        <Link
+          href={dashboard.nextStep}
           className="
-            mt-6
-            flex
-            flex-wrap
-            gap-4
+            inline-flex items-center
+            mt-6 px-5 py-3
+            font-medium text-black
+            bg-white
+            rounded-xl
+            gap-2
           "
         >
-          <Link
-            href="/preview"
-            className="
-              inline-flex
-              items-center
-              gap-2
-              rounded-xl
-              border
-              border-white/10
-              px-5
-              py-3
-              text-white
-              transition
-              hover:bg-white/[0.04]
-            "
-          >
-            <Eye size={18} />
-            Preview Portfolio
-          </Link>
-
-          <Link
-            href="/publish"
-            className="
-              inline-flex
-              items-center
-              gap-2
-              rounded-xl
-              bg-white
-              px-5
-              py-3
-              font-medium
-              text-black
-            "
-          >
-            <Rocket size={18} />
-            Publish Portfolio
-          </Link>
-        </div>
+          Continue Building
+          <ArrowRight size={18} />
+        </Link>
       </div>
     </div>
   );
 }
+// import React from 'react'
+
+// function page() {
+//   return (
+//     <div>
+//       hyy
+//     </div>
+//   )
+// }
+
+// export default page

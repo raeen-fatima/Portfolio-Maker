@@ -1,9 +1,9 @@
-
 "use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import LogoutButton from "../ui/LogoutButton";
 
 import {
   Menu,
@@ -49,8 +49,7 @@ const navigation = [
 ];
 
 export default function MobileSidebar() {
-  const [open, setOpen] =
-    useState(false);
+  const [open, setOpen] = useState(false);
 
   const pathname = usePathname();
 
@@ -86,11 +85,7 @@ export default function MobileSidebar() {
           duration-300
           lg:hidden
 
-          ${
-            open
-              ? "opacity-100"
-              : "pointer-events-none opacity-0"
-          }
+          ${open ? "opacity-100" : "pointer-events-none opacity-0"}
         `}
       />
 
@@ -112,11 +107,7 @@ export default function MobileSidebar() {
           duration-300
           lg:hidden
 
-          ${
-            open
-              ? "translate-x-0"
-              : "-translate-x-full"
-          }
+          ${open ? "translate-x-0" : "-translate-x-full"}
         `}
       >
         {/* Header */}
@@ -129,7 +120,7 @@ export default function MobileSidebar() {
           "
         >
           <Link
-            href="/dashboard"
+            href="/"
             className="
               flex items-center
               gap-3
@@ -180,9 +171,7 @@ export default function MobileSidebar() {
           </Link>
 
           <button
-            onClick={() =>
-              setOpen(false)
-            }
+            onClick={() => setOpen(false)}
             className="
               rounded-xl
               p-2
@@ -220,16 +209,13 @@ export default function MobileSidebar() {
             {navigation.map((item) => {
               const Icon = item.icon;
 
-              const active =
-                pathname === item.href;
+              const active = pathname === item.href;
 
               return (
                 <Link
                   key={item.title}
                   href={item.href}
-                  onClick={() =>
-                    setOpen(false)
-                  }
+                  onClick={() => setOpen(false)}
                   className={`
                     flex
                     items-center
@@ -264,69 +250,9 @@ export default function MobileSidebar() {
           </div>
         </div>
 
-        {/* Bottom */}
         <div
-          className="
-            p-4
-            border-t border-white/10
-          "
-        >
-          <div
-            className="
-              p-4
-              bg-white/[0.03]
-              rounded-2xl border border-white/10
-            "
-          >
-            <div
-              className="
-                flex items-center justify-between
-              "
-            >
-              <span
-                className="
-                  text-sm
-                "
-              >
-                Progress
-              </span>
-
-              <span
-                className="
-                  text-xs text-zinc-500
-                "
-              >
-                65%
-              </span>
-            </div>
-
-            <div
-              className="
-                overflow-hidden
-                h-2
-                mt-3
-                bg-white/10
-                rounded-full
-              "
-            >
-              <div
-                className="
-                  h-full w-[65%]
-                  bg-white
-                "
-                /
-              >
-            </div>
-
-            <p
-              className="
-                mt-3
-                text-xs text-zinc-500
-              "
-            >
-              Complete your portfolio.
-            </p>
-          </div>
+          className="p-6">        
+          <LogoutButton />
         </div>
       </aside>
     </>

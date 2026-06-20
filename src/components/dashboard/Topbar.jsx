@@ -1,208 +1,11 @@
-// "use client";
 
-// import {
-//   Bell,
-//   ChevronDown,
-//   Settings,
-// } from "lucide-react";
-// import { usePathname } from "next/navigation";
-// import { useState } from "react";
-// import Link from "next/link";
-// import MobileSidebar from "./MobileSidebar";
-
-// export default function Topbar() {
-//   const pathname = usePathname();
-
-//   const [open, setOpen] =
-//     useState(false);
-
-//   const pageTitle =
-//     pathname === "/dashboard"
-//       ? "Dashboard"
-//       : pathname
-//           .split("/")
-//           .pop()
-//           ?.replace("-", " ")
-//           ?.replace(
-//             /\b\w/g,
-//             (l) =>
-//               l.toUpperCase()
-//           );
-
-//   return (
-//     <header
-//       className="
-//         sticky
-//         top-0
-//         z-30
-//         border-b
-//         bg-white/80
-//         backdrop-blur-xl
-//       "
-//     >
-//       <div className="flex h-16 items-center justify-between px-4 lg:px-8">
-//         {/* Left */}
-//         <div className="flex items-center gap-4">
-//           <MobileSidebar />
-
-//           <div>
-//             <h1 className="font-bold text-xl">
-//               {pageTitle}
-//             </h1>
-
-//             <p className="text-xs text-zinc-500">
-//               Portfolio Builder
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Right */}
-//         <div className="flex items-center gap-3">
-          
-//           {/* Profile Dropdown */}
-//           <div className="relative">
-//             <button
-//               onClick={() =>
-//                 setOpen(!open)
-//               }
-//               className="
-//                 flex
-//                 items-center
-//                 gap-3
-//                 rounded-xl
-//                 border
-//                 px-3
-//                 py-2
-//                 hover:bg-zinc-50
-//               "
-//             >
-//               <div
-//                 className="
-//                   flex
-//                   h-9
-//                   w-9
-//                   items-center
-//                   justify-center
-//                   rounded-full
-//                   bg-black
-//                   text-sm
-//                   font-semibold
-//                   text-white
-//                 "
-//               >
-//                 R
-//               </div>
-
-//               <div className="hidden md:block text-left">
-//                 <p className="text-sm font-medium">
-//                   Raeen
-//                 </p>
-
-//                 <p className="text-xs text-zinc-500">
-//                   Portfolio Owner
-//                 </p>
-//               </div>
-
-//               <ChevronDown
-//                 size={16}
-//               />
-//             </button>
-
-//             {open && (
-//               <div
-//                 className="
-//                   absolute
-//                   right-0
-//                   mt-2
-//                   w-60
-//                   rounded-2xl
-//                   border
-//                   bg-white
-//                   p-2
-//                   shadow-xl
-//                 "
-//               >
-//                 <div className="border-b p-3">
-//                   <p className="font-medium">
-//                     Raeen Fatima
-//                   </p>
-
-//                   <p className="text-sm text-zinc-500">
-//                     raeen@email.com
-//                   </p>
-//                 </div>
-
-//                 <div className="py-2">
-//                   <Link
-//                     href="/dashboard/portfolio"
-//                     className="
-//                       block
-//                       rounded-xl
-//                       px-3
-//                       py-2
-//                       hover:bg-zinc-100
-//                     "
-//                   >
-//                     My Portfolio
-//                   </Link>
-
-//                   <Link
-//                     href="/dashboard/settings"
-//                     className="
-//                       block
-//                       rounded-xl
-//                       px-3
-//                       py-2
-//                       hover:bg-zinc-100
-//                     "
-//                   >
-//                     Settings
-//                   </Link>
-
-//                   <Link
-//                     href="/dashboard/publish"
-//                     className="
-//                       block
-//                       rounded-xl
-//                       px-3
-//                       py-2
-//                       hover:bg-zinc-100
-//                     "
-//                   >
-//                     Publish
-//                   </Link>
-//                 </div>
-
-//                 <div className="border-t pt-2">
-//                   <button
-//                     className="
-//                       w-full
-//                       rounded-xl
-//                       px-3
-//                       py-2
-//                       text-left
-//                       text-red-500
-//                       hover:bg-red-50
-//                     "
-//                   >
-//                     Logout
-//                   </button>
-//                 </div>
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </header>
-//   );
-// }
 import MobileSidebar from "./MobileSidebar";
 import {
   Bell,
   UserCircle2,
 } from "lucide-react";
 
-export default function Topbar() {
+export default function Topbar({ user }) {
   const currentHour =
     new Date().getHours();
 
@@ -217,31 +20,23 @@ export default function Topbar() {
   return (
     <header
       className="
-        sticky
-        top-0
-        z-30
-        border-b
-        border-white/10
+        sticky top-0 z-30
         bg-black/80
+        border-b border-white/10
         backdrop-blur-xl
       "
     >
       <div
         className="
-          flex
+          flex items-center justify-between
           h-20
-          items-center
-          justify-between
-          px-4
-          sm:px-6
-          lg:px-8
+          px-4 sm:px-6 lg:px-8
         "
       >
         {/* Left */}
         <div
           className="
-            flex
-            items-center
+            flex items-center
             gap-4
           "
         >
@@ -250,10 +45,7 @@ export default function Topbar() {
           <div>
             <h1
               className="
-                text-lg
-                font-semibold
-                text-white
-                sm:text-xl
+                text-lg text-white sm:text-xl font-semibold
               "
             >
               {greeting} 👋
@@ -261,10 +53,8 @@ export default function Topbar() {
 
             <p
               className="
-                hidden
-                text-sm
-                text-zinc-500
-                sm:block
+                hidden sm:block
+                text-sm text-zinc-500
               "
             >
               Welcome back to FolioForge
@@ -275,84 +65,72 @@ export default function Topbar() {
         {/* Right */}
         <div
           className="
-            flex
-            items-center
+            flex items-center
             gap-3
           "
         >
           {/* Notification */}
           <button
             className="
-              relative
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-white/10
-              bg-white/[0.03]
-              text-zinc-400
+              relative flex items-center justify-center
+              h-11 w-11
+              text-zinc-400 hover:text-white
+              bg-white/[0.03] hover:bg-white/[0.05]
+              rounded-xl border border-white/10
               transition
-              hover:bg-white/[0.05]
-              hover:text-white
             "
           >
             <Bell size={18} />
 
             <span
               className="
-                absolute
-                right-3
-                top-3
-                h-2
-                w-2
-                rounded-full
+                absolute right-3 top-3
+                h-2 w-2
                 bg-white
+                rounded-full
               "
+              
             />
           </button>
 
           {/* User */}
           <button
             className="
-              flex
-              items-center
-              gap-3
-              rounded-xl
-              border
-              border-white/10
-              bg-white/[0.03]
-              px-3
-              py-2
+              flex items-center
+              px-3 py-2
+              bg-white/[0.03] hover:bg-white/[0.05]
+              rounded-xl border border-white/10
               transition
-              hover:bg-white/[0.05]
+              gap-3
             "
           >
             <UserCircle2
               size={28}
-              className="text-zinc-300"
+              className="
+                text-zinc-300
+              "
+              
             />
 
-            <div className="hidden md:block">
+            <div
+              className="
+                hidden md:block
+              "
+            >
               <p
                 className="
-                  text-sm
-                  font-medium
-                  text-white
+                  text-sm text-white font-medium
                 "
               >
-                Raeen
+                 {user?.name || "Portfolio Owner"}
               </p>
 
               <p
                 className="
-                  text-xs
-                  text-zinc-500
+                  text-xs text-zinc-500
                 "
               >
-                Portfolio Owner
+                {user?.email}
               </p>
             </div>
           </button>

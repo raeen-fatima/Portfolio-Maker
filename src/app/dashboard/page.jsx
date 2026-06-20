@@ -1,682 +1,380 @@
-// "use client";
-
-// import Link from "next/link";
-// import {
-//   Eye,
-//   CheckCircle2,
-//   Palette,
-//   Globe,
-//   ArrowRight,
-// } from "lucide-react";
-// import { useEffect, useState } from "react";
-
-// export default function DashboardPage() {
-//   const [views, setViews] = useState(0);
-
-//   const [dashboard, setDashboard] =
-//     useState({
-//       completion: 0,
-//       template: "Nova",
-//       isPublished: false,
-//       slug: "",
-//     });
-
-//   useEffect(() => {
-//     const loadDashboard =
-//       async () => {
-//         try {
-//           const [
-//             statsResponse,
-//             dashboardResponse,
-//           ] = await Promise.all([
-//             fetch(
-//               "/api/portfolio/stats"
-//             ),
-//             fetch(
-//               "/api/portfolio/dashboard"
-//             ),
-//           ]);
-
-//           const statsResult =
-//             await statsResponse.json();
-
-//           const dashboardResult =
-//             await dashboardResponse.json();
-
-//           if (
-//             statsResponse.ok
-//           ) {
-//             setViews(
-//               statsResult.views
-//             );
-//           }
-
-//           if (
-//             dashboardResponse.ok
-//           ) {
-//             setDashboard({
-//               completion:
-//                 dashboardResult
-//                   .stats
-//                   .completion,
-//               template:
-//                 dashboardResult
-//                   .stats
-//                   .template ||
-//                 "Nova",
-//               isPublished:
-//                 dashboardResult
-//                   .stats
-//                   .isPublished ||
-//                 false,
-//               slug:
-//                 dashboardResult
-//                   .stats.slug ||
-//                 "",
-//             });
-//           }
-//         } catch (error) {
-//           console.log(error);
-//         }
-//       };
-
-//     loadDashboard();
-//   }, []);
-
-//   const cards = [
-//     {
-//       title:
-//         "Portfolio Views",
-//       value: views,
-//       icon: Eye,
-//       color:
-//         "from-blue-500 to-cyan-500",
-//     },
-//     {
-//       title: "Completion",
-//       value: `${dashboard.completion}%`,
-//       icon: CheckCircle2,
-//       color:
-//         "from-green-500 to-emerald-500",
-//     },
-//     {
-//       title: "Template",
-//       value:
-//         dashboard.template,
-//       icon: Palette,
-//       color:
-//         "from-purple-500 to-pink-500",
-//     },
-//     {
-//       title: "Status",
-//       value:
-//         dashboard.isPublished
-//           ? "Published"
-//           : "Draft",
-//       icon: Globe,
-//       color:
-//         "from-orange-500 to-red-500",
-//     },
-//   ];
-
-//   return (
-//     <div className="space-y-8 p-6 lg:p-10">
-//       {/* Header */}
-//       <div>
-//         <h1 className="text-4xl font-bold">
-//           Dashboard
-//         </h1>
-
-//         <p className="mt-2 text-zinc-500">
-//           Overview of your
-//           portfolio performance
-//           and progress.
-//         </p>
-//       </div>
-
-//       {/* Stats */}
-//       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-//         {cards.map((card) => {
-//           const Icon =
-//             card.icon;
-
-//           return (
-//             <div
-//               key={card.title}
-//               className="
-//                 overflow-hidden
-//                 rounded-3xl
-//                 border
-//                 bg-white
-//                 shadow-sm
-//               "
-//             >
-//               <div
-//                 className={`h-2 bg-gradient-to-r ${card.color}`}
-//               />
-
-//               <div className="p-6">
-//                 <div className="flex items-center justify-between">
-//                   <p className="text-sm text-zinc-500">
-//                     {card.title}
-//                   </p>
-
-//                   <Icon
-//                     size={18}
-//                   />
-//                 </div>
-
-//                 <h2 className="mt-4 text-3xl font-bold">
-//                   {card.value}
-//                 </h2>
-//               </div>
-//             </div>
-//           );
-//         })}
-//       </div>
-
-//       {/* URL Card */}
-//       <div className="rounded-3xl border bg-white p-8">
-//         <h2 className="text-xl font-bold">
-//           Portfolio URL
-//         </h2>
-
-//         <p className="mt-2 text-zinc-500">
-//           Share your portfolio
-//           with recruiters and
-//           clients.
-//         </p>
-
-//         <div className="mt-5 rounded-2xl border bg-zinc-50 p-4">
-//           {dashboard.slug
-//             ? `${process.env.NEXT_PUBLIC_APP_URL}/u/${dashboard.slug}`
-//             : "Slug not configured"}
-//         </div>
-
-//         <div className="mt-5 flex flex-wrap gap-3">
-//           <Link
-//             href="/dashboard/settings"
-//             className="
-//               rounded-xl
-//               bg-black
-//               px-5
-//               py-3
-//               text-white
-//             "
-//           >
-//             Manage Settings
-//           </Link>
-
-//           {dashboard.slug && (
-//             <a
-//               href={`/u/${dashboard.slug}`}
-//               target="_blank"
-//               className="
-//                 rounded-xl
-//                 border
-//                 px-5
-//                 py-3
-//               "
-//             >
-//               Visit Portfolio
-//             </a>
-//           )}
-//         </div>
-//       </div>
-
-//       {/* Quick Actions */}
-//       <div className="rounded-3xl border bg-white p-8">
-//         <h2 className="text-xl font-bold">
-//           Quick Actions
-//         </h2>
-
-//         <div className="mt-6 grid gap-4 md:grid-cols-2">
-//           <Link
-//             href="/dashboard/portfolio"
-//             className="
-//               flex
-//               items-center
-//               justify-between
-//               rounded-2xl
-//               border
-//               p-5
-//               hover:bg-zinc-50
-//             "
-//           >
-//             <span>
-//               Continue Building
-//             </span>
-
-//             <ArrowRight
-//               size={18}
-//             />
-//           </Link>
-
-//           <Link
-//             href="/dashboard/templates"
-//             className="
-//               flex
-//               items-center
-//               justify-between
-//               rounded-2xl
-//               border
-//               p-5
-//               hover:bg-zinc-50
-//             "
-//           >
-//             <span>
-//               Change Template
-//             </span>
-
-//             <ArrowRight
-//               size={18}
-//             />
-//           </Link>
-
-//           <Link
-//             href="/dashboard/preview"
-//             className="
-//               flex
-//               items-center
-//               justify-between
-//               rounded-2xl
-//               border
-//               p-5
-//               hover:bg-zinc-50
-//             "
-//           >
-//             <span>
-//               Preview Portfolio
-//             </span>
-
-//             <ArrowRight
-//               size={18}
-//             />
-//           </Link>
-
-//           <Link
-//             href="/dashboard/publish"
-//             className="
-//               flex
-//               items-center
-//               justify-between
-//               rounded-2xl
-//               border
-//               p-5
-//               hover:bg-zinc-50
-//             "
-//           >
-//             <span>
-//               Publish Portfolio
-//             </span>
-
-//             <ArrowRight
-//               size={18}
-//             />
-//           </Link>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+"use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
 import {
-  Eye,
-  FolderKanban,
-  Code2,
-  TrendingUp,
   ArrowRight,
+  Rocket,
+  FolderKanban,
+  TrendingUp,
   CheckCircle2,
-  Circle,
+  Eye,
+  Sparkles,
+  Code2,
 } from "lucide-react";
 
-const sections = [
-  {
-    name: "Hero",
-    completed: true,
-  },
-  {
-    name: "About",
-    completed: true,
-  },
-  {
-    name: "Skills",
-    completed: true,
-  },
-  {
-    name: "Projects",
-    completed: true,
-  },
-  {
-    name: "Experience",
-    completed: false,
-  },
-  {
-    name: "Education",
-    completed: false,
-  },
-];
-
 export default function DashboardPage() {
+  const [dashboard, setDashboard] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  useEffect(() => {
+    const fetchDashboard =
+      async () => {
+        try {
+          const response =
+            await fetch(
+              "/api/portfolio/dashboard"
+            );
+
+          const result =
+            await response.json();
+
+          if (response.ok) {
+            setDashboard(result);
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+    fetchDashboard();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-48 rounded-[32px] bg-white/[0.03] animate-pulse" />
+
+        <div className="grid md:grid-cols-4 gap-5">
+          {[1, 2, 3, 4].map(
+            (item) => (
+              <div
+                key={item}
+                className="
+                  h-32
+                  rounded-[28px]
+                  bg-white/[0.03]
+                  animate-pulse
+                "
+              />
+            )
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      {/* Welcome */}
-      <div>
-        <h1
-          className="
-            text-3xl
-            font-bold
-            text-white
-          "
-        >
-          Welcome back 👋
-        </h1>
+      {/* Hero */}
 
-        <p
+      <div
+        className="
+          rounded-[32px]
+          border border-white/10
+          bg-gradient-to-br
+          from-white/[0.05]
+          to-white/[0.02]
+          p-8
+        "
+      >
+        <div
           className="
-            mt-2
-            text-zinc-500
+            flex flex-col
+            lg:flex-row
+            lg:items-center
+            lg:justify-between
+            gap-8
           "
         >
-          Manage your portfolio and
-          track your growth.
-        </p>
+          <div>
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                px-3 py-1
+                rounded-full
+                border border-white/10
+                bg-white/[0.03]
+                text-sm
+              "
+            >
+              <Sparkles size={14} />
+              Dashboard
+            </div>
+
+            <h1
+              className="
+                mt-4
+                text-4xl
+                font-bold
+                tracking-tight
+              "
+            >
+              Welcome back 👋
+            </h1>
+
+            <p
+              className="
+                mt-3
+                text-zinc-500
+                max-w-xl
+              "
+            >
+              Your portfolio is
+              {" "}
+              {dashboard.completion}%
+              {" "}
+              complete.
+              Continue building and
+              get ready to publish.
+            </p>
+          </div>
+
+          <Link
+            href={dashboard.nextStep}
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-xl
+              bg-white
+              px-5
+              py-3
+              font-medium
+              text-black
+            "
+          >
+            Continue Building
+            <ArrowRight size={18} />
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}
+
       <div
         className="
           grid
           gap-5
-          sm:grid-cols-2
+          md:grid-cols-2
           xl:grid-cols-4
         "
       >
-        <StatCard
-          icon={Eye}
-          title="Portfolio Views"
-          value="124"
-        />
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <p className="text-zinc-500">
+            Completion
+          </p>
 
-        <StatCard
-          icon={FolderKanban}
-          title="Projects"
-          value="8"
-        />
+          <h2 className="mt-3 text-4xl font-bold">
+            {dashboard.completion}%
+          </h2>
+        </div>
 
-        <StatCard
-          icon={Code2}
-          title="Skills"
-          value="15"
-        />
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <p className="text-zinc-500">
+            Score
+          </p>
 
-        <StatCard
-          icon={TrendingUp}
-          title="Completion"
-          value="65%"
-        />
+          <h2 className="mt-3 text-4xl font-bold">
+            {dashboard.score}
+          </h2>
+        </div>
+
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <p className="text-zinc-500">
+            Projects
+          </p>
+
+          <h2 className="mt-3 text-4xl font-bold">
+            {dashboard.stats.projects}
+          </h2>
+        </div>
+
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
+          <p className="text-zinc-500">
+            Skills
+          </p>
+
+          <h2 className="mt-3 text-4xl font-bold">
+            {dashboard.stats.skills}
+          </h2>
+        </div>
       </div>
 
-      {/* Progress + Actions */}
+      {/* Builder */}
+
+      <div
+        className="
+          rounded-[32px]
+          border border-white/10
+          bg-white/[0.03]
+          p-8
+        "
+      >
+        <div
+          className="
+            flex items-center
+            justify-between
+          "
+        >
+          <div>
+            <h2 className="text-xl font-semibold">
+              Portfolio Builder
+            </h2>
+
+            <p className="mt-2 text-zinc-500">
+              Manage all sections of your portfolio.
+            </p>
+          </div>
+
+          <Link
+            href="/dashboard/portfolio"
+            className="
+              inline-flex
+              items-center
+              gap-2
+            "
+          >
+            Open Builder
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </div>
+
+      {/* Bottom Grid */}
+
       <div
         className="
           grid
-          gap-6
           lg:grid-cols-2
+          gap-6
         "
       >
-        {/* Progress */}
+        {/* Insights */}
+
         <div
           className="
-            rounded-3xl
-            border
-            border-white/10
+            rounded-[32px]
+            border border-white/10
             bg-white/[0.03]
             p-6
           "
         >
-          <h2
-            className="
-              text-lg
-              font-semibold
-              text-white
-            "
-          >
-            Portfolio Completion
-          </h2>
+          <div className="flex items-center gap-2">
+            <TrendingUp size={18} />
 
-          <p
-            className="
-              mt-2
-              text-sm
-              text-zinc-500
-            "
-          >
-            Complete remaining sections
-            before publishing.
-          </p>
-
-          <div
-            className="
-              mt-6
-              h-3
-              overflow-hidden
-              rounded-full
-              bg-white/10
-            "
-          >
-            <div
-              className="
-                h-full
-                w-[65%]
-                rounded-full
-                bg-white
-              "
-            />
+            <h2 className="text-xl font-semibold">
+              Insights
+            </h2>
           </div>
 
-          <p
-            className="
-              mt-3
-              text-sm
-              text-zinc-500
-            "
-          >
-            65% Completed
-          </p>
+          <div className="mt-6 space-y-3">
+            {dashboard.insights.map(
+              (item) => (
+                <div
+                  key={item}
+                  className="
+                    rounded-xl
+                    border border-white/10
+                    px-4 py-3
+                  "
+                >
+                  {item}
+                </div>
+              )
+            )}
+          </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Publishing */}
+
         <div
           className="
-            rounded-3xl
-            border
-            border-white/10
+            rounded-[32px]
+            border border-white/10
             bg-white/[0.03]
             p-6
           "
         >
-          <h2
-            className="
-              text-lg
-              font-semibold
-              text-white
-            "
-          >
-            Quick Actions
-          </h2>
+          <div className="flex items-center gap-2">
+            <Rocket size={18} />
 
-          <div className="mt-5 space-y-3">
-            <QuickLink
-              href="/dashboard/portfolio"
-              title="Continue Building"
-            />
-
-            <QuickLink
-              href="/preview"
-              title="Preview Portfolio"
-            />
-
-            <QuickLink
-              href="/publish"
-              title="Publish Portfolio"
-            />
+            <h2 className="text-xl font-semibold">
+              Publishing
+            </h2>
           </div>
-        </div>
-      </div>
 
-      {/* Sections */}
-      <div
-        className="
-          rounded-3xl
-          border
-          border-white/10
-          bg-white/[0.03]
-          p-6
-        "
-      >
-        <h2
-          className="
-            text-lg
-            font-semibold
-            text-white
-          "
-        >
-          Portfolio Sections
-        </h2>
-
-        <div className="mt-6 space-y-4">
-          {sections.map((section) => (
-            <div
-              key={section.name}
-              className="
-                flex
-                items-center
-                justify-between
-                rounded-2xl
-                border
-                border-white/10
-                px-4
-                py-4
-              "
-            >
+          <div className="mt-6">
+            {dashboard.isPublished ? (
               <div
                 className="
-                  flex
-                  items-center
-                  gap-3
+                  rounded-xl
+                  border border-green-500/20
+                  bg-green-500/10
+                  px-4 py-3
+                  text-green-400
                 "
               >
-                {section.completed ? (
-                  <CheckCircle2
-                    size={18}
-                    className="
-                      text-green-500
-                    "
-                  />
-                ) : (
-                  <Circle
-                    size={18}
-                    className="
-                      text-zinc-600
-                    "
-                  />
-                )}
-
-                <span className="text-white">
-                  {section.name}
-                </span>
+                Portfolio is live 🚀
               </div>
-
-              <Link
-                href="/dashboard/portfolio"
+            ) : (
+              <div
                 className="
-                  text-sm
-                  text-zinc-400
-                  hover:text-white
+                  rounded-xl
+                  border border-yellow-500/20
+                  bg-yellow-500/10
+                  px-4 py-3
+                  text-yellow-400
                 "
               >
-                Edit
-              </Link>
-            </div>
-          ))}
+                Portfolio not published yet.
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 flex gap-3">
+            <Link
+              href={`/u/${dashboard.slug}`}
+              className="
+                inline-flex
+                items-center
+                gap-2
+                rounded-xl
+                border border-white/10
+                px-4 py-3
+              "
+            >
+              <Eye size={18} />
+              Preview
+            </Link>
+
+            <Link
+              href="/dashboard/portfolio/publish"
+              className="
+                inline-flex
+                items-center
+                gap-2
+                rounded-xl
+                bg-white
+                px-4 py-3
+                text-black
+                font-medium
+              "
+            >
+              <Rocket size={18} />
+              Publish
+            </Link>
+          </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function StatCard({
-  icon: Icon,
-  title,
-  value,
-}) {
-  return (
-    <div
-      className="
-        rounded-3xl
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-      "
-    >
-      <div
-        className="
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <p className="text-zinc-500">
-          {title}
-        </p>
-
-        <Icon
-          size={18}
-          className="text-zinc-500"
-        />
-      </div>
-
-      <h3
-        className="
-          mt-4
-          text-3xl
-          font-bold
-          text-white
-        "
-      >
-        {value}
-      </h3>
-    </div>
-  );
-}
-
-function QuickLink({
-  href,
-  title,
-}) {
-  return (
-    <Link
-      href={href}
-      className="
-        flex
-        items-center
-        justify-between
-        rounded-2xl
-        border
-        border-white/10
-        px-4
-        py-4
-        text-white
-        transition
-        hover:bg-white/[0.04]
-      "
-    >
-      {title}
-
-      <ArrowRight size={16} />
-    </Link>
   );
 }
