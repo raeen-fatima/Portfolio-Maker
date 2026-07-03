@@ -1,11 +1,156 @@
+"use client";
 
-
-import {
-  User,
-  Shield,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import ImageUpload from "@/components/ui/ImageUpload";
+import { User, Shield } from "lucide-react";
 
 export default function UserInformationPage() {
+  const [passwords, setPasswords] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [profile, setProfile] = useState({
+    name: "",
+    username: "",
+    email: "",
+    image: "",
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  const [saving, setSaving] = useState(false);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch("/api/user/profile");
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      setProfile(result.user);
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Failed to load profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+
+      const response = await fetch("/api/user/profile", {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          name: profile.name,
+          username: profile.username,
+          image: profile.image,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      setProfile(result.user);
+
+      toast.success(result.message);
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Something went wrong");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    if (
+      !passwords.currentPassword ||
+      !passwords.newPassword ||
+      !passwords.confirmPassword
+    ) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      setPasswordLoading(true);
+
+      const response = await fetch("/api/user/change-password", {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          currentPassword: passwords.currentPassword,
+
+          newPassword: passwords.newPassword,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      toast.success(result.message);
+
+      setPasswords({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Something went wrong");
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="h-40 rounded-[32px] bg-white/[0.03] animate-pulse" />
+
+        <div className="h-80 rounded-[32px] bg-white/[0.03] animate-pulse" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -40,8 +185,7 @@ export default function UserInformationPage() {
             text-zinc-500
           "
         >
-          Manage your profile, portfolio
-          settings and account preferences.
+          Manage your profile, portfolio settings and account preferences.
         </p>
       </div>
 
@@ -69,6 +213,29 @@ export default function UserInformationPage() {
           </h2>
         </div>
 
+        <div className="mt-8 flex flex-col items-center gap-5">
+          {profile.image ? (
+            <img
+              src={profile.image}
+              alt={profile.name}
+              className="h-28 w-28 rounded-3xl object-cover border border-white/10"
+            />
+          ) : (
+            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-white/[0.03] border border-white/10">
+              <User size={38} />
+            </div>
+          )}
+
+          <ImageUpload
+            onUpload={(url) =>
+              setProfile({
+                ...profile,
+                image: url,
+              })
+            }
+          />
+        </div>
+
         <div
           className="
             mt-8
@@ -79,24 +246,35 @@ export default function UserInformationPage() {
         >
           <Input
             label="Full Name"
-            placeholder="Raeen Fatima"
+            value={profile.name}
+            onChange={(e) =>
+              setProfile({
+                ...profile,
+                name: e.target.value,
+              })
+            }
           />
 
           <Input
             label="Username"
-            placeholder="raeen"
+            value={profile.username}
+            onChange={(e) =>
+              setProfile({
+                ...profile,
+                username: e.target.value,
+              })
+            }
           />
 
           <div className="md:col-span-2">
-            <Input
-              label="Email Address"
-              placeholder="raeen@gmail.com"
-            />
+            <Input label="Email Address" value={profile.email} disabled />
           </div>
         </div>
 
         <button
-          className="
+          onClick={handleSave}
+          disabled={saving}
+          className=" 
             mt-8
             rounded-xl
             bg-white 
@@ -105,33 +283,33 @@ export default function UserInformationPage() {
             font-medium
             text-black
             hover:bg-zinc-900
-            hover:text-white
+            hover:text-white  disabled:opacity-50
           "
         >
-          Save Changes
+          {saving ? "Saving..." : "Save Changes"}
         </button>
       </section>
 
-     
+      {/* Security */}
       {/* Security */}
       <section
         className="
-          rounded-[32px]
-          border
-          border-white/10
-          bg-black
-          p-8
-        "
+    rounded-[32px]
+    border
+    border-white/10
+    bg-black
+    p-8
+  "
       >
         <div className="flex items-center gap-3">
           <Shield size={20} />
 
           <h2
             className="
-              text-xl
-              font-semibold
-              text-white
-            "
+        text-xl
+        font-semibold
+        text-white
+      "
           >
             Security
           </h2>
@@ -139,39 +317,83 @@ export default function UserInformationPage() {
 
         <p
           className="
-            mt-3
-            text-zinc-500
-          "
+      mt-3
+      text-zinc-500
+      max-w-xl
+    "
         >
-          Update your password and keep
-          your account secure.
+          Update your password regularly to keep your account secure.
         </p>
 
-        <button
+        <div
           className="
-            mt-6
-            rounded-xl
-            border
-            border-white/10
-            px-5
-            py-3
-            transition
-            hover:bg-white/[0.04]
-          "
+      mt-8
+      grid
+      gap-6
+    "
         >
-          Change Password
+          <Input
+            label="Current Password"
+            type="password"
+            value={passwords.currentPassword}
+            onChange={(e) =>
+              setPasswords({
+                ...passwords,
+                currentPassword: e.target.value,
+              })
+            }
+          />
+
+          <Input
+            label="New Password"
+            type="password"
+            value={passwords.newPassword}
+            onChange={(e) =>
+              setPasswords({
+                ...passwords,
+                newPassword: e.target.value,
+              })
+            }
+          />
+
+          <Input
+            label="Confirm Password"
+            type="password"
+            value={passwords.confirmPassword}
+            onChange={(e) =>
+              setPasswords({
+                ...passwords,
+                confirmPassword: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        <button
+          onClick={handlePasswordChange}
+          disabled={passwordLoading}
+          className="
+      mt-8
+      rounded-xl
+      bg-white
+      px-6
+      py-3
+      font-medium
+      text-black
+      transition
+      hover:bg-zinc-200
+      disabled:opacity-50
+    "
+        >
+          {passwordLoading ? "Updating..." : "Update Password"}
         </button>
       </section>
-
-     
     </div>
   );
 }
 
-function Input({
-  label,
-  placeholder,
-}) {
+
+function Input({ label, type = "text", value, onChange, disabled = false }) {
   return (
     <div>
       <label
@@ -186,7 +408,10 @@ function Input({
       </label>
 
       <input
-        placeholder={placeholder}
+        type={type}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
         className="
           w-full
           rounded-xl
@@ -198,6 +423,7 @@ function Input({
           outline-none
           transition
           focus:border-white/20
+          disabled:opacity-60
         "
       />
     </div>

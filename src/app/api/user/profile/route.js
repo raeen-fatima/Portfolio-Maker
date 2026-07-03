@@ -11,8 +11,7 @@ export async function GET() {
 
     const cookieStore = await cookies();
 
-    const token =
-      cookieStore.get("token")?.value;
+    const token = cookieStore.get("token")?.value;
 
     if (!token) {
       return Response.json(
@@ -25,12 +24,11 @@ export async function GET() {
       );
     }
 
-    const decoded =
-      verifyToken(token);
+    const decoded = verifyToken(token);
 
-    const user = await User.findById(
-      decoded.id
-    ).select("-password");
+    const user = await User.findById(decoded.id).select(
+      "name username email image createdAt"
+    );
 
     if (!user) {
       return Response.json(
@@ -43,14 +41,15 @@ export async function GET() {
       );
     }
 
-    return Response.json(user);
+    return Response.json({
+      user,
+    });
   } catch (error) {
     console.log(error);
 
     return Response.json(
       {
-        message:
-          "Something went wrong",
+        message: "Something went wrong",
       },
       {
         status: 500,
@@ -58,15 +57,13 @@ export async function GET() {
     );
   }
 }
-
 export async function PUT(request) {
   try {
     await connectDB();
 
     const cookieStore = await cookies();
 
-    const token =
-      cookieStore.get("token")?.value;
+    const token = cookieStore.get("token")?.value;
 
     if (!token) {
       return Response.json(
@@ -79,31 +76,16 @@ export async function PUT(request) {
       );
     }
 
-    const decoded =
-      verifyToken(token);
+    const decoded = verifyToken(token);
 
-    const body =
-      await request.json();
+    const body = await request.json();
 
-    const {
-      name,
-      username,
-      image,
-    } = body;
+    const { name, username, image } = body;
 
-    const existingUser =
-      await User.findOne({
-        username,
-        _id: {
-          $ne: decoded.id,
-        },
-      });
-
-    if (existingUser) {
+    if (!name.trim()) {
       return Response.json(
         {
-          message:
-            "Username already exists",
+          message: "Name is required",
         },
         {
           status: 400,
@@ -111,7 +93,25 @@ export async function PUT(request) {
       );
     }
 
-    const user =
+    const existingUser = await User.findOne({
+      username,
+      _id: {
+        $ne: decoded.id,
+      },
+    });
+
+    if (existingUser) {
+      return Response.json(
+        {
+          message: "Username already exists",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const updatedUser =
       await User.findByIdAndUpdate(
         decoded.id,
         {
@@ -122,21 +122,21 @@ export async function PUT(request) {
         {
           new: true,
         }
-      ).select("-password");
+      ).select(
+        "name username email image createdAt"
+      );
 
     return Response.json({
-      message:
-        "Profile updated successfully",
+      message: "Profile updated successfully",
 
-      user,
+      user: updatedUser,
     });
   } catch (error) {
     console.log(error);
 
     return Response.json(
       {
-        message:
-          "Something went wrong",
+        message: "Something went wrong",
       },
       {
         status: 500,

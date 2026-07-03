@@ -7,6 +7,13 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    username: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      default: "",
+    },
 
     email: {
       type: String,
@@ -31,7 +38,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    
+
     resetPasswordToken: {
       type: String,
     },
