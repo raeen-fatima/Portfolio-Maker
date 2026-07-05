@@ -134,7 +134,7 @@ export default function PortfolioShowcase() {
                     text-zinc-500
                   "
                 >
-                  folioforge.com/raeen
+                  folioforge.com/john
                 </div>
 
                 <div className="ml-auto">
@@ -183,9 +183,9 @@ export default function PortfolioShowcase() {
                       md:text-6xl
                     "
                   >
-                    Raeen
+                    john
                     <br />
-                    Fatima
+                    Doe
                   </h3>
 
                   <p

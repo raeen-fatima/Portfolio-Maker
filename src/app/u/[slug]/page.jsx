@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/db";
 import Portfolio from "@/models/Portfolio";
 import { notFound } from "next/navigation";
 import { templateMap } from "@/lib/templates";
+import PortfolioTracker from "@/components/analytics/PortfolioTracker";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -64,14 +65,6 @@ export default async function PortfolioPage({ params }) {
     slug,
     isPublished: true,
   }).lean();
-  await Portfolio.updateOne(
-    { _id: portfolio._id },
-    {
-      $inc: {
-        views: 1,
-      },
-    },
-  );
 
   if (!portfolio) {
     notFound();
@@ -83,15 +76,18 @@ export default async function PortfolioPage({ params }) {
     templateMap[safePortfolio.selectedTemplate] || templateMap.nova;
 
   return (
-    <Template
-      heroData={safePortfolio.hero || {}}
-      aboutData={safePortfolio.about || {}}
-      skills={safePortfolio.skills || []}
-      projects={safePortfolio.projects || []}
-      experience={safePortfolio.experience || []}
-      education={safePortfolio.education || []}
-      certifications={safePortfolio.certifications || []}
-      contact={safePortfolio.contact || {}}
-    />
+    <>
+      <PortfolioTracker slug={slug} portfolio={safePortfolio} />
+      <Template
+        heroData={safePortfolio.hero || {}}
+        aboutData={safePortfolio.about || {}}
+        skills={safePortfolio.skills || []}
+        projects={safePortfolio.projects || []}
+        experience={safePortfolio.experience || []}
+        education={safePortfolio.education || []}
+        certifications={safePortfolio.certifications || []}
+        contact={safePortfolio.contact || {}}
+      />
+    </>
   );
 }

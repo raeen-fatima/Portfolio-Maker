@@ -54,6 +54,16 @@ const analyticsSchema = new mongoose.Schema(
       default: 0,
     },
 
+    projectClicks: [
+      {
+        title: String,
+        clicks: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+
     viewsHistory: [
       {
         date: String,

@@ -173,7 +173,7 @@ export default function CertificationForm({
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium">Issue Date</label>
+            <label className="mb-2 block  text-sm font-medium">Issue Date</label>
 
             <input
               type="month"

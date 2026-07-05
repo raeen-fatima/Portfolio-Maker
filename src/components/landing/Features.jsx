@@ -191,7 +191,7 @@ export default function Features() {
                 text-zinc-400
               "
             >
-              folioforge.com/raeen
+              folioforge.com/john
             </div>
           </div>
 

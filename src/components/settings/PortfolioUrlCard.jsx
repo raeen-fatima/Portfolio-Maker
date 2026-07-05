@@ -79,7 +79,7 @@ export default function PortfolioUrlCard({
             <input
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              placeholder="raeen-fatima"
+              placeholder="john-Doe"
               className="
                 w-full
                 bg-transparent

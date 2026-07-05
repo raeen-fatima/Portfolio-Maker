@@ -14,6 +14,25 @@ const analyticsEventSchema =
         required: true,
       },
 
+      eventType: {
+        type: String,
+        enum: [
+          "view",
+          "resume_download",
+          "contact_click",
+          "github_click",
+          "linkedin_click",
+          "project_click",
+        ],
+        default: "view",
+      },
+
+      label: {
+        type: String,
+        default: "",
+        trim: true,
+      },
+
       country: {
         type: String,
         default: "Unknown",
