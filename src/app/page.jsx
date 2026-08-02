@@ -11,6 +11,7 @@ import PortfolioShowcase from '@/components/landing/PortfolioShowcase';
 import Pricing from '@/components/landing/Pricing';
 import Stats from '@/components/landing/Stats';
 import Templates from '@/components/landing/Templates';
+import ScrollToTop from '@/components/ui/ScrollToTop';
 import Image from 'next/image';
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
       <FAQ />
       <ContactSection />
       <CTA />
+      <ScrollToTop />
       <Footer />
     </main>
   );

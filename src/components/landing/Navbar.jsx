@@ -73,13 +73,7 @@ export default async function Navbar() {
                 group-hover:scale-105 group-hover:bg-white/[0.08]
               "
             >
-              <Blocks
-                size={20}
-                className="
-                  text-white
-                "
-                /
-              >
+              <Blocks size={20} className="text-white" />
             </div>
 
             <div>
@@ -186,7 +180,7 @@ export default async function Navbar() {
           {/* Mobile Menu */}
           <MobileMenu user={user} />
         </div>
-      </div> 
+      </div>
     </header>
   );
 }

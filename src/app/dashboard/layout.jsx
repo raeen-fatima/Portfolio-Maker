@@ -1,7 +1,7 @@
 import { getCurrentUser } from "@/lib/auth/auth";
 import Sidebar from "../../components/dashboard/Sidebar";
 import Topbar from "../../components/dashboard/Topbar";
-
+import ScrollToTop from "@/components/ui/ScrollToTop";
 export default async function DashboardLayout({
   children,
 }) {
@@ -17,6 +17,7 @@ export default async function DashboardLayout({
         <main className="p-4 sm:p-6 lg:p-8">
           {children}
         </main>
+        <ScrollToTop />
       </div>
     </div>
   );
