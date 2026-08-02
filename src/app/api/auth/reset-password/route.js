@@ -1,61 +1,67 @@
-import bcrypt from "bcryptjs";
+import { connectDB } from "@/lib/database/db";
 
-import { connectDB } from "@/lib/db";
-import User from "@/models/User";
+import { validate } from "@/utils/validate";
+
+import { resetPasswordSchema } from "@/validators/auth";
+
+import { resetPassword } from "@/services/user/user.service";
 
 export async function POST(request) {
   try {
     await connectDB();
 
-    const { token, password } =
+    const body =
       await request.json();
 
-    const user = await User.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpires: {
-        $gt: Date.now(),
-      },
-    });
+    const result = validate(
+      resetPasswordSchema,
+      body,
+    );
 
-    if (!user) {
+    if (!result.success) {
       return Response.json(
         {
           success: false,
-          message:
-            "Invalid or expired token",
+          errors: result.errors,
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
-    const hashedPassword =
-      await bcrypt.hash(password, 10);
+    const {
+      password,
+    } = result.data;
 
-    user.password = hashedPassword;
+    await resetPassword(
+      body.token,
+      password,
+    );
 
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-
-    await user.save();
-
-    return Response.json({
-      success: true,
-      message:
-        "Password updated successfully",
-    });
+    return Response.json(
+      {
+        success: true,
+        message:
+          "Password updated successfully",
+      },
+      {
+        status: 200,
+      },
+    );
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return Response.json(
       {
         success: false,
-        message: "Something went wrong",
+        message:
+          error.message ||
+          "Something went wrong",
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }

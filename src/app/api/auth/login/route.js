@@ -1,80 +1,91 @@
-import { connectDB } from "@/lib/db";
-import User from "@/models/User";
-import bcrypt from "bcryptjs";
-import { generateToken } from "@/lib/jwt";
 import { cookies } from "next/headers";
+
+import { connectDB } from "@/lib/database/db";
+import { generateToken } from "@/lib/auth/jwt";
+
+import { loginUser } from "@/services/user/user.service";
+
+import { validate } from "@/utils/validate";
+
+import { loginSchema } from "@/validators/auth/auth";
 
 export async function POST(request) {
   try {
     await connectDB();
 
-    const { email, password } = await request.json();
+    const body = await request.json();
 
-    if (!email || !password) {
-      return Response.json(
-        {
-          success: false,
-          message: "All fields are required",
-        },
-        { status: 400 }
-      );
-    }
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return Response.json(
-        {
-          success: false,
-          message: "User not found",
-        },
-        { status: 404 }
-      );
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      user.password
+    const result = validate(
+      loginSchema,
+      body,
     );
 
-    if (!isPasswordCorrect) {
+    if (!result.success) {
       return Response.json(
         {
           success: false,
-          message: "Invalid credentials",
+          errors: result.errors,
         },
-        { status: 401 }
+        {
+          status: 400,
+        },
       );
     }
 
-    const token = generateToken(user);
+    const {
+      email,
+      password,
+    } = result.data;
 
-    const cookieStore = await cookies();
+    const user = await loginUser(
+      email,
+      password,
+    );
 
-    cookieStore.set("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    });
+    const token =
+      generateToken(user);
+
+    const cookieStore =
+      await cookies();
+
+    cookieStore.set(
+      "token",
+      token,
+      {
+        httpOnly: true,
+        secure:
+          process.env.NODE_ENV ===
+          "production",
+        sameSite: "strict",
+        maxAge:
+          60 * 60 * 24 * 7,
+        path: "/",
+      },
+    );
 
     return Response.json(
       {
         success: true,
-        message: "Login successful",
+        message:
+          "Login successful",
       },
-      { status: 200 }
+      {
+        status: 200,
+      },
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return Response.json(
       {
         success: false,
-        message: "Something went wrong",
+        message:
+          error.message ||
+          "Something went wrong",
       },
-      { status: 500 }
+      {
+        status: 500,
+      },
     );
   }
 }

@@ -1,57 +1,42 @@
 "use client";
-
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { resetPasswordSchema } from "@/validators/auth";
+import { useResetPassword } from "@/hooks/auth/useResetPassword";
 
 export default function ResetPasswordPage() {
   const { token } = useParams();
   const router = useRouter();
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const { loading, resetPassword } = useResetPassword();
 
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(resetPasswordSchema),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
+    const result = await resetPassword(token, data);
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+    if (!result.success) {
+      toast.error(result.data.message || "Something went wrong");
       return;
     }
 
-    try {
-      setLoading(true);
+    toast.success(result.data.message);
 
-      const response = await fetch("/api/auth/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token,
-          password,
-        }),
-      });
+    reset();
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success(result.message);
-
-      setTimeout(() => {
-        router.push("/auth/login");
-      }, 1500);
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+    setTimeout(() => {
+      router.push("/auth/login");
+    }, 1500);
   };
 
   return (
@@ -72,8 +57,8 @@ export default function ResetPasswordPage() {
           rounded-full
           blur-3xl
         "
-        /
-      >
+      />
+
       <div
         className="
           absolute bottom-0 right-0
@@ -82,8 +67,7 @@ export default function ResetPasswordPage() {
           rounded-full
           blur-3xl
         "
-        /
-      >
+      />
 
       <div
         className="
@@ -91,16 +75,13 @@ export default function ResetPasswordPage() {
           w-full max-w-md
           p-8 md:p-10
           bg-white/[0.03]
-          rounded-[32px] border border-white/10
+          rounded-[32px]
+          border border-white/10
           backdrop-blur-xl
         "
       >
         {/* Header */}
-        <div
-          className="
-            text-center
-          "
-        >
+        <div className="text-center">
           <h1
             className="
               text-4xl text-white font-bold
@@ -121,12 +102,12 @@ export default function ResetPasswordPage() {
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="
             mt-10 space-y-6
           "
         >
-          {/* New Password */}
+          {/* Password */}
           <div>
             <label
               className="
@@ -141,24 +122,29 @@ export default function ResetPasswordPage() {
             <input
               type="password"
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
               className="
-              w-full
-              rounded-2xl
-              border
-              border-white/10
-              bg-white/[0.03]
-              px-4
-              py-3.5
-              text-white
-              placeholder:text-zinc-600
-              outline-none
-              transition
-              focus:border-white/20
-              focus:bg-white/[0.05]
-            "
+                w-full
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/[0.03]
+                px-4
+                py-3.5
+                text-white
+                placeholder:text-zinc-600
+                outline-none
+                transition
+                focus:border-white/20
+                focus:bg-white/[0.05]
+              "
             />
+
+            {errors.password && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Confirm Password */}
@@ -176,24 +162,29 @@ export default function ResetPasswordPage() {
             <input
               type="password"
               placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              {...register("confirmPassword")}
               className="
-              w-full
-              rounded-2xl
-              border
-              border-white/10
-              bg-white/[0.03]
-              px-4
-              py-3.5
-              text-white
-              placeholder:text-zinc-600
-              outline-none
-              transition
-              focus:border-white/20
-              focus:bg-white/[0.05]
-            "
+                w-full
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/[0.03]
+                px-4
+                py-3.5
+                text-white
+                placeholder:text-zinc-600
+                outline-none
+                transition
+                focus:border-white/20
+                focus:bg-white/[0.05]
+              "
             />
+
+            {errors.confirmPassword && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
           {/* Submit */}
@@ -206,8 +197,11 @@ export default function ResetPasswordPage() {
               font-medium text-black
               bg-white
               rounded-2xl
-              transition-all duration-200 hover:opacity-95 disabled:opacity-50
-              hover:scale-[1.01] active:scale-[0.99]
+              transition-all duration-200
+              hover:opacity-95
+              disabled:opacity-50
+              hover:scale-[1.01]
+              active:scale-[0.99]
             "
           >
             {loading ? (
@@ -220,11 +214,13 @@ export default function ResetPasswordPage() {
                 <span
                   className="
                     h-4 w-4
-                    rounded-full border-2 border-black border-t-transparent
+                    rounded-full
+                    border-2
+                    border-black
+                    border-t-transparent
                     animate-spin
                   "
-                  /
-                >
+                />
                 Updating Password...
               </span>
             ) : (

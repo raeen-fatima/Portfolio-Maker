@@ -1,7 +1,7 @@
-import { connectDB } from "@/lib/db";
-import Portfolio from "@/models/Portfolio";
+import { connectDB } from "@/lib/database/db";
+import Portfolio from "@/models/portfolio/Portfolio";
 import { notFound } from "next/navigation";
-import { templateMap } from "@/lib/templates";
+import { templateMap } from "@/lib/templates/templates";
 import PortfolioTracker from "@/components/analytics/PortfolioTracker";
 
 export async function generateMetadata({ params }) {
@@ -13,6 +13,7 @@ export async function generateMetadata({ params }) {
     slug,
     isPublished: true,
   }).lean();
+
 
   if (!portfolio) {
     return {

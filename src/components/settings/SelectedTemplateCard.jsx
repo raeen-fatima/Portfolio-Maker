@@ -63,7 +63,7 @@ export default function SelectedTemplateCard({
       </div>
 
       <Link
-        href="/dashboard/templates"
+        href="/dashboard/portfolio/templates"
         className="
           mt-5
           block

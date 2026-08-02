@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { usePublish } from "@/hooks/portfolio/usePublish";
 
 export default function PublishPage() {
   const [isPublished, setIsPublished] = useState(false);
   const [slug, setSlug] = useState("");
-  const [loading, setLoading] = useState(true);
+  const { loading, fetchStatus, togglePublish } = usePublish();
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(
@@ -17,57 +18,28 @@ export default function PublishPage() {
   };
 
   const handlePublish = async () => {
-    try {
-      const response = await fetch("/api/portfolio/publish", {
-        method: "PUT",
-      });
+  const result = await togglePublish();
 
-      const result = await response.json();
+  if (!result) return;
 
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
+  setIsPublished(result.isPublished);
+  setSlug(result.slug);
+};
 
-      setIsPublished(result.isPublished);
-      setSlug(result.slug);
+ 
 
-      toast.success(
-        result.isPublished
-          ? "Portfolio published successfully"
-          : "Portfolio unpublished successfully",
-      );
-    } catch (error) {
-      console.log(error);
+ useEffect(() => {
+  const loadPublishPage = async () => {
+    const result = await fetchStatus();
 
-      toast.error("Something went wrong");
-    }
+    if (!result) return;
+
+    setIsPublished(result.isPublished);
+    setSlug(result.slug);
   };
 
-  const fetchStatus = async () => {
-    try {
-      const response = await fetch("/api/portfolio/status");
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setIsPublished(result.isPublished);
-        setSlug(result.slug);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const loadPublishPage = async () => {
-      await fetchStatus();
-    };
-
-    loadPublishPage();
-  }, []);
+  loadPublishPage();
+}, []);
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 p-6 lg:p-10">

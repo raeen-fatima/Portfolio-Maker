@@ -23,7 +23,7 @@ export default function PortfolioBuilderPage() {
 
   const fetchDashboard = async () => {
     try {
-      const response = await fetch("/api/portfolio/dashboard");
+      const response = await fetch("/api/dashboard/portfolio")
 
       const result = await response.json();
 
@@ -179,7 +179,7 @@ export default function PortfolioBuilderPage() {
     },
     {
       title: "Templates",
-      href: "/dashboard/templates",
+      href: "/dashboard/portfolio/templates",
       completed: !!dashboard.selectedTemplate,
     },
 

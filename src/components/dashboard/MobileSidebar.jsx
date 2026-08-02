@@ -31,7 +31,7 @@ const navigation = [
 
   {
     title: "Templates",
-    href: "/dashboard/templates",
+    href: "/dashboard/portfolio/templates",
     icon: Palette,
   },
 

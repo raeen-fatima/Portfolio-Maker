@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
-import { connectDB } from "@/lib/db";
-import { verifyToken } from "@/lib/jwt";
-import Portfolio from "@/models/Portfolio";
+import { connectDB } from "@/lib/database/db";
+import { verifyToken } from "@/lib/auth/jwt";
+import Portfolio from "@/models/portfolio/Portfolio";
 import Link from "next/link";
 import { Eye, Rocket, LayoutTemplate } from "lucide-react";
-import { templateMap } from "@/lib/templates";
+import { templateMap } from "@/lib/templates/templates";
 
 export default async function PreviewPage() {
   await connectDB();
@@ -82,7 +82,7 @@ export default async function PreviewPage() {
           {/* Right */}
           <div className="flex items-center gap-3">
             <Link
-              href="/dashboard/templates"
+              href="/dashboard/portfolio/templates"
               className="
               inline-flex
               items-center

@@ -6,11 +6,18 @@ export async function POST() {
 
     cookieStore.delete("token");
 
-    return Response.json({
-      success: true,
-      message: "Logged out successfully",
-    });
+    return Response.json(
+      {
+        success: true,
+        message: "Logged out successfully",
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
+    console.error(error);
+
     return Response.json(
       {
         success: false,

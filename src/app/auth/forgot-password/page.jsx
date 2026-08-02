@@ -1,40 +1,37 @@
 "use client";
 
 import { useState } from "react";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { toast } from "sonner";
 
+import { forgotPasswordSchema } from "@/validators/auth";
+import { useForgotPassword } from "@/hooks/auth/useForgotPassword";
+
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, forgotPassword } = useForgotPassword();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
+    const result = await forgotPassword(data);
 
-    try {
-      setLoading(true);
-
-      const response = await fetch("/api/auth/forgot-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success(result.message);
-      setEmail("");
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
+    if (!result.success) {
+      toast.error(result.data.message || "Something went wrong");
+      return;
     }
+
+    toast.success(result.data.message);
+
+    reset();
   };
 
   return (
@@ -55,8 +52,8 @@ export default function ForgotPasswordPage() {
           rounded-full
           blur-3xl
         "
-        /
-      >
+      />
+
       <div
         className="
           absolute bottom-0 right-0
@@ -65,8 +62,7 @@ export default function ForgotPasswordPage() {
           rounded-full
           blur-3xl
         "
-        /
-      >
+      />
 
       <div
         className="
@@ -74,23 +70,22 @@ export default function ForgotPasswordPage() {
           w-full max-w-md
           p-8 md:p-10
           bg-white/[0.03]
-          rounded-[32px] border border-white/10
+          rounded-[32px]
+          border border-white/10
           backdrop-blur-xl
         "
       >
         {/* Header */}
-        <div
-          className="
-            text-center
-          "
-        >
+        <div className="text-center">
           <div
             className="
               inline-flex
-              mx-auto mb-5 px-4 py-2
+              mx-auto mb-5
+              px-4 py-2
               text-xs text-zinc-400
               bg-white/[0.03]
-              rounded-full border border-white/10
+              rounded-full
+              border border-white/10
             "
           >
             Password Recovery
@@ -98,7 +93,9 @@ export default function ForgotPasswordPage() {
 
           <h1
             className="
-              text-4xl text-white font-bold
+              text-4xl
+              text-white
+              font-bold
             "
           >
             Forgot Password?
@@ -107,7 +104,8 @@ export default function ForgotPasswordPage() {
           <p
             className="
               mt-3
-              text-sm text-zinc-500
+              text-sm
+              text-zinc-500
             "
           >
             Enter your email address and we'll send you a secure password reset
@@ -117,9 +115,10 @@ export default function ForgotPasswordPage() {
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="
-            mt-10 space-y-6
+            mt-10
+            space-y-6
           "
         >
           <div>
@@ -127,7 +126,11 @@ export default function ForgotPasswordPage() {
               className="
                 block
                 mb-2
-                text-xs text-zinc-500 font-medium uppercase tracking-wider
+                text-xs
+                text-zinc-500
+                font-medium
+                uppercase
+                tracking-wider
               "
             >
               Email Address
@@ -136,24 +139,27 @@ export default function ForgotPasswordPage() {
             <input
               type="email"
               placeholder="john@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
               className="
-              w-full
-              rounded-2xl
-              border
-              border-white/10
-              bg-white/[0.03]
-              px-4
-              py-3.5
-              text-white
-              placeholder:text-zinc-600
-              outline-none
-              transition
-              focus:border-white/20
-              focus:bg-white/[0.05]
-            "
+                w-full
+                rounded-2xl
+                border border-white/10
+                bg-white/[0.03]
+                px-4 py-3.5
+                text-white
+                placeholder:text-zinc-600
+                outline-none
+                transition
+                focus:border-white/20
+                focus:bg-white/[0.05]
+              "
             />
+
+            {errors.email && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <button
@@ -162,28 +168,38 @@ export default function ForgotPasswordPage() {
             className="
               w-full
               py-3.5
-              font-medium text-black
+              font-medium
+              text-black
               bg-white
               rounded-2xl
-              transition-all duration-200 hover:opacity-95 disabled:opacity-50
-              hover:scale-[1.01] active:scale-[0.99]
+              transition-all
+              duration-200
+              hover:opacity-95
+              disabled:opacity-50
+              hover:scale-[1.01]
+              active:scale-[0.99]
             "
           >
             {loading ? (
               <span
                 className="
-                  flex items-center justify-center
+                  flex
+                  items-center
+                  justify-center
                   gap-2
                 "
               >
                 <span
                   className="
-                    h-4 w-4
-                    rounded-full border-2 border-black border-t-transparent
+                    h-4
+                    w-4
+                    rounded-full
+                    border-2
+                    border-black
+                    border-t-transparent
                     animate-spin
                   "
-                  /
-                >
+                />
                 Sending Link...
               </span>
             ) : (
@@ -196,7 +212,9 @@ export default function ForgotPasswordPage() {
         <p
           className="
             mt-8
-            text-center text-xs text-zinc-600
+            text-center
+            text-xs
+            text-zinc-600
           "
         >
           We'll only send a reset link if an account exists for this email.

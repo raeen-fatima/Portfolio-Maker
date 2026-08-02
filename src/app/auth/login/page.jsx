@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Blocks } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/validators/auth";
+import { loginSchema } from "@/validators/auth/auth";
 import { toast } from "sonner";
+import { useLogin } from "@/hooks/auth/useLogin";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,36 +22,19 @@ export default function LoginPage() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-
+  const { loading, login } = useLogin();
   const onSubmit = async (data) => {
-    try {
-      setLoading(true);
+    const result = await login(data);
 
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success(result.message);
-
-      router.push("/dashboard");
-      router.refresh();
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
+    if (!result.success) {
+      toast.error(result.data.message);
+      return;
     }
+
+    toast.success(result.data.message);
+
+    router.push("/dashboard");
+    router.refresh();
   };
 
   return (
@@ -77,8 +62,7 @@ export default function LoginPage() {
             rounded-full
             blur-3xl
           "
-          /
-        >
+        />
         <div
           className="
             absolute bottom-0 right-0
@@ -87,36 +71,28 @@ export default function LoginPage() {
             rounded-full
             blur-3xl
           "
-          /
-        >
+        />
 
         {/* Logo */}
-        <div
-          className="
-            relative z-10
-          "
-        >
-          <h2
-            className="
-              text-xl font-semibold tracking-tight
-            "
-          >
-            <span
+        <div className="relative z-10">
+          <div className="flex items-center gap-3">
+            <div
               className="
-                text-white
-              "
+        flex items-center justify-center
+        h-10 w-10
+        bg-white/[0.03]
+        rounded-xl
+        border border-white/10
+      "
             >
-              Folio
-            </span>
+              <Blocks size={18} />
+            </div>
 
-            <span
-              className="
-                text-zinc-500
-              "
-            >
-              Forge
-            </span>
-          </h2>
+            <h2 className="text-xl font-semibold tracking-tight">
+              <span className="text-white">Folio</span>
+              <span className="text-zinc-500">Forge</span>
+            </h2>
+          </div>
         </div>
 
         {/* Main Content */}
@@ -182,8 +158,7 @@ export default function LoginPage() {
                 bg-green-500
                 rounded-full
               "
-              /
-            >
+            />
 
             <span
               className="
@@ -296,8 +271,7 @@ export default function LoginPage() {
                   outline-none
                   transition
                 "
-                /
-              >
+              />
 
               {errors.email && (
                 <p
@@ -341,8 +315,7 @@ export default function LoginPage() {
                     outline-none
                     transition
                   "
-                  /
-                >
+                />
 
                 <button
                   type="button"
@@ -416,8 +389,7 @@ export default function LoginPage() {
                       rounded-full border-2 border-black border-t-transparent
                       animate-spin
                     "
-                    /
-                  >
+                  />
                   Signing In...
                 </span>
               ) : (
@@ -440,8 +412,7 @@ export default function LoginPage() {
                 h-px
                 bg-white/10
               "
-              /
-            >
+            />
 
             <span
               className="
@@ -457,8 +428,7 @@ export default function LoginPage() {
                 h-px
                 bg-white/10
               "
-              /
-            >
+            />
           </div>
 
           {/* Footer */}

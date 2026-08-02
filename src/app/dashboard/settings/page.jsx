@@ -1,10 +1,14 @@
 "use client";
+
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { portfolioTemplates } from "@/lib/templates";
-import DeleteModal from "@/components/ui/DeleteModal";
 import { useRouter } from "next/navigation";
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
+
+import { portfolioTemplates } from "@/lib/templates/templates";
+
+import { useSettings } from "@/hooks/settings/useSettings";
+
+import DeleteModal from "@/components/ui/DeleteModal";
 import SettingsHeader from "@/components/settings/SettingsHeader";
 import LoadingState from "@/components/settings/LoadingState";
 import SaveButton from "@/components/settings/SaveButton";
@@ -14,146 +18,102 @@ import AccountCard from "@/components/settings/AccountCard";
 import SelectedTemplateCard from "@/components/settings/SelectedTemplateCard";
 import DangerZoneCard from "@/components/settings/DangerZoneCard";
 
-function normalizeSlug(value) {
-  return value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9-]/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+const APP_URL =
+  process.env.NEXT_PUBLIC_APP_URL;
 
 export default function SettingsPage() {
-  const [user, setUser] = useState(null);
   const router = useRouter();
 
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] =
+    useState(false);
 
-  const [slug, setSlug] = useState("");
+  const {
+    user,
+    slug,
+    setSlug,
+    template,
+    isPublished,
 
-  const [template, setTemplate] = useState("nova");
+    loading,
+    saving,
 
-  const [isPublished, setIsPublished] = useState(false);
-
-  const [loading, setLoading] = useState(true);
-
-  const [saving, setSaving] = useState(false);
+    fetchSettings,
+    saveSettings,
+    deletePortfolio,
+  } = useSettings();
 
   const selectedTemplate = useMemo(
     () =>
-      portfolioTemplates.find((item) => item.id === template) ||
-      portfolioTemplates[0],
+      portfolioTemplates.find(
+        (item) => item.id === template,
+      ) || portfolioTemplates[0],
     [template],
   );
 
-  const portfolioUrl = slug && APP_URL ? `${APP_URL}/u/${slug}` : "";
-
-  const fetchSettings = async () => {
-    try {
-      setLoading(true);
-
-      const response = await fetch("/api/portfolio/settings");
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      setUser(result.user);
-
-      setSlug(result.settings.slug || "");
-
-      setTemplate(result.settings.selectedTemplate || "nova");
-
-      setIsPublished(Boolean(result.settings.isPublished));
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Failed to load settings");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const portfolioUrl =
+    slug && APP_URL
+      ? `${APP_URL}/u/${slug}`
+      : "";
 
   useEffect(() => {
-    const loadSettings = async () => {
-      await fetchSettings();
-    };
-    loadSettings();
-  }, []);
-
-  const handleDelete = async () => {
-    try {
-      const response = await fetch("/api/portfolio/delete", {
-        method: "DELETE",
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success("Portfolio deleted successfully");
-
-      setDeleteOpen(false);
-
-      router.refresh();
-
-      router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Something went wrong");
-    }
-  };
+    fetchSettings();
+  }, [fetchSettings]);
 
   const handleSave = async () => {
-    try {
-      setSaving(true);
+    const result =
+      await saveSettings();
 
-      const response = await fetch("/api/portfolio/settings", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          slug: normalizeSlug(slug),
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      setSlug(result.settings.slug);
-
-      toast.success("Settings saved successfully");
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Something went wrong");
-    } finally {
-      setSaving(false);
+    if (!result.success) {
+      toast.error(
+        result.data?.message,
+      );
+      return;
     }
+
+    toast.success(
+      result.data.message,
+    );
+  };
+
+  const handleDelete = async () => {
+    const result =
+      await deletePortfolio();
+
+    if (!result.success) {
+      toast.error(
+        result.data?.message,
+      );
+      return;
+    }
+
+    toast.success(
+      result.data.message,
+    );
+
+    setDeleteOpen(false);
+
+    router.refresh();
+
+    router.push("/dashboard");
   };
 
   const handleCopy = async () => {
     if (!portfolioUrl) {
-      toast.error("No portfolio URL available");
+      toast.error(
+        "No portfolio URL available",
+      );
       return;
     }
 
-    await navigator.clipboard.writeText(portfolioUrl);
+    await navigator.clipboard.writeText(
+      portfolioUrl,
+    );
 
-    toast.success("Portfolio URL copied");
+    toast.success(
+      "Portfolio URL copied",
+    );
   };
+
   if (loading) {
     return <LoadingState />;
   }
@@ -211,9 +171,7 @@ export default function SettingsPage() {
 
             <DangerZoneCard
               onDelete={() =>
-                setDeleteOpen(
-                  true
-                )
+                setDeleteOpen(true)
               }
             />
           </aside>

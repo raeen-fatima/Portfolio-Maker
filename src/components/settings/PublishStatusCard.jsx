@@ -70,7 +70,7 @@ export default function PublishStatusCard({
       </div>
 
       <Link
-        href="/dashboard/publish"
+        href="/dashboard/portfolio/publish"
         className="
           mt-5
           inline-flex

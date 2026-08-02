@@ -1,5 +1,5 @@
 
-import MobileSidebar from "./MobileSidebar";
+import MobileSidebar from "../dashboard/MobileSidebar";
 import {
   Bell,
   UserCircle2,

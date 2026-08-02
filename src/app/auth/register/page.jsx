@@ -2,11 +2,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "@/validators/auth";
+import { registerSchema } from "@/validators/auth/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Blocks } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRegister } from "@/hooks/auth/useRegister";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -20,46 +22,27 @@ export default function RegisterPage() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
-
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success(result.message);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
-
-      reset();
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const { loading, registerUser } = useRegister();
+
+  const onSubmit = async (data) => {
+    const result = await registerUser(data);
+
+    if (!result.success) {
+      toast.error(result.data.message);
+      return;
+    }
+
+    toast.success(result.data.message);
+
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 1000);
+
+    reset();
+  };
 
   return (
     <div
@@ -87,8 +70,7 @@ export default function RegisterPage() {
             rounded-full
             blur-3xl
           "
-          /
-        >
+        />
         <div
           className="
             absolute bottom-0 right-0
@@ -97,36 +79,28 @@ export default function RegisterPage() {
             rounded-full
             blur-3xl
           "
-          /
-        >
+        />
 
         {/* Logo */}
-        <div
-          className="
-            relative z-10
-          "
-        >
-          <h2
-            className="
-              text-xl font-semibold tracking-tight
-            "
-          >
-            <span
+        <div className="relative z-10">
+          <div className="flex items-center gap-3">
+            <div
               className="
-                text-white
-              "
+        flex items-center justify-center
+        h-10 w-10
+        bg-white/[0.03]
+        rounded-xl
+        border border-white/10
+      "
             >
-              Folio
-            </span>
+              <Blocks size={18} />
+            </div>
 
-            <span
-              className="
-                text-zinc-500
-              "
-            >
-              Forge
-            </span>
-          </h2>
+            <h2 className="text-xl font-semibold tracking-tight">
+              <span className="text-white">Folio</span>
+              <span className="text-zinc-500">Forge</span>
+            </h2>
+          </div>
         </div>
 
         {/* Main Content */}
@@ -192,8 +166,7 @@ export default function RegisterPage() {
                 bg-green-500
                 rounded-full
               "
-              /
-            >
+            />
 
             <span
               className="
@@ -281,8 +254,7 @@ export default function RegisterPage() {
                   outline-none
                   transition
                 "
-                /
-              >
+              />
 
               {errors.name && (
                 <p
@@ -292,6 +264,43 @@ export default function RegisterPage() {
                   "
                 >
                   {errors.name.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label
+                className="
+      block
+      mb-2
+      text-xs text-zinc-500 font-medium uppercase tracking-wider
+    "
+              >
+                Username
+              </label>
+
+              <input
+                type="text"
+                placeholder="johndoe"
+                {...register("username")}
+                className="
+      w-full
+      px-4 py-3.5
+      text-white placeholder:text-zinc-600
+      bg-white/[0.03] focus:bg-white/[0.05]
+      rounded-2xl border border-white/10 focus:border-white/20
+      outline-none
+      transition
+    "
+              />
+
+              {errors.username && (
+                <p
+                  className="
+        mt-2
+        text-sm text-red-500
+      "
+                >
+                  {errors.username.message}
                 </p>
               )}
             </div>
@@ -321,8 +330,7 @@ export default function RegisterPage() {
                   outline-none
                   transition
                 "
-                /
-              >
+              />
 
               {errors.email && (
                 <p
@@ -373,8 +381,7 @@ export default function RegisterPage() {
                       outline-none
                       transition
                     "
-                    /
-                  >
+                  />
 
                   <button
                     type="button"
@@ -434,8 +441,7 @@ export default function RegisterPage() {
                       outline-none
                       transition
                     "
-                    /
-                  >
+                  />
 
                   <button
                     type="button"
@@ -493,8 +499,7 @@ export default function RegisterPage() {
                       rounded-full border-2 border-black border-t-transparent
                       animate-spin
                     "
-                    /
-                  >
+                  />
                   Creating Account...
                 </span>
               ) : (
@@ -517,8 +522,7 @@ export default function RegisterPage() {
                 h-px
                 bg-white/10
               "
-              /
-            >
+            />
 
             <span
               className="
@@ -534,8 +538,7 @@ export default function RegisterPage() {
                 h-px
                 bg-white/10
               "
-              /
-            >
+            />
           </div>
 
           {/* Footer */}

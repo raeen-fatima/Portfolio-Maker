@@ -4,7 +4,7 @@ import { Blocks } from "lucide-react";
 import UserDropdown from "../ui/UserDropdown";
 import MobileMenu from "../ui/MobileMenu";
 
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/auth/auth";
 
 export default async function Navbar() {
   const user = await getCurrentUser();

@@ -1,9 +1,10 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { User, Shield } from "lucide-react";
+import Image from "next/image";
+import { useProfile, usePassword } from "@/hooks/settings/user-profile/useProfile";
 
 export default function UserInformationPage() {
   const [passwords, setPasswords] = useState({
@@ -12,80 +13,33 @@ export default function UserInformationPage() {
     confirmPassword: "",
   });
 
-  const [passwordLoading, setPasswordLoading] = useState(false);
-  const [profile, setProfile] = useState({
-    name: "",
-    username: "",
-    email: "",
-    image: "",
-  });
+  const {
+    profile,
+    setProfile,
 
-  const [loading, setLoading] = useState(true);
+    loading,
+    saving,
 
-  const [saving, setSaving] = useState(false);
+    fetchProfile,
+    updateProfile,
+  } = useProfile();
 
-  const fetchProfile = async () => {
-    try {
-      const response = await fetch("/api/user/profile");
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      setProfile(result.user);
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Failed to load profile");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { passwordLoading, changePassword } = usePassword();
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, [fetchProfile]);
 
   const handleSave = async () => {
-    try {
-      setSaving(true);
+    const result = await updateProfile(profile);
 
-      const response = await fetch("/api/user/profile", {
-        method: "PUT",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          name: profile.name,
-          username: profile.username,
-          image: profile.image,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      setProfile(result.user);
-
-      toast.success(result.message);
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Something went wrong");
-    } finally {
-      setSaving(false);
+    if (!result.success) {
+      toast.error(result.data.message);
+      return;
     }
-  };
 
+    toast.success(result.data.message);
+  };
   const handlePasswordChange = async () => {
     if (
       !passwords.currentPassword ||
@@ -101,52 +55,30 @@ export default function UserInformationPage() {
       return;
     }
 
-    try {
-      setPasswordLoading(true);
+    const result = await changePassword(
+      passwords.currentPassword,
+      passwords.newPassword,
+    );
 
-      const response = await fetch("/api/user/change-password", {
-        method: "PUT",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          currentPassword: passwords.currentPassword,
-
-          newPassword: passwords.newPassword,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
-
-      toast.success(result.message);
-
-      setPasswords({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Something went wrong");
-    } finally {
-      setPasswordLoading(false);
+    if (!result.success) {
+      toast.error(result.data.message);
+      return;
     }
-  };
 
+    toast.success(result.data.message);
+
+    setPasswords({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+  };
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-40 rounded-[32px] bg-white/[0.03] animate-pulse" />
+        <div className="h-40 rounded-4xl bg-white/3 animate-pulse" />
 
-        <div className="h-80 rounded-[32px] bg-white/[0.03] animate-pulse" />
+        <div className="h-80 rounded-4xl bg-white/3 animate-pulse" />
       </div>
     );
   }
@@ -192,7 +124,7 @@ export default function UserInformationPage() {
       {/* Profile */}
       <section
         className="
-          rounded-[32px]
+          rounded-4xl
           border
           border-white/10
           bg-black
@@ -215,13 +147,15 @@ export default function UserInformationPage() {
 
         <div className="mt-8 flex flex-col items-center gap-5">
           {profile.image ? (
-            <img
+            <Image
               src={profile.image}
               alt={profile.name}
+              width={112}
+              height={112}
               className="h-28 w-28 rounded-3xl object-cover border border-white/10"
             />
           ) : (
-            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-white/[0.03] border border-white/10">
+            <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-white/3 border border-white/10">
               <User size={38} />
             </div>
           )}
@@ -391,7 +325,6 @@ export default function UserInformationPage() {
     </div>
   );
 }
-
 
 function Input({ label, type = "text", value, onChange, disabled = false }) {
   return (

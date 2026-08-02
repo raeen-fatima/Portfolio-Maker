@@ -3,13 +3,17 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { aboutSchema } from "@/validators/portfolio";
+import { aboutSchema } from "@/validators/portfolio/portfolio";
 import { toast } from "sonner";
 import ImageUpload from "@/components/ui/ImageUpload";
-import BuilderHeader from "@/components/builder/BuilderHeader";
+import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 import { useRouter } from "next/navigation";
+import useAbout from "@/hooks/portfolio/useAbout";
+import usePortfolioNavigation from "@/hooks/portfolio/usePortfolioNavigation";
+
 export default function AboutPage() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const { loading, fetchAbout, saveAbout } = useAbout();
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
 
@@ -58,60 +62,47 @@ export default function AboutPage() {
     name: "instagram",
   });
 
+  const { saveDraft, saveAndContinue, goBack } = usePortfolioNavigation();
+
   const onSubmit = async (data) => {
     try {
-      setLoading(true);
-
-      const response = await fetch("/api/portfolio/about", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-          image: imageUrl,
-        }),
+      const result = await saveAbout({
+        ...data,
+        image: imageUrl,
       });
-      //  console.log("ABOUT DATA:", data);
 
-      const result = await response.json();
+      console.log("SAVE RESULT:", result);
 
-      if (!response.ok) {
-        toast.error(result.message);
+      if (!result.success) {
+        toast.error(result.data?.message || "Save failed");
         return;
       }
 
-      toast.success(result.message);
-
-      toast.success("About section saved successfully");
+      toast.success(result.data.message);
       router.push("/dashboard/portfolio/skills");
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
     }
   };
+
   useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        const response = await fetch("/api/portfolio/about");
+    const loadAbout = async () => {
+      const about = await fetchAbout();
 
-        const result = await response.json();
+      console.log("ABOUT:", about);
 
-        if (!result.success) return;
+      if (!about) return;
 
-        reset(result.about);
-        // Set profile image if it exists
-        if (result.about.image) {
-          setImageUrl(result.about.image);
-        }
-      } catch (error) {
-        console.log(error);
+      reset(about);
+
+      if (about.image) {
+        setImageUrl(about.image);
       }
     };
 
-    fetchAbout();
-  }, [reset]);
+    loadAbout();
+  }, [fetchAbout, reset]);
 
   return (
     <div className="space-y-6 p-6 lg:p-12">
@@ -355,8 +346,23 @@ export default function AboutPage() {
                 ← Back
               </button>
 
+              {/* <button
+                type="button"
+                onClick={handleSubmit((data) =>
+                  saveDraft(saveAbout, {
+                    ...data,
+                    image: imageUrl,
+                  }),
+                )}
+                disabled={loading}
+                className="flex-1 rounded-2xl border border-white/10 py-3.5 font-medium text-white hover:bg-white/5 disabled:opacity-50"
+              >
+                {loading ? "Saving..." : "Save Draft"}
+              </button> */}
+
               <button
                 type="submit"
+                disabled={loading}
                 className="
             flex-1
             rounded-2xl
@@ -368,7 +374,7 @@ export default function AboutPage() {
             hover:opacity-90
           "
               >
-                Save & Continue →
+                {loading ? "Saving..." : "Save & Continue →"}
               </button>
             </div>
           </form>

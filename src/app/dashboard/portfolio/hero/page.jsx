@@ -5,16 +5,19 @@ import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Validation Schema
-import { heroSchema } from "@/validators/portfolio";
+import { heroSchema } from "@/validators/portfolio/portfolio";
 // UI & Notifications
 import { toast } from "sonner";
 import ImageUpload from "@/components/ui/ImageUpload";
 import Image from "next/image";
-import BuilderHeader from "@/components/builder/BuilderHeader";
+import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 import { useRouter } from "next/navigation";
+
+import { useHero } from "@/hooks/portfolio/useHero";
+
 export default function HeroPage() {
   // Loading state for form submission
-  const [loading, setLoading] = useState(false);
+  const { loading, fetchHero, saveHero } = useHero();
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
 
@@ -27,6 +30,8 @@ export default function HeroPage() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(heroSchema),
+
+    
   });
 
   // Watch form fields for real-time preview updates
@@ -51,64 +56,82 @@ export default function HeroPage() {
   });
   // Fetch existing hero data on component mount
   useEffect(() => {
-    const fetchHero = async () => {
-      try {
-        const response = await fetch("/api/portfolio/hero");
+    const loadHero = async () => {
+      const hero = await fetchHero();
 
-        const result = await response.json();
+      if (!hero) return;
 
-        if (!result.success) return;
+      reset(hero);
 
-        // Populate form with existing hero data
-        reset(result.hero);
-
-        // Set profile image if it exists
-        if (result.hero.image) {
-          setImageUrl(result.hero.image);
-        }
-      } catch (error) {
-        console.log(error);
+      if (hero.image) {
+        setImageUrl(hero.image);
       }
     };
 
-    fetchHero();
-  }, [reset]);
+    loadHero();
+  }, [fetchHero, reset]);
+
+const onSubmit = async (data) => {
+  try {
+    const result = await saveHero({
+      ...data,
+      image: imageUrl,
+    });
+
+    if (!result.success) {
+      toast.error(
+        result.data?.message || "Save failed",
+      );
+      return;
+    }
+
+    toast.success(result.data.message);
+
+    router.push(
+      "/dashboard/portfolio/about",
+    );
+  } catch (error) {
+    console.error(error);
+
+    toast.error("Something went wrong");
+  }
+};
 
   // Handle form submission - save hero section to database
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
+  // const onSubmit = async (data) => {
+  //   try {
+  //     setLoading(true);
 
-      // Send form data along with profile image URL to API
-      const response = await fetch("/api/portfolio/hero", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-          image: imageUrl,
-        }),
-      });
-      console.log("FORM DATA:", data);
+  //     // Send form data along with profile image URL to API
+  //     const response = await fetch("/api/dashboard/portfolio/hero", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         ...data,
+  //         image: imageUrl,
+  //       }),
+  //     });
+  //     console.log("FORM DATA:", data);
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      // Show error toast if submission failed
-      if (!response.ok) {
-        toast.error(result.message);
-        return;
-      }
+  //     // Show error toast if submission failed
+  //     if (!response.ok) {
+  //       toast.error(result.message);
+  //       return;
+  //     }
 
-      // Show success message
-      toast.success(result.message);
-      router.push("/dashboard/portfolio/about");
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     // Show success message
+  //     toast.success(result.message);
+  //     router.push("/dashboard/portfolio/about");
+  //   } catch (error) {
+  //     toast.error("Something went wrong");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div
@@ -178,8 +201,7 @@ export default function HeroPage() {
                     outline-none
                     transition
                   "
-                  /
-                >
+                />
 
                 {errors.name && (
                   <p
@@ -218,8 +240,7 @@ export default function HeroPage() {
                     outline-none
                     transition
                   "
-                  /
-                >
+                />
 
                 {errors.title && (
                   <p
@@ -242,7 +263,9 @@ export default function HeroPage() {
                   mb-2
                   text-sm font-medium
                 "
-              >Tagline</label>
+              >
+                Tagline
+              </label>
 
               <textarea
                 rows={4}
@@ -258,8 +281,7 @@ export default function HeroPage() {
                   transition
                   resize-none
                 "
-                /
-              >
+              />
 
               {errors.tagline && (
                 <p
@@ -298,8 +320,7 @@ export default function HeroPage() {
                   outline-none
                   transition
                 "
-                /
-              >
+              />
 
               {errors.resumeUrl && (
                 <p
@@ -387,6 +408,7 @@ export default function HeroPage() {
             {imageUrl ? (
               <Image
                 src={imageUrl}
+                loading="eager"
                 alt="Profile"
                 width={120}
                 height={120}
@@ -395,8 +417,7 @@ export default function HeroPage() {
                   h-32 w-32
                   rounded-full
                 "
-                /
-              >
+              />
             ) : (
               <div
                 className="
@@ -404,8 +425,7 @@ export default function HeroPage() {
                   bg-white/[0.03]
                   rounded-full border border-dashed border-white/10
                 "
-                /
-              >
+              />
             )}
 
             <p
@@ -413,14 +433,18 @@ export default function HeroPage() {
                 mt-6
                 text-zinc-500
               "
-            >Hi, I'm</p>
+            >
+              Hi, I'm
+            </p>
 
             <h1
               className="
                 mt-2
                 text-3xl font-bold
               "
-            >{name || "Your Name"}</h1>
+            >
+              {name || "Your Name"}
+            </h1>
 
             <h2
               className="

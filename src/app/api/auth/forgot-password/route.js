@@ -1,86 +1,63 @@
-import crypto from "crypto";
+import { connectDB } from "@/lib/database/db";
 
-import { connectDB } from "@/lib/db";
-import User from "@/models/User";
-import { sendResetEmail } from "@/lib/mail";
+import { validate } from "@/utils/validate";
 
-export async function POST(request) {
+import { forgotPasswordSchema } from "@/validators/auth";
+
+import { forgotPassword } from "@/services/user/user.service";
+
+export async function POST(
+  request,
+) {
   try {
     await connectDB();
 
-    const { email } = await request.json();
+    const body =
+      await request.json();
 
-    if (!email) {
+    const result = validate(
+      forgotPasswordSchema,
+      body,
+    );
+
+    if (!result.success) {
       return Response.json(
         {
           success: false,
-          message: "Email is required",
+          errors: result.errors,
         },
         {
           status: 400,
-        }
-      );
-    }
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return Response.json(
-        {
-          success: false,
-          message: "User not found",
         },
-        {
-          status: 404,
-        }
       );
     }
 
-    const resetToken = crypto
-      .randomBytes(32)
-      .toString("hex");
-
-    user.resetPasswordToken = resetToken;
-
-    user.resetPasswordExpires =
-      Date.now() + 1000 * 60 * 15;
-
-    await user.save();
-
-    const resetLink =
-      `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password/${resetToken}`;
-
-    await sendResetEmail(
-      user.email,
-      resetLink
+    await forgotPassword(
+      result.data.email,
     );
 
-    return Response.json({
-      success: true,
-      message:
-        "Password reset link sent successfully",
-    });
+    return Response.json(
+      {
+        success: true,
+        message:
+          "If an account exists with this email, a password reset link has been sent.",
+      },
+      {
+        status: 200,
+      },
+    );
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return Response.json(
       {
         success: false,
-        message: "Something went wrong",
+        message:
+          "Something went wrong",
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }
-
-// Receive Email
-//       ↓
-// Find User
-//       ↓
-// Generate Reset Token
-//       ↓
-// Save Token in MongoDB
-//       ↓
-// Send Gmail
