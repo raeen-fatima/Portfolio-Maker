@@ -1,66 +1,39 @@
+
 // "use client";
 
 // import EducationCard from "@/components/portfolio/education/EducationCard";
 // import EducationForm from "@/components/portfolio/education/EducationForm";
 // import { useEffect, useState } from "react";
-// import { toast } from "sonner";
+// // import { toast } from "sonner";
 // import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 // import { useRouter } from "next/navigation";
+
+// import { useEducation } from "@/hooks/portfolio/useEducation";
 
 // export default function EducationPage() {
 //   const [education, setEducation] = useState([]);
 //   const router = useRouter();
+
 //   const [editingEducation, setEditingEducation] = useState(null);
+//   const { loading, fetchEducation, deleteEducation } = useEducation();
 
-//   const fetchEducation = async () => {
-//     try {
-//       const response = await fetch("/api/dashboard/portfolio/education");
+//   const loadEducation = async () => {
+//     const data = await fetchEducation();
 
-//       const result = await response.json();
-
-//       if (!result.success) return;
-
-//       setEducation(result.education);
-//     } catch (error) {
-//       console.log(error);
-//     }
+//     setEducation(data);
 //   };
 
 //   useEffect(() => {
-//     const loadEducation = async () => {
-//       await fetchEducation();
-//     };
-
 //     loadEducation();
 //   }, []);
 
 //   const handleDelete = async (educationId) => {
-//     try {
-//       const response = await fetch("/api/dashboard/portfolio/education", {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           educationId,
-//         }),
-//       });
+//     const success = await deleteEducation(educationId);
 
-//       const result = await response.json();
-
-//       if (!response.ok) {
-//         toast.error(result.message);
-//         return;
-//       }
-
-//       toast.success(result.message);
-//       await fetchEducation();
-//     } catch (error) {
-//       console.log(error);
-//       toast.error("Something went wrong");
+//     if (success) {
+//       await loadEducation();
 //     }
 //   };
-
 //   return (
 //     <div
 //       className="
@@ -86,7 +59,7 @@
 //         <EducationForm
 //           editingEducation={editingEducation}
 //           setEditingEducation={setEditingEducation}
-//           fetchEducation={fetchEducation}
+//          fetchEducation={loadEducation}
 //         />
 //       </div>
 
@@ -230,14 +203,17 @@
 
 import EducationCard from "@/components/portfolio/education/EducationCard";
 import EducationForm from "@/components/portfolio/education/EducationForm";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // import { toast } from "sonner";
 import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 import { useRouter } from "next/navigation";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap/gsap";
 
 import { useEducation } from "@/hooks/portfolio/useEducation";
 
 export default function EducationPage() {
+  const containerRef = useRef(null);
   const [education, setEducation] = useState([]);
   const router = useRouter();
 
@@ -246,13 +222,28 @@ export default function EducationPage() {
 
   const loadEducation = async () => {
     const data = await fetchEducation();
-
     setEducation(data);
   };
 
   useEffect(() => {
     loadEducation();
   }, []);
+
+  useGSAP(
+    () => {
+      if (!loading && containerRef.current) {
+        gsap.from(".education-animate", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+        });
+      }
+    },
+    { dependencies: [loading, education.length], scope: containerRef }
+  );
 
   const handleDelete = async (educationId) => {
     const success = await deleteEducation(educationId);
@@ -261,23 +252,28 @@ export default function EducationPage() {
       await loadEducation();
     }
   };
+
   return (
     <div
+      ref={containerRef}
       className="
         max-w-7xl
         mx-auto space-y-8 p-6 lg:p-10
       "
     >
-      <BuilderHeader
-        title="Education"
-        description="Add your academic background, degrees, diplomas, and certifications."
-        step={6}
-        totalSteps={8}
-      />
+      <div className="education-animate">
+        <BuilderHeader
+          title="Education"
+          description="Add your academic background, degrees, diplomas, and certifications."
+          step={6}
+          totalSteps={8}
+        />
+      </div>
 
       {/* Form Section */}
       <div
         className="
+          education-animate
           p-6 lg:p-8
           bg-white/[0.03]
           rounded-[28px] border border-white/10
@@ -286,13 +282,14 @@ export default function EducationPage() {
         <EducationForm
           editingEducation={editingEducation}
           setEditingEducation={setEditingEducation}
-         fetchEducation={loadEducation}
+          fetchEducation={loadEducation}
         />
       </div>
 
       {/* Education List */}
       <div
         className="
+          education-animate
           p-6 lg:p-8
           bg-white/[0.03]
           rounded-[28px] border border-white/10
@@ -383,6 +380,7 @@ export default function EducationPage() {
       {/* Navigation */}
       <div
         className="
+          education-animate
           flex flex-col sm:flex-row
           gap-3
         "
@@ -391,16 +389,16 @@ export default function EducationPage() {
           type="button"
           onClick={() => router.push("/dashboard/portfolio/experience")}
           className="
-          flex-1
-          rounded-2xl
-          border
-          border-white/10
-          py-3.5
-          font-medium
-          text-white
-          transition
-          hover:bg-white/[0.04]
-        "
+            flex-1
+            rounded-2xl
+            border
+            border-white/10
+            py-3.5
+            font-medium
+            text-white
+            transition
+            hover:bg-white/[0.04]
+          "
         >
           ← Back
         </button>
@@ -409,15 +407,15 @@ export default function EducationPage() {
           type="button"
           onClick={() => router.push("/dashboard/portfolio/certifications")}
           className="
-          flex-1
-          rounded-2xl
-          bg-white
-          py-3.5
-          font-medium
-          text-black
-          transition
-          hover:opacity-90
-        "
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
         >
           Continue →
         </button>

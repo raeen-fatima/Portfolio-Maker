@@ -1,6 +1,9 @@
+
+
 // "use client";
 
 // import { useEffect, useState } from "react";
+// import useSkills from "@/hooks/portfolio/useSkills";
 // import { toast } from "sonner";
 // import { useRouter } from "next/navigation";
 
@@ -12,69 +15,38 @@
 //   const [skills, setSkills] = useState([]);
 
 //   const router = useRouter();
+//   const {
+//   loading,
+//   fetchSkills,
+//   deleteSkill,
+// } = useSkills();
 
-//   const fetchSkills = async () => {
-//     try {
-//       const response = await fetch(
-//         "/api/dashboard/portfolio/skills"
-//       );
-
-//       const result =
-//         await response.json();
-
-//       if (!result.success) return;
-
-//       setSkills(result.skills);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
+ 
 //   useEffect(() => {
-//     fetchSkills();
-//   }, []);
+//   async function loadSkills() {
+//     const data = await fetchSkills();
+//     setSkills(data);
+//   }
 
-//   const handleDelete = async (
-//     skillId
-//   ) => {
-//     try {
-//       const response = await fetch(
-//         "/api/dashboard/portfolio/skills",
-//         {
-//           method: "DELETE",
-//           headers: {
-//             "Content-Type":
-//               "application/json",
-//           },
-//           body: JSON.stringify({
-//             skillId,
-//           }),
-//         }
-//       );
+//   loadSkills();
+// }, [fetchSkills]);
 
-//       const result =
-//         await response.json();
+//   const handleDelete = async (skillId) => {
+//   const result = await deleteSkill(skillId);
 
-//       if (!response.ok) {
-//         toast.error(
-//           result.message
-//         );
-//         return;
-//       }
+//   if (!result.success) {
+//     toast.error(result.data.message);
+//     return;
+//   }
 
-//       toast.success(
-//         result.message
-//       );
+//   toast.success(result.data.message);
 
-//       await fetchSkills();
-//     } catch (error) {
-//       console.log(error);
+//   const updatedSkills = await fetchSkills();
+//   setSkills(updatedSkills);
+// };
 
-//       toast.error(
-//         "Something went wrong"
-//       );
-//     }
-//   };
+
+
 
 //   return (
 //     <div className="space-y-8 p-6 lg:p-10">
@@ -303,67 +275,93 @@
 //   );
 // }
 
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useSkills from "@/hooks/portfolio/useSkills";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap/gsap";
 
 import SkillForm from "@/components/portfolio/skills/SkillForm";
 import SkillCard from "@/components/portfolio/skills/SkillCard";
 import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 
 export default function SkillsPage() {
+  const containerRef = useRef(null);
   const [skills, setSkills] = useState([]);
 
   const router = useRouter();
-  const {
-  loading,
-  fetchSkills,
-  deleteSkill,
-} = useSkills();
+  const { loading, fetchSkills, deleteSkill } = useSkills();
 
- 
   useEffect(() => {
-  async function loadSkills() {
-    const data = await fetchSkills();
-    setSkills(data);
-  }
+    async function loadSkills() {
+      const data = await fetchSkills();
+      setSkills(data);
+    }
 
-  loadSkills();
-}, [fetchSkills]);
+    loadSkills();
+  }, [fetchSkills]);
+
+  useGSAP(
+    () => {
+      if (!loading && containerRef.current) {
+        gsap.from(".skills-animate", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+        });
+         gsap.from(".template-animate", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+        });
+      }
+    },
+    { dependencies: [loading, skills.length], scope: containerRef }
+  );
 
   const handleDelete = async (skillId) => {
-  const result = await deleteSkill(skillId);
+    const result = await deleteSkill(skillId);
 
-  if (!result.success) {
-    toast.error(result.data.message);
-    return;
-  }
+    if (!result.success) {
+      toast.error(result.data.message);
+      return;
+    }
 
-  toast.success(result.data.message);
+    toast.success(result.data.message);
 
-  const updatedSkills = await fetchSkills();
-  setSkills(updatedSkills);
-};
-
-
-
+    const updatedSkills = await fetchSkills();
+    setSkills(updatedSkills);
+  };
 
   return (
-    <div className="space-y-8 p-6 lg:p-10">
+    <div
+      ref={containerRef}
+      className="space-y-8 p-6 lg:p-10"
+    >
       {/* Header */}
-      <BuilderHeader
-        title="Skills"
-        description="Add the technologies, frameworks and tools you use."
-        step={3}
-        totalSteps={8}
-      />
+      <div className="skills-animate">
+        <BuilderHeader
+          title="Skills"
+          description="Add the technologies, frameworks and tools you use."
+          step={3}
+          totalSteps={8}
+        />
+      </div>
 
       {/* Add Skill */}
       <div
         className="
+          skills-animate
           rounded-[28px]
           border
           border-white/10
@@ -389,23 +387,19 @@ export default function SkillsPage() {
               text-zinc-500
             "
           >
-            Add technologies that
-            showcase your expertise.
+            Add technologies that showcase your expertise.
           </p>
         </div>
 
         <div className="mt-6">
-          <SkillForm
-            fetchSkills={
-              fetchSkills
-            }
-          />
+          <SkillForm fetchSkills={fetchSkills} />
         </div>
       </div>
 
-      {/* Skills */}
+      {/* Skills List */}
       <div
         className="
+          skills-animate
           rounded-[28px]
           border
           border-white/10
@@ -441,9 +435,7 @@ export default function SkillsPage() {
                 text-zinc-500
               "
             >
-              Technologies currently
-              displayed on your
-              portfolio.
+              Technologies currently displayed on your portfolio.
             </p>
           </div>
 
@@ -494,9 +486,7 @@ export default function SkillsPage() {
                 text-zinc-500
               "
             >
-              Add your first skill to
-              start building your
-              portfolio.
+              Add your first skill to start building your portfolio.
             </p>
           </div>
         ) : (
@@ -509,24 +499,21 @@ export default function SkillsPage() {
               xl:grid-cols-3
             "
           >
-            {skills.map(
-              (skill) => (
-                <SkillCard
-                  key={skill._id}
-                  skill={skill}
-                  onDelete={
-                    handleDelete
-                  }
-                />
-              )
-            )}
+            {skills.map((skill) => (
+              <SkillCard
+                key={skill._id}
+                skill={skill}
+                onDelete={handleDelete}
+              />
+            ))}
           </div>
         )}
       </div>
 
-      {/* Footer */}
+      {/* Footer Navigation */}
       <div
         className="
+          skills-animate
           flex
           flex-col
           gap-3
@@ -534,11 +521,7 @@ export default function SkillsPage() {
         "
       >
         <button
-        onClick={() =>
-            router.push(
-              "/dashboard/portfolio/about"
-            )
-          }
+          onClick={() => router.push("/dashboard/portfolio/about")}
           className="
             flex-1
             rounded-2xl
@@ -551,15 +534,11 @@ export default function SkillsPage() {
             hover:bg-white/[0.04]
           "
         >
-         Back
+          Back
         </button>
 
         <button
-          onClick={() =>
-            router.push(
-              "/dashboard/portfolio/projects"
-            )
-          }
+          onClick={() => router.push("/dashboard/portfolio/projects")}
           className="
             flex-1
             rounded-2xl

@@ -1,3 +1,9 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap/gsap";
+
 function formatMonth(dateString) {
   if (!dateString) return "";
 
@@ -21,84 +27,100 @@ function formatMonth(dateString) {
   return `${months[Number(month) - 1]} ${year}`;
 }
 
-export default function Experience({
-  experience,
-}) {
+export default function Experience({ experience }) {
+  const containerRef = useRef(null);
+
+  useGSAP(
+    () => {
+      if (!experience?.length) return;
+
+      if (typeof window !== "undefined") {
+        ScrollTrigger.refresh();
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // Smooth Header Reveal
+      tl.fromTo(
+        ".exp-header",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          clearProps: "all",
+        }
+      )
+        // Vertical Timeline Line Animation
+        .fromTo(
+          ".exp-line",
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            transformOrigin: "top center",
+            duration: 0.8,
+            ease: "power2.out",
+            clearProps: "all",
+          },
+          "-=0.3"
+        )
+        // Staggered Timeline Items Reveal
+        .fromTo(
+          ".exp-item",
+          { opacity: 0, x: -20 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.15,
+            ease: "power3.out",
+            clearProps: "all",
+          },
+          "-=0.6"
+        );
+    },
+    { scope: containerRef, dependencies: [experience] }
+  );
+
   if (!experience?.length) return null;
 
   return (
     <section
+      ref={containerRef}
       id="experience"
-      className="
-        border-b
-        border-zinc-200
-        bg-white
-      "
+      className="border-b border-zinc-200 bg-white"
     >
       <div className="mx-auto max-w-7xl px-6 py-24">
         {/* Header */}
-        <div className="max-w-2xl">
-          <p
-            className="
-              text-xs
-              uppercase
-              tracking-[0.35em]
-              text-zinc-500
-            "
-          >
+        <div className="exp-header max-w-2xl">
+          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">
             Experience
           </p>
 
-          <h2
-            className="
-              mt-4
-              text-4xl
-              font-bold
-              tracking-tight
-              text-black
-              md:text-5xl
-            "
-          >
-            Professional journey &
-            work experience.
+          <h2 className="mt-4 text-4xl font-bold tracking-tight text-black md:text-5xl">
+            Professional journey & work experience.
           </h2>
 
-          <p
-            className="
-              mt-6
-              text-lg
-              leading-8
-              text-zinc-500
-            "
-          >
-            My internships, freelance work,
-            and professional experiences that
+          <p className="mt-6 text-lg leading-8 text-zinc-500">
+            My internships, freelance work, and professional experiences that
             helped shape my skills.
           </p>
         </div>
 
         {/* Timeline */}
         <div className="relative mt-20">
-          <div
-            className="
-              absolute
-              left-1.75
-              top-0
-              h-full
-              w-px
-              bg-zinc-200
-            "
-          />
+          <div className="exp-line absolute left-1.75 top-0 h-full w-px bg-zinc-200" />
 
           <div className="space-y-16">
             {experience.map((item) => (
-              <div
-                key={item._id}
-                className="
-                  relative
-                  pl-12
-                "
-              >
+              <div key={item._id} className="exp-item relative pl-12">
                 {/* Dot */}
                 <div
                   className="
@@ -134,9 +156,7 @@ export default function Experience({
 
                     {item.current
                       ? " — Present"
-                      : ` — ${formatMonth(
-                          item.endDate
-                        )}`}
+                      : ` — ${formatMonth(item.endDate)}`}
                   </span>
 
                   {item.current && (
@@ -157,53 +177,23 @@ export default function Experience({
                 </div>
 
                 {/* Role */}
-                <h3
-                  className="
-                    mt-5
-                    text-2xl
-                    font-bold
-                    tracking-tight
-                    text-black
-                    md:text-3xl
-                  "
-                >
+                <h3 className="mt-5 text-2xl font-bold tracking-tight text-black md:text-3xl">
                   {item.role}
                 </h3>
 
                 {/* Company */}
-                <p
-                  className="
-                    mt-2
-                    text-lg
-                    font-medium
-                    text-zinc-800
-                  "
-                >
+                <p className="mt-2 text-lg font-medium text-zinc-800">
                   {item.company}
                 </p>
 
                 {/* Location */}
                 {item.location && (
-                  <p
-                    className="
-                      mt-1
-                      text-zinc-500
-                    "
-                  >
-                    {item.location}
-                  </p>
+                  <p className="mt-1 text-zinc-500">{item.location}</p>
                 )}
 
                 {/* Description */}
                 {item.description && (
-                  <p
-                    className="
-                      mt-6
-                      max-w-3xl
-                      leading-8
-                      text-zinc-600
-                    "
-                  >
+                  <p className="mt-6 max-w-3xl leading-8 text-zinc-600">
                     {item.description}
                   </p>
                 )}

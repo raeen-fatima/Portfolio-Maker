@@ -1,3 +1,207 @@
+// function formatMonth(dateString) {
+//   if (!dateString) return "";
+
+//   const [year, month] = dateString.split("-");
+
+//   const months = [
+//     "Jan",
+//     "Feb",
+//     "Mar",
+//     "Apr",
+//     "May",
+//     "Jun",
+//     "Jul",
+//     "Aug",
+//     "Sep",
+//     "Oct",
+//     "Nov",
+//     "Dec",
+//   ];
+
+//   return `${months[Number(month) - 1]} ${year}`;
+// }
+
+// export default function Education({
+//   education,
+// }) {
+//   if (!education?.length) return null;
+
+//   return (
+//     <section
+//       id="education"
+//       className="
+//         bg-black
+//         px-6
+//         py-24
+//         text-zinc-100
+//       "
+//     >
+//       <div className="mx-auto max-w-6xl">
+//         <div
+//           className="
+//             overflow-hidden
+//             rounded-3xl
+//             border
+//             border-zinc-800
+//             bg-zinc-950
+//           "
+//         >
+//           {/* Terminal Header */}
+//           <div
+//             className="
+//               flex
+//               items-center
+//               gap-2
+//               border-b
+//               border-zinc-800
+//               px-5
+//               py-4
+//             "
+//           >
+//             <div className="h-3 w-3 rounded-full bg-red-500" />
+//             <div className="h-3 w-3 rounded-full bg-yellow-500" />
+//             <div className="h-3 w-3 rounded-full bg-green-500" />
+
+//             <span
+//               className="
+//                 ml-4
+//                 text-sm
+//                 text-zinc-500
+//               "
+//             >
+//               education.log
+//             </span>
+//           </div>
+
+//           {/* Content */}
+//           <div
+//             className="
+//               p-8
+//               font-mono
+//               md:p-12
+//             "
+//           >
+//             <p className="text-green-500">
+//               $ cat education.log
+//             </p>
+
+//             <div className="mt-10 space-y-10">
+//               {education.map((item) => (
+//                 <div
+//                   key={item._id}
+//                   className="
+//                     border-l-2
+//                     border-green-500
+//                     pl-6
+//                   "
+//                 >
+//                   {/* Date */}
+//                   <p
+//                     className="
+//                       text-sm
+//                       text-green-400
+//                     "
+//                   >
+//                     [
+//                     {formatMonth(
+//                       item.startYear
+//                     )}
+
+//                     {item.endYear
+//                       ? ` - ${formatMonth(
+//                           item.endYear
+//                         )}`
+//                       : " - Present"}
+//                     ]
+//                   </p>
+
+//                   {/* Degree */}
+//                   <h3
+//                     className="
+//                       mt-3
+//                       text-xl
+//                       font-bold
+//                       text-white
+//                     "
+//                   >
+//                     {item.degree}
+//                   </h3>
+
+//                   {/* Institution */}
+//                   <p
+//                     className="
+//                       mt-2
+//                       text-zinc-400
+//                     "
+//                   >
+//                     {item.institution}
+//                   </p>
+
+//                   {/* Location */}
+//                   {item.location && (
+//                     <p
+//                       className="
+//                         mt-1
+//                         text-sm
+//                         text-zinc-500
+//                       "
+//                     >
+//                       {item.location}
+//                     </p>
+//                   )}
+
+//                   {/* Description */}
+//                   {item.description && (
+//                     <p
+//                       className="
+//                         mt-4
+//                         leading-7
+//                         text-zinc-400
+//                       "
+//                     >
+//                       {item.description}
+//                     </p>
+//                   )}
+//                 </div>
+//               ))}
+//             </div>
+
+//             {/* Cursor */}
+//             <div
+//               className="
+//                 mt-10
+//                 flex
+//                 items-center
+//                 gap-2
+//                 text-green-500
+//               "
+//             >
+//               <span>$</span>
+
+//               <span
+//                 className="
+//                   h-5
+//                   w-3
+//                   animate-pulse
+//                   bg-green-500
+//                 "
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap/gsap";
+
 function formatMonth(dateString) {
   if (!dateString) return "";
 
@@ -21,144 +225,111 @@ function formatMonth(dateString) {
   return `${months[Number(month) - 1]} ${year}`;
 }
 
-export default function Education({
-  education,
-}) {
+export default function Education({ education }) {
+  const containerRef = useRef(null);
+
+  useGSAP(
+    () => {
+      if (!education?.length) return;
+
+      if (typeof window !== "undefined") {
+        ScrollTrigger.refresh();
+      }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      tl.fromTo(
+        ".edu-terminal-box",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          clearProps: "all",
+        }
+      ).fromTo(
+        ".edu-terminal-item",
+        { opacity: 0, x: -15 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power3.out",
+          clearProps: "all",
+        },
+        "-=0.3"
+      );
+    },
+    { scope: containerRef, dependencies: [education] }
+  );
+
   if (!education?.length) return null;
 
   return (
     <section
+      ref={containerRef}
       id="education"
-      className="
-        bg-black
-        px-6
-        py-24
-        text-zinc-100
-      "
+      className="bg-black px-6 py-24 text-zinc-100"
     >
       <div className="mx-auto max-w-6xl">
-        <div
-          className="
-            overflow-hidden
-            rounded-3xl
-            border
-            border-zinc-800
-            bg-zinc-950
-          "
-        >
+        <div className="edu-terminal-box overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 shadow-2xl">
           {/* Terminal Header */}
-          <div
-            className="
-              flex
-              items-center
-              gap-2
-              border-b
-              border-zinc-800
-              px-5
-              py-4
-            "
-          >
+          <div className="flex items-center gap-2 border-b border-zinc-800 px-5 py-4">
             <div className="h-3 w-3 rounded-full bg-red-500" />
             <div className="h-3 w-3 rounded-full bg-yellow-500" />
             <div className="h-3 w-3 rounded-full bg-green-500" />
 
-            <span
-              className="
-                ml-4
-                text-sm
-                text-zinc-500
-              "
-            >
+            <span className="ml-4 text-sm font-mono text-zinc-500">
               education.log
             </span>
           </div>
 
           {/* Content */}
-          <div
-            className="
-              p-8
-              font-mono
-              md:p-12
-            "
-          >
-            <p className="text-green-500">
-              $ cat education.log
-            </p>
+          <div className="p-8 font-mono md:p-12">
+            <p className="text-green-500">$ cat education.log</p>
 
             <div className="mt-10 space-y-10">
-              {education.map((item) => (
+              {education.map((item, index) => (
                 <div
-                  key={item._id}
-                  className="
-                    border-l-2
-                    border-green-500
-                    pl-6
-                  "
+                  key={item._id || index}
+                  className="edu-terminal-item border-l-2 border-green-500 pl-6"
                 >
                   {/* Date */}
-                  <p
-                    className="
-                      text-sm
-                      text-green-400
-                    "
-                  >
+                  <p className="text-sm text-green-400">
                     [
-                    {formatMonth(
-                      item.startYear
-                    )}
-
+                    {formatMonth(item.startYear)}
                     {item.endYear
-                      ? ` - ${formatMonth(
-                          item.endYear
-                        )}`
+                      ? ` - ${formatMonth(item.endYear)}`
                       : " - Present"}
                     ]
                   </p>
 
                   {/* Degree */}
-                  <h3
-                    className="
-                      mt-3
-                      text-xl
-                      font-bold
-                      text-white
-                    "
-                  >
+                  <h3 className="mt-3 text-xl font-bold text-white">
                     {item.degree}
                   </h3>
 
                   {/* Institution */}
-                  <p
-                    className="
-                      mt-2
-                      text-zinc-400
-                    "
-                  >
-                    {item.institution}
-                  </p>
+                  <p className="mt-2 text-zinc-400">{item.institution}</p>
 
                   {/* Location */}
                   {item.location && (
-                    <p
-                      className="
-                        mt-1
-                        text-sm
-                        text-zinc-500
-                      "
-                    >
+                    <p className="mt-1 text-sm text-zinc-500">
                       {item.location}
                     </p>
                   )}
 
                   {/* Description */}
                   {item.description && (
-                    <p
-                      className="
-                        mt-4
-                        leading-7
-                        text-zinc-400
-                      "
-                    >
+                    <p className="mt-4 leading-7 text-zinc-400">
                       {item.description}
                     </p>
                   )}
@@ -167,25 +338,9 @@ export default function Education({
             </div>
 
             {/* Cursor */}
-            <div
-              className="
-                mt-10
-                flex
-                items-center
-                gap-2
-                text-green-500
-              "
-            >
+            <div className="mt-10 flex items-center gap-2 text-green-500">
               <span>$</span>
-
-              <span
-                className="
-                  h-5
-                  w-3
-                  animate-pulse
-                  bg-green-500
-                "
-              />
+              <span className="h-5 w-3 animate-pulse bg-green-500" />
             </div>
           </div>
         </div>

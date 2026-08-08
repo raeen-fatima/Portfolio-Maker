@@ -1,64 +1,36 @@
+
+
 // "use client";
 
 // import ExperienceCard from "@/components/portfolio/experience/ExperienceCard";
 // import ExperienceForm from "@/components/portfolio/experience/ExperienceForm";
 // import { useEffect, useState } from "react";
-// import { toast } from "sonner";
+// // import { toast } from "sonner";
 // import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 // import { useRouter } from "next/navigation";
+// import { useExperience } from "@/hooks/portfolio/useExperience";
 
 // export default function ExperiencePage() {
 //   const router = useRouter();
 //   const [experience, setExperience] = useState([]);
 //   const [editingExperience, setEditingExperience] = useState(null);
+//   const { loading, fetchExperience, deleteExperience } = useExperience();
 
-//   const fetchExperience = async () => {
-//     try {
-//       const response = await fetch("/api/dashboard/portfolio/experience");
+//   const loadExperience = async () => {
+//     const data = await fetchExperience();
 
-//       const result = await response.json();
-
-//       if (!result.success) return;
-
-//       setExperience(result.experience);
-//     } catch (error) {
-//       console.log(error);
-//     }
+//     setExperience(data);
 //   };
 
 //   useEffect(() => {
-//     const loadExperience = async () => {
-//       await fetchExperience();
-//     };
-
 //     loadExperience();
 //   }, []);
 
 //   const handleDelete = async (experienceId) => {
-//     try {
-//       const response = await fetch("/api/dashboard/portfolio/experience", {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           experienceId,
-//         }),
-//       });
+//     const success = await deleteExperience(experienceId);
 
-//       const result = await response.json();
-
-//       if (!response.ok) {
-//         toast.error(result.message);
-//         return;
-//       }
-
-//       toast.success(result.message);
-
-//       await fetchExperience();
-//     } catch (error) {
-//       console.log(error);
-//       toast.error("Something went wrong");
+//     if (success) {
+//       await loadExperience();
 //     }
 //   };
 
@@ -111,7 +83,7 @@
 //           <ExperienceForm
 //             editingExperience={editingExperience}
 //             setEditingExperience={setEditingExperience}
-//             fetchExperience={fetchExperience}
+//             fetchExperience={loadExperience}
 //           />
 //         </div>
 //       </div>
@@ -257,13 +229,16 @@
 
 import ExperienceCard from "@/components/portfolio/experience/ExperienceCard";
 import ExperienceForm from "@/components/portfolio/experience/ExperienceForm";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // import { toast } from "sonner";
 import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 import { useRouter } from "next/navigation";
 import { useExperience } from "@/hooks/portfolio/useExperience";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap/gsap";
 
 export default function ExperiencePage() {
+  const containerRef = useRef(null);
   const router = useRouter();
   const [experience, setExperience] = useState([]);
   const [editingExperience, setEditingExperience] = useState(null);
@@ -271,13 +246,28 @@ export default function ExperiencePage() {
 
   const loadExperience = async () => {
     const data = await fetchExperience();
-
     setExperience(data);
   };
 
   useEffect(() => {
     loadExperience();
   }, []);
+
+  useGSAP(
+    () => {
+      if (!loading && containerRef.current) {
+        gsap.from(".experience-animate", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+        });
+      }
+    },
+    { dependencies: [loading, experience.length], scope: containerRef }
+  );
 
   const handleDelete = async (experienceId) => {
     const success = await deleteExperience(experienceId);
@@ -289,21 +279,25 @@ export default function ExperiencePage() {
 
   return (
     <div
+      ref={containerRef}
       className="
         max-w-7xl
         mx-auto space-y-8 p-6 lg:p-10
       "
     >
-      <BuilderHeader
-        title="Experience"
-        description="Add your work experience, internships, freelance work, and professional roles."
-        step={5}
-        totalSteps={8}
-      />
+      <div className="experience-animate">
+        <BuilderHeader
+          title="Experience"
+          description="Add your work experience, internships, freelance work, and professional roles."
+          step={5}
+          totalSteps={8}
+        />
+      </div>
 
       {/* Form */}
       <div
         className="
+          experience-animate
           p-6 lg:p-8
           bg-white/[0.03]
           rounded-[28px] border border-white/10
@@ -344,6 +338,7 @@ export default function ExperiencePage() {
       {/* Experience List */}
       <div
         className="
+          experience-animate
           p-6 lg:p-8
           bg-white/[0.03]
           rounded-[28px] border border-white/10
@@ -434,6 +429,7 @@ export default function ExperiencePage() {
       {/* Navigation */}
       <div
         className="
+          experience-animate
           flex flex-col sm:flex-row
           gap-3
         "
@@ -442,16 +438,16 @@ export default function ExperiencePage() {
           type="button"
           onClick={() => router.push("/dashboard/portfolio/projects")}
           className="
-          flex-1
-          rounded-2xl
-          border
-          border-white/10
-          py-3.5
-          font-medium
-          text-white
-          transition
-          hover:bg-white/[0.04]
-        "
+            flex-1
+            rounded-2xl
+            border
+            border-white/10
+            py-3.5
+            font-medium
+            text-white
+            transition
+            hover:bg-white/[0.04]
+          "
         >
           ← Back
         </button>
@@ -460,15 +456,15 @@ export default function ExperiencePage() {
           type="button"
           onClick={() => router.push("/dashboard/portfolio/education")}
           className="
-          flex-1
-          rounded-2xl
-          bg-white
-          py-3.5
-          font-medium
-          text-black
-          transition
-          hover:opacity-90
-        "
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
         >
           Continue →
         </button>

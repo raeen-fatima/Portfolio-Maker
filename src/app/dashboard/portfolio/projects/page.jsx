@@ -1,3 +1,4 @@
+
 // "use client";
 // import ProjectForm from "@/components/portfolio/projects/ProjectForm";
 // import ProjectCard from "@/components/portfolio/projects/ProjectCard";
@@ -5,61 +6,41 @@
 // import { toast } from "sonner";
 // import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 // import { useRouter } from "next/navigation";
-
+// import useProjects from "@/hooks/portfolio/useProjects";
 
 // export default function ProjectsPage() {
 //   const [projects, setProjects] = useState([]);
 //   const [editingProject, setEditingProject] = useState(null);
 //   const router = useRouter();
+//   const {
+//   loading,
+//   fetchProjects,
+//   deleteProject,
+// } = useProjects();
+  
 
-//   const fetchProjects = async () => {
-//     try {
-//       const response = await fetch("/api/dashboard/portfolio/projects");
+//  useEffect(() => {
+//   async function loadProjects() {
+//     const data = await fetchProjects();
+//     setProjects(data);
+//   }
 
-//       const result = await response.json();
-
-//       if (!result.success) return;
-
-//       setProjects(result.projects);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     const loadProjects = async () => {
-//       await fetchProjects();
-//     };
-
-//     loadProjects();
-//   }, []);
+//   loadProjects();
+// }, [fetchProjects]);
 
 //   const handleDelete = async (projectId) => {
-//     try {
-//       const response = await fetch("/api/dashboard/portfolio/projects", {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           projectId,
-//         }),
-//       });
+//   const result = await deleteProject(projectId);
 
-//       const result = await response.json();
+//   if (!result.success) {
+//     toast.error(result.data.message);
+//     return;
+//   }
 
-//       if (!response.ok) {
-//         toast.error(result.message);
-//         return;
-//       }
+//   toast.success(result.data.message);
 
-//       toast.success(result.message);
-
-//       fetchProjects();
-//     } catch (error) {
-//       toast.error("Something went wrong");
-//     }
-//   };
+//   const updatedProjects = await fetchProjects();
+//   setProjects(updatedProjects);
+// };
 //   return (
 //     <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10">
 //       {/* Header */}
@@ -237,68 +218,92 @@
 //   );
 // }
 
+
 "use client";
+
 import ProjectForm from "@/components/portfolio/projects/ProjectForm";
 import ProjectCard from "@/components/portfolio/projects/ProjectCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import BuilderHeader from "@/components/portfolio/builder/BuilderHeader";
 import { useRouter } from "next/navigation";
 import useProjects from "@/hooks/portfolio/useProjects";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap/gsap";
 
 export default function ProjectsPage() {
+  const containerRef = useRef(null);
   const [projects, setProjects] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
   const router = useRouter();
-  const {
-  loading,
-  fetchProjects,
-  deleteProject,
-} = useProjects();
-  
 
- useEffect(() => {
-  async function loadProjects() {
-    const data = await fetchProjects();
-    setProjects(data);
-  }
+  const { loading, fetchProjects, deleteProject } = useProjects();
 
-  loadProjects();
-}, [fetchProjects]);
+  useEffect(() => {
+    async function loadProjects() {
+      const data = await fetchProjects();
+      setProjects(data);
+    }
+
+    loadProjects();
+  }, [fetchProjects]);
+
+  useGSAP(
+    () => {
+      if (!loading && containerRef.current) {
+        gsap.from(".projects-animate", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: "power2.out",
+          clearProps: "opacity,transform",
+        });
+      }
+    },
+    { dependencies: [loading, projects.length], scope: containerRef }
+  );
 
   const handleDelete = async (projectId) => {
-  const result = await deleteProject(projectId);
+    const result = await deleteProject(projectId);
 
-  if (!result.success) {
-    toast.error(result.data.message);
-    return;
-  }
+    if (!result.success) {
+      toast.error(result.data.message);
+      return;
+    }
 
-  toast.success(result.data.message);
+    toast.success(result.data.message);
 
-  const updatedProjects = await fetchProjects();
-  setProjects(updatedProjects);
-};
+    const updatedProjects = await fetchProjects();
+    setProjects(updatedProjects);
+  };
+
   return (
-    <div className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10">
+    <div
+      ref={containerRef}
+      className="mx-auto max-w-7xl space-y-8 p-6 lg:p-10"
+    >
       {/* Header */}
-      <BuilderHeader
-        title="Projects"
-        description="Showcase your best work and highlight projects that represent your skills."
-        step={4}
-        totalSteps={8}
-      />
+      <div className="projects-animate">
+        <BuilderHeader
+          title="Projects"
+          description="Showcase your best work and highlight projects that represent your skills."
+          step={4}
+          totalSteps={8}
+        />
+      </div>
 
       {/* Project Form */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          projects-animate
+          rounded-[28px]
+          border
+          border-white/10
+          bg-white/[0.03]
+          p-6
+          lg:p-8
+        "
       >
         <div>
           <h2 className="text-xl font-semibold text-white">
@@ -319,26 +324,27 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      {/* Projects */}
+      {/* Projects List */}
       <div
         className="
-        rounded-[28px]
-        border
-        border-white/10
-        bg-white/[0.03]
-        p-6
-        lg:p-8
-      "
+          projects-animate
+          rounded-[28px]
+          border
+          border-white/10
+          bg-white/[0.03]
+          p-6
+          lg:p-8
+        "
       >
         <div
           className="
-          flex
-          flex-col
-          gap-4
-          sm:flex-row
-          sm:items-center
-          sm:justify-between
-        "
+            flex
+            flex-col
+            gap-4
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
+          "
         >
           <div>
             <h2 className="text-xl font-semibold text-white">Your Projects</h2>
@@ -350,17 +356,17 @@ export default function ProjectsPage() {
 
           <div
             className="
-            inline-flex
-            items-center
-            rounded-full
-            border
-            border-white/10
-            bg-white/[0.03]
-            px-4
-            py-2
-            text-sm
-            text-zinc-400
-          "
+              inline-flex
+              items-center
+              rounded-full
+              border
+              border-white/10
+              bg-white/[0.03]
+              px-4
+              py-2
+              text-sm
+              text-zinc-400
+            "
           >
             {projects.length} Projects
           </div>
@@ -369,15 +375,15 @@ export default function ProjectsPage() {
         {projects.length === 0 ? (
           <div
             className="
-            mt-8
-            rounded-3xl
-            border
-            border-dashed
-            border-white/10
-            bg-white/[0.02]
-            p-12
-            text-center
-          "
+              mt-8
+              rounded-3xl
+              border
+              border-dashed
+              border-white/10
+              bg-white/[0.02]
+              p-12
+              text-center
+            "
           >
             <h3 className="text-lg font-semibold text-white">
               No projects added yet
@@ -390,11 +396,11 @@ export default function ProjectsPage() {
         ) : (
           <div
             className="
-            mt-8
-            grid
-            gap-5
-            md:grid-cols-2
-          "
+              mt-8
+              grid
+              gap-5
+              md:grid-cols-2
+            "
           >
             {projects.map((project) => (
               <ProjectCard
@@ -411,26 +417,27 @@ export default function ProjectsPage() {
       {/* Footer Navigation */}
       <div
         className="
-        flex
-        flex-col
-        gap-3
-        sm:flex-row
-      "
+          projects-animate
+          flex
+          flex-col
+          gap-3
+          sm:flex-row
+        "
       >
         <button
           type="button"
           onClick={() => router.push("/dashboard/portfolio/skills")}
           className="
-          flex-1
-          rounded-2xl
-          border
-          border-white/10
-          py-3.5
-          font-medium
-          text-white
-          transition
-          hover:bg-white/[0.04]
-        "
+            flex-1
+            rounded-2xl
+            border
+            border-white/10
+            py-3.5
+            font-medium
+            text-white
+            transition
+            hover:bg-white/[0.04]
+          "
         >
           ← Back
         </button>
@@ -439,15 +446,15 @@ export default function ProjectsPage() {
           type="button"
           onClick={() => router.push("/dashboard/portfolio/experience")}
           className="
-          flex-1
-          rounded-2xl
-          bg-white
-          py-3.5
-          font-medium
-          text-black
-          transition
-          hover:opacity-90
-        "
+            flex-1
+            rounded-2xl
+            bg-white
+            py-3.5
+            font-medium
+            text-black
+            transition
+            hover:opacity-90
+          "
         >
           Continue →
         </button>
