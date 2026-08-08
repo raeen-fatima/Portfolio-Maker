@@ -299,13 +299,16 @@ export default function Navbar({ heroData }) {
     <div ref={containerRef}>
       <header
         className="
-          sticky
+          fixed
           top-0
-          z-20
+          left-0
+          right-0
+          w-full
+          z-30
           border-b
           border-zinc-800
           bg-black/90
-          backdrop-blur
+          backdrop-blur-md
         "
       >
         <div className="mx-auto max-w-6xl px-4 md:px-6">
@@ -320,7 +323,7 @@ export default function Navbar({ heroData }) {
                 text-green-500
                 font-semibold
                 hover:text-green-400
-                transition
+                transition-colors
               "
             >
               $ whoami
@@ -344,7 +347,7 @@ export default function Navbar({ heroData }) {
                   className="
                     nav-terminal-animate
                     text-zinc-400
-                    transition
+                    transition-colors
                     hover:text-green-500
                   "
                 >
@@ -366,7 +369,7 @@ export default function Navbar({ heroData }) {
               {heroData?.name}
             </div>
 
-            {/* Mobile Button */}
+            {/* Mobile Menu Button */}
             <button
               type="button"
               onClick={() => setOpen(true)}
@@ -374,14 +377,19 @@ export default function Navbar({ heroData }) {
               className="
                 nav-terminal-animate
                 text-green-500
+                p-1
+                hover:text-green-400
                 lg:hidden
               "
             >
-              <Menu size={20} />
+              <Menu size={22} />
             </button>
           </div>
         </div>
       </header>
+
+      {/* Spacer to prevent content overlap caused by fixed header */}
+      <div className="h-16" />
 
       {/* Overlay */}
       {open && (
@@ -390,8 +398,9 @@ export default function Navbar({ heroData }) {
           className="
             fixed
             inset-0
-            z-30
-            bg-black/70
+            z-40
+            bg-black/80
+            backdrop-blur-xs
             lg:hidden
           "
         />
@@ -403,7 +412,7 @@ export default function Navbar({ heroData }) {
           fixed
           top-0
           right-0
-          z-40
+          z-50
           h-screen
           w-72
           border-l
@@ -411,6 +420,7 @@ export default function Navbar({ heroData }) {
           bg-black
           transition-transform
           duration-300
+          ease-in-out
           lg:hidden
           ${open ? "translate-x-0" : "translate-x-full"}
         `}
@@ -454,13 +464,15 @@ export default function Navbar({ heroData }) {
             aria-label="Close menu"
             className="
               text-green-500
+              p-1
+              hover:text-green-400
             "
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Links */}
+        {/* Mobile Navigation Links */}
         <nav
           className="
             flex
@@ -479,7 +491,7 @@ export default function Navbar({ heroData }) {
                 border-zinc-800
                 py-4
                 text-zinc-400
-                transition
+                transition-colors
                 hover:text-green-500
               "
             >
@@ -487,7 +499,7 @@ export default function Navbar({ heroData }) {
             </a>
           ))}
 
-          {/* Terminal Card */}
+          {/* Terminal Info Card */}
           <div
             className="
               mt-6
@@ -505,7 +517,7 @@ export default function Navbar({ heroData }) {
                 text-green-500
               "
             >
-              {heroData?.name}
+              {heroData?.name || "Portfolio"}
             </p>
 
             <p
