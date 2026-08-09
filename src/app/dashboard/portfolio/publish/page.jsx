@@ -120,7 +120,7 @@ export default function PublishPage() {
           </p>
 
           {/* URL */}
-          {slug && (
+          {isPublished && slug && (
             <div
               className="
               mt-8
@@ -204,7 +204,7 @@ export default function PublishPage() {
             }
           `}
           >
-            {isPublished ? "Unpublish Portfolio" : "Publish Portfolio"}
+            {isPublished ? "Stop Sharing" : "Publish Portfolio"}
           </button>
         </div>
 

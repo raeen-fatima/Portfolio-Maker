@@ -55,7 +55,7 @@ export function usePublish() {
       toast.success(
         data.isPublished
           ? "Portfolio published successfully"
-          : "Portfolio unpublished successfully",
+          : "Portfolio sharing stopped",
       );
 
       return {
